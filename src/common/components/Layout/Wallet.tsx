@@ -47,7 +47,9 @@ const Wallet = (): JSX.Element => {
           <div>
             {!isVerified && !rolesLoading && `Verify Twitter ❎`}
             {isVerified &&
-              `${isChancellor ? "👑 Welcome Chancellor! 🏰" : "🌾 One Day... 🛖"}
+              `${
+                isChancellor ? "👑 Welcome Chancellor! 🏰" : "🌾 One Day... 🛖"
+              }
           `}
           </div>
           <button onClick={() => disconnect?.()}>Disconnect</button>
