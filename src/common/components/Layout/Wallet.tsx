@@ -1,18 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-} from "wagmi";
+import { useEffect, useState } from "react";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 import useRoles from "@/hooks/useRoles";
 import { toTrimmedAddress } from "@/utils/index";
-
-// TODO: configure Mainnet for ENS fetching https://wagmi.sh/docs/providers/configuring-chains#multiple-providers
-// const { data: ensName } = useEnsName({ address });
-// const { data: ensAvatar } = useEnsAvatar({ addressOrName: address });
+import { signIn, useSession, signOut, getCsrfToken } from "next-auth/react";
+import TwitterAuth from "../TwitterAuth";
 
 const Wallet = (): JSX.Element => {
   const { connect, connectors, error, isLoading, pendingConnector } =
@@ -25,6 +17,10 @@ const Wallet = (): JSX.Element => {
   const { isVerified, isChancellor, rolesLoading, rolesErrors } =
     useRoles(address);
 
+  // next-auth twitter
+  const { data: twitterSession, status: twitterStatus } = useSession();
+  const [authToken, setAuthToken] = useState<null | string>();
+
   // close dialog/modal with escape
   const handleKeyDown = (e) => {
     if (e.keyCode === 27) {
@@ -32,21 +28,40 @@ const Wallet = (): JSX.Element => {
     }
   };
 
+  useEffect(() => {
+    const getAuthToken = async () => {
+      const csrfToken = await getCsrfToken();
+      if (csrfToken) setAuthToken(csrfToken);
+    };
+
+    if (twitterStatus === "authenticated") {
+      getAuthToken();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [twitterStatus]);
+
   return (
     <>
       {isConnected ? (
         <div>
-          {/* <img src={ensAvatar} aria-hidden={true} /> */}
-          <div>{/* ensName ? `${ensName}` : */ toTrimmedAddress(address)}</div>
-
-          {/* TODO: TWITTER VERIFICATION 
-            after twitter is verified, call API (api/mint/[userAddress]/[twitterUsername]),
-            this will use private key and add user to VoterRegistry
-          */}
-
+          <div>{toTrimmedAddress(address)}</div>
           <div>
-            {!isVerified && !rolesLoading && `Verify Twitter ❎`}
+            {!isVerified && !rolesLoading && (
+              <>
+                {twitterSession && authToken ? (
+                  <TwitterAuth signOut={signOut} authToken={authToken} />
+                ) : (
+                  <button
+                    className="px-1 border border-green-100 animate-pulse"
+                    onClick={() => signIn()}
+                  >
+                    Verify Twitter ❎
+                  </button>
+                )}
+              </>
+            )}
             {isVerified &&
+              !rolesLoading &&
               `${
                 isChancellor ? "👑 Welcome Chancellor! 🏰" : "🌾 One Day... 🛖"
               }
