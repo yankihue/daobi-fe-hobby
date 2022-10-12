@@ -94,7 +94,7 @@ const TwitterAuth = ({ signOut, authToken }: Props) => {
 
       {verificationStatus?.error && (
         <p>
-          {verificationStatus.message}
+          {verificationStatus?.message ?? verificationStatus?.error}
           <br />
           Try again. If issue persists, check in Discord.
         </p>
