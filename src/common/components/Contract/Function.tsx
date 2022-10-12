@@ -60,8 +60,6 @@ const Function = ({
           })
         : undefined,
     onError(error: any) {
-      // dev use dont console.log read errors in prod
-      // console.log("error", JSON.parse(JSON.stringify(error, null, 2)));
       setErrorMsg(
         JSON.stringify(
           (error?.reason ?? "") +
@@ -94,7 +92,7 @@ const Function = ({
       setTxWillError(false);
     },
     onError(error: any) {
-      console.log("Error: ", JSON.stringify(error));
+      // console.log("Error: ", JSON.stringify(error));
       setTxWillError(true);
       setErrorMsg(
         JSON.stringify(
