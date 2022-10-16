@@ -14,7 +14,7 @@ const Wallet = (): JSX.Element => {
 
   const [showDialog, setShowDialog] = useState(false);
 
-  const { isVerified, isChancellor, rolesLoading, rolesErrors } =
+  const { isVerified, isRegistered, isChancellor, rolesLoading } =
     useRoles(address);
 
   // next-auth twitter
@@ -60,7 +60,10 @@ const Wallet = (): JSX.Element => {
                 )}
               </>
             )}
-            {isVerified &&
+            {!isRegistered &&
+              isVerified &&
+              `Twitter verification completed. To register as a voter, go to VoteContract > Register.`}
+            {isRegistered &&
               !rolesLoading &&
               `${
                 isChancellor ? "👑 Welcome Chancellor! 🏰" : "🌾 One Day... 🛖"

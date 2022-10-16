@@ -1,13 +1,29 @@
+import { BigNumber } from "ethers";
 import { useContractRead } from "wagmi";
 import Contract3ABI from "../../ethereum/abis/DAObiContract3.json";
 import VoteABI from "../../ethereum/abis/DaobiVoteContract.json";
 
 const useRoles = (userAddress: string) => {
+  // check if address owns voting token
+  // if they do, they've verified on twitter already
+  const {
+    data: votingTokenBalance,
+    isError: isVerifiedError,
+    isLoading: isVerifiedLoading,
+  } = useContractRead({
+    addressOrName:
+      process.env.NEXT_PUBLIC_VOTE_ADDR ??
+      "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
+    contractInterface: VoteABI,
+    functionName: "balanceOf",
+    args: [userAddress],
+  });
+
   // get address' Voter Struct from Voter Registry Mapping
   const {
     data: voterStruct,
-    isError: isVerifiedError,
-    isLoading: isVerifiedLoading,
+    isError: isRegisteredError,
+    isLoading: isRegisteredLoading,
   } = useContractRead({
     addressOrName:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
@@ -30,14 +46,17 @@ const useRoles = (userAddress: string) => {
   });
 
   return {
-    // check if user verified on twitter
-    isVerified: voterStruct?.["serving"],
+    // check if user completed twitter verification
+    isVerified: (votingTokenBalance as unknown as BigNumber)?.gt(0),
+    // check if user registered to vote / claimed username
+    isRegistered: voterStruct?.["serving"],
     // check if user is Chancellor
     isChancellor: (chancellorAddress as unknown as string) === userAddress,
-    rolesLoading: isChancellorLoading || isVerifiedLoading,
+    rolesLoading:
+      isChancellorLoading || isVerifiedLoading || isRegisteredLoading,
     rolesErrors:
-      isChancellorError || isVerifiedError
-        ? [isChancellorError, isVerifiedError]
+      isChancellorError || isVerifiedError || isRegisteredError
+        ? [isChancellorError, isVerifiedError, isRegisteredError]
         : null,
   };
 };
