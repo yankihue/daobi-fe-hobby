@@ -15,7 +15,9 @@ export interface DAOBI_CONTRACT {
 export const DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   {
     name: "Contract3",
-    address: "0xC808B77Ade52704B8451328CccA8D6652f604b8c", // env.ERC20_ADDR,
+    address:
+      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
+      "0x68af95a6f932a372e88170e9c2a46094FAeFd5D4",
     ABI: Contract3,
     visibleMethods: [
       "chancellorSalary",
@@ -30,7 +32,9 @@ export const DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   },
   {
     name: "ChancellorsSeal",
-    address: "0x20CE6a3b589f44A85695733B11c93C39CfaD6473", // env.ERC721_ADDR,
+    address:
+      process.env.NEXT_PUBLIC_SEAL_ADDR ??
+      "0x6F5ec4A3Ff18647105cd42754846c86E3cDEec93",
     ABI: ChancellorsSeal,
     visibleMethods: [
       "symbol",
@@ -46,7 +50,9 @@ export const DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   },
   {
     name: "VoteContract",
-    address: "0xdbd584686ad45F57B1E05751269Af93A79429587", // env.VOTE_ADDR,
+    address:
+      process.env.NEXT_PUBLIC_VOTE_ADDR ??
+      "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
     ABI: VoteContract,
     visibleMethods: [
       "register",

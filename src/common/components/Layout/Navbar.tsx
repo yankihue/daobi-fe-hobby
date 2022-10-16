@@ -5,7 +5,9 @@ import { toTrimmedAddress } from "@/utils/index";
 
 const Navbar = () => {
   const { data, isError, isLoading } = useContractRead({
-    addressOrName: "0xC808B77Ade52704B8451328CccA8D6652f604b8c", //env.ERC20_ADDR
+    addressOrName:
+      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
+      "0x68af95a6f932a372e88170e9c2a46094FAeFd5D4",
     contractInterface: Contract3ABI,
     functionName: "chancellor",
   });

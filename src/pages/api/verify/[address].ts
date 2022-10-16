@@ -104,7 +104,7 @@ const initiateVoteContractWithSigner = async () => {
   await provider.ready;
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
   const voteContract = new ethers.Contract(
-    process.env.VOTE_ADDR,
+    process.env.NEXT_PUBLIC_VOTE_ADDR,
     VoteABI,
     signer
   );
