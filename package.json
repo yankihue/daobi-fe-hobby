@@ -1,11 +1,11 @@
 {
-  "name": "create-next-dapp",
+  "name": "daobi-frontend",
   "version": "1.0.0",
-  "description": "Next.js Typescript Boilerplate",
+  "description": "Frontend for DAObi smart contracts",
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:nickadamson/create-next-dapp"
+    "url": "git@github.com:DAObiFE/daobi-fe"
   },
   "private": false,
   "scripts": {
