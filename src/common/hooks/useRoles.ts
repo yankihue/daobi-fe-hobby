@@ -1,15 +1,33 @@
+import { BigNumber } from "ethers";
 import { useContractRead } from "wagmi";
 import Contract3ABI from "../../ethereum/abis/DAObiContract3.json";
 import VoteABI from "../../ethereum/abis/DaobiVoteContract.json";
 
 const useRoles = (userAddress: string) => {
-  // get address' Voter Struct from Voter Registry Mapping
+  // check if address owns voting token
+  // if they do, they've verified on twitter already
   const {
-    data: voterStruct,
+    data: votingTokenBalance,
     isError: isVerifiedError,
     isLoading: isVerifiedLoading,
   } = useContractRead({
-    addressOrName: "0xdbd584686ad45F57B1E05751269Af93A79429587", //env.VOTE_ADDR
+    addressOrName:
+      process.env.NEXT_PUBLIC_VOTE_ADDR ??
+      "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
+    contractInterface: VoteABI,
+    functionName: "balanceOf",
+    args: [userAddress],
+  });
+
+  // get address' Voter Struct from Voter Registry Mapping
+  const {
+    data: voterStruct,
+    isError: isRegisteredError,
+    isLoading: isRegisteredLoading,
+  } = useContractRead({
+    addressOrName:
+      process.env.NEXT_PUBLIC_VOTE_ADDR ??
+      "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
     contractInterface: VoteABI,
     functionName: "voterRegistry",
     args: [userAddress],
@@ -20,20 +38,25 @@ const useRoles = (userAddress: string) => {
     isError: isChancellorError,
     isLoading: isChancellorLoading,
   } = useContractRead({
-    addressOrName: "0xC808B77Ade52704B8451328CccA8D6652f604b8c", //env.ERC20_ADDR
+    addressOrName:
+      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
+      "0x68af95a6f932a372e88170e9c2a46094FAeFd5D4",
     contractInterface: Contract3ABI,
     functionName: "chancellor",
   });
 
   return {
-    // check if user verified on twitter
-    isVerified: voterStruct?.["serving"],
+    // check if user completed twitter verification
+    isVerified: (votingTokenBalance as unknown as BigNumber)?.gt(0),
+    // check if user registered to vote / claimed username
+    isRegistered: voterStruct?.["serving"],
     // check if user is Chancellor
     isChancellor: (chancellorAddress as unknown as string) === userAddress,
-    rolesLoading: isChancellorLoading || isVerifiedLoading,
+    rolesLoading:
+      isChancellorLoading || isVerifiedLoading || isRegisteredLoading,
     rolesErrors:
-      isChancellorError || isVerifiedError
-        ? [isChancellorError, isVerifiedError]
+      isChancellorError || isVerifiedError || isRegisteredError
+        ? [isChancellorError, isVerifiedError, isRegisteredError]
         : null,
   };
 };

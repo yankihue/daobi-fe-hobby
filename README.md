@@ -1,1 +1,5 @@
-see https://github.com/DAObiFE/daobi-fe
+Repository for DAObi smart contracts' front-end.
+
+Using next, wagmi, & next-auth.
+
+<!-- TODO -->

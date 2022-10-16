@@ -19,6 +19,29 @@ interface Props {
   contractAddress: string;
 }
 
+const formatInputData = (input: {
+  name?: string;
+  indexed?: boolean;
+  type?: string;
+  internalType?: any;
+  components?: readonly JsonFragmentType[];
+  value: any;
+}) => {
+  if (typeof input.value === "number") {
+    input.value = BigNumber.from(input.value.toString());
+  } else if (input.type === "bytes6") {
+    // username
+    let utf8 = ethers.utils.toUtf8Bytes(input.value);
+    let hexstring = ethers.utils.hexlify(utf8);
+    if (input.value.length < 6) {
+      hexstring = ethers.utils.hexZeroPad(hexstring, 6);
+    }
+    return hexstring;
+  } else {
+    return input.value;
+  }
+};
+
 const Function = ({
   name,
   stateMutability,
@@ -53,15 +76,10 @@ const Function = ({
     args:
       inputs.length > 0
         ? formData.map((input) => {
-            if (typeof input.value === "number") {
-              input.value = BigNumber.from(input.value.toString());
-            }
-            return input.value;
+            return formatInputData(input);
           })
         : undefined,
     onError(error: any) {
-      // dev use dont console.log read errors in prod
-      // console.log("error", JSON.parse(JSON.stringify(error, null, 2)));
       setErrorMsg(
         JSON.stringify(
           (error?.reason ?? "") +
@@ -82,10 +100,7 @@ const Function = ({
     contractInterface: contractABI,
     functionName: name,
     args: formData.map((input) => {
-      if (typeof input.value === "number") {
-        input.value = BigNumber.from(input.value.toString());
-      }
-      return input.value;
+      return formatInputData(input);
     }),
     overrides: {
       value: ethers.utils.parseEther(msgValue.toString()),
@@ -94,7 +109,7 @@ const Function = ({
       setTxWillError(false);
     },
     onError(error: any) {
-      console.log("Error: ", JSON.stringify(error));
+      // console.log("Error: ", JSON.stringify(error));
       setTxWillError(true);
       setErrorMsg(
         JSON.stringify(

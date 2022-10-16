@@ -24,6 +24,9 @@ export function formatIODefaultValues(
       case "bool":
         value = false;
         break;
+      case "bytes6": // username
+        value = "6chars";
+        break;
 
       default:
         if (input.type.includes("int")) value = 1;

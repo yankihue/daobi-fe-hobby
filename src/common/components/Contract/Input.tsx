@@ -64,6 +64,18 @@ const Input = ({
               onChange={(e) => handleChange(e)}
             />
           );
+        } else if (input.type === "bytes6") {
+          // username
+          return (
+            <input
+              className={inputStyle}
+              type="text"
+              pattern={`/^[A-Z|a-z|0-9]{1,6}$/s`}
+              maxLength={6}
+              value={value}
+              onChange={(e) => handleChange(e)}
+            />
+          );
         } else if (input.type.includes("bytes")) {
           return (
             <input
@@ -74,7 +86,6 @@ const Input = ({
             />
           );
         } else {
-          // console.log(`Unknown Type: ${JSON.stringify(input)}`);
           return <p>Error, UnknownType</p>;
         }
     }
@@ -83,7 +94,8 @@ const Input = ({
   return (
     <div className="flex flex-col">
       <label>
-        {`${input.name}(${input.type}):`}
+        {`${input.name}(${input.type}): `}
+        {input.type === "bytes6" && `6 character max`}
         {input.type.includes("int") && (
           <p className="italic">
             Note: Will be converted to Wei; 1 = 1 ETH = 10^18 WEI
