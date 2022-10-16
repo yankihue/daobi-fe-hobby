@@ -72,7 +72,7 @@ export default async function handler(
             address
           );
 
-          const receipt = tx.wait(2);
+          const receipt = await tx.wait(2);
 
           if (receipt) {
             return res.status(200).json({
@@ -81,6 +81,7 @@ export default async function handler(
           }
         } catch (error) {
           // if minting fails, tell user reason, and log to server
+          console.log({ error });
           return res.status(500).json({
             message: "Internal Server Error while trying to mint.",
             error: error,

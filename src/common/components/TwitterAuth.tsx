@@ -8,7 +8,7 @@ interface Props {
 }
 
 const TwitterAuth = ({ signOut, authToken }: Props) => {
-  const { address, isConnected, connector } = useAccount();
+  const { address, isConnected } = useAccount();
   const uniqueMessage =
     `Signing this message verifies that you have completed linking your Twitter. \nAfter you sign this message, DAObi will approve your wallet address on the Voting contract, and your Twitter will be disconnected. \nNeither your address or Twitter will be saved by DAObi, but we still recommend clearing your cookies after verification is completed. \n` +
     JSON.stringify({
