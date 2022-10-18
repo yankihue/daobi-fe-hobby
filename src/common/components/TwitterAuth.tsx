@@ -85,7 +85,7 @@ const TwitterAuth = ({ signOut, authToken }: Props) => {
     <>
       {!verificationStatus?.error && (
         <button
-          className="px-1 border border-green-100 animate-pulse"
+          className="px-1 border animate-pulse border-ready"
           onClick={() => signMessage()}
         >
           Sign Message To Complete Verification...

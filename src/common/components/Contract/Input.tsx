@@ -10,7 +10,7 @@ interface Props {
 }
 
 const inputStyle =
-  "w-full p-2 rounded border-2 border-black-900 focus:outline-1 focus:outline-blue-400";
+  "w-full p-2 rounded border-2 border-color-mode focus:outline-1 focus:outline-blue-400";
 
 const Input = ({
   input,
