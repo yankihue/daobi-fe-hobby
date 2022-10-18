@@ -70,12 +70,12 @@ const Function = ({
     isLoading: viewIsLoading,
     refetch: viewRefetch,
   } = useContractRead({
-    addressOrName: contractAddress,
-    contractInterface: contractABI,
+    address: contractAddress,
+    abi: [...contractABI] as const,
     functionName: name,
     args:
-      inputs.length > 0
-        ? formData.map((input) => {
+      inputs?.length > 0
+        ? formData?.map((input) => {
             return formatInputData(input);
           })
         : undefined,
@@ -96,10 +96,10 @@ const Function = ({
 
   // FOR WRITE FUNCTIONS
   const { config, refetch } = usePrepareContractWrite({
-    addressOrName: contractAddress,
-    contractInterface: contractABI,
+    address: contractAddress,
+    abi: [...contractABI] as const,
     functionName: name,
-    args: formData.map((input) => {
+    args: formData?.map((input) => {
       return formatInputData(input);
     }),
     overrides: {

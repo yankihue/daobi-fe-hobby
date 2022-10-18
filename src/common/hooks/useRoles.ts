@@ -11,10 +11,10 @@ const useRoles = (userAddress: string) => {
     isError: isVerifiedError,
     isLoading: isVerifiedLoading,
   } = useContractRead({
-    addressOrName:
+    address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
       "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
-    contractInterface: VoteABI,
+    abi: [...VoteABI] as const,
     functionName: "balanceOf",
     args: [userAddress],
   });
@@ -25,10 +25,10 @@ const useRoles = (userAddress: string) => {
     isError: isRegisteredError,
     isLoading: isRegisteredLoading,
   } = useContractRead({
-    addressOrName:
+    address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
       "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
-    contractInterface: VoteABI,
+    abi: [...VoteABI] as const,
     functionName: "voterRegistry",
     args: [userAddress],
   });
@@ -38,10 +38,10 @@ const useRoles = (userAddress: string) => {
     isError: isChancellorError,
     isLoading: isChancellorLoading,
   } = useContractRead({
-    addressOrName:
+    address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
       "0x68af95a6f932a372e88170e9c2a46094FAeFd5D4",
-    contractInterface: Contract3ABI,
+    abi: [...Contract3ABI] as const,
     functionName: "chancellor",
   });
 

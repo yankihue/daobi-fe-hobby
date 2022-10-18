@@ -4,11 +4,11 @@ import Contract3ABI from "../../../ethereum/abis/DAObiContract3.json";
 import { toTrimmedAddress } from "@/utils/index";
 
 const Navbar = () => {
-  const { data, isError, isLoading } = useContractRead({
-    addressOrName:
+  const result = useContractRead({
+    address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
       "0x68af95a6f932a372e88170e9c2a46094FAeFd5D4",
-    contractInterface: Contract3ABI,
+    abi: [...Contract3ABI] as const,
     functionName: "chancellor",
   });
 
