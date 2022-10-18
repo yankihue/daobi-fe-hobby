@@ -11,7 +11,7 @@ export function formatIODefaultValues(
   inputs: readonly JsonFragmentType[],
   address: string
 ) {
-  return inputs.map((input) => {
+  return inputs?.map((input) => {
     let value;
 
     switch (input.type) {

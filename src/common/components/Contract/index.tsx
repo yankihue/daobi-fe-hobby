@@ -50,8 +50,8 @@ const Contract = ({ name, address, ABI, visibleMethods }: DAOBI_CONTRACT) => {
                 key={`${func?.name}-${address}-${idx}`}
                 name={func?.name}
                 stateMutability={func?.stateMutability}
-                inputs={func.inputs}
-                outputs={func.outputs}
+                inputs={func?.inputs}
+                outputs={func?.outputs}
                 contractABI={ABI}
                 contractAddress={address}
               />

@@ -96,7 +96,7 @@ const Input = ({
       <label>
         {`${input.name}(${input.type}): `}
         {input.type === "bytes6" && `6 character max`}
-        {input.type.includes("int") && (
+        {input.type.includes("int") && isMsgValue && (
           <p className="italic">
             Note: Will be converted to Wei; 1 = 1 ETH = 10^18 WEI
           </p>
