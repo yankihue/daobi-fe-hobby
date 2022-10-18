@@ -8,7 +8,8 @@ import {
 } from "wagmi";
 import { useEffect, useState } from "react";
 import { BigNumber, BigNumberish, ethers } from "ethers";
-import { formatIODefaultValues, toTrimmedAddress } from "@/utils/index";
+import { formatIODefaultValues } from "@/utils/index";
+import { BytesLike } from "ethers/lib/utils";
 
 interface Props {
   name: string;
@@ -109,7 +110,6 @@ const Function = ({
       setTxWillError(false);
     },
     onError(error: any) {
-      // console.log("Error: ", JSON.stringify(error));
       setTxWillError(true);
       setErrorMsg(
         JSON.stringify(
@@ -130,7 +130,9 @@ const Function = ({
 
   const formattedViewData =
     typeof viewData !== "object"
-      ? viewData
+      ? ethers.utils.isHexString(viewData, 6)
+        ? ethers.utils.toUtf8String(viewData as BytesLike)
+        : viewData?.toString() ?? viewData
       : (viewData as BigNumberish)?.toString();
 
   // re-estimate when values change
@@ -147,76 +149,78 @@ const Function = ({
   }, [formData]);
 
   return (
-    <div className="flex flex-col justify-between p-4 m-auto w-full h-full border-2">
-      <p className="text-lg font-bold">{`${name} (${stateMutability})`}</p>
-      {stateMutability === "view" && (
-        <div>
-          <br />
-          {/* TODO: add visual indication of query status */}
-          Value{`(${outputs[0].type})`}:{viewIsLoading && <p>spinner</p>}
-          {viewIsError && <p>error</p>}
-          {viewIsSuccess && (
-            <div className="overflow-x-auto max-w-32">
-              {/* {formattedViewData.length === 42
-                ? toTrimmedAddress(formattedViewData)
-                : formattedViewData} */}
-              {formattedViewData}
-            </div>
-          )}
-        </div>
-      )}
-      <br />
-      <form className="w-full">
-        {inputs.map((input, idx) => (
-          <Input
-            key={`${input.name}-${contractAddress}-${idx}`}
-            input={input}
-            value={formData[idx].value}
-            idx={idx}
-            formData={formData}
-            setFormData={setFormData}
-            isMsgValue={false}
-          />
-        ))}
-
-        {/* field for payable function */}
-        {stateMutability === "payable" && (
-          <Input
-            key={`${msgValue}-${contractAddress}-${name}`}
-            input={{ name: "msgValue", type: "uint256" }}
-            value={msgValue}
-            idx={0}
-            formData={msgValue}
-            setFormData={setMsgValue}
-            isMsgValue={true}
-          />
-        )}
-        <br />
-      </form>
-      <div className="flex flex-row justify-between w-full">
+    <div className="flex flex-col justify-between card">
+      <div className="px-6 py-4 w-full border-b border-color-mode">
+        <h3 className="mx-auto text-lg font-bold text-center">{`${name}:`}</h3>
+      </div>
+      {inputs?.length > 0 && (
         <>
-          {txWillError && (
-            <p className="overflow-auto p-2 mr-2 border">
-              {errorMsg && "ERROR: " + errorMsg}
-            </p>
-          )}
+          <br />
+          <form className="px-6 w-full">
+            {inputs?.map((input, idx) => (
+              <Input
+                key={`${input.name}-${contractAddress}-${idx}`}
+                input={input}
+                value={formData[idx].value}
+                idx={idx}
+                formData={formData}
+                setFormData={setFormData}
+                isMsgValue={false}
+              />
+            ))}
+
+            {/* field for payable function */}
+            {stateMutability === "payable" && (
+              <Input
+                key={`${msgValue}-${contractAddress}-${name}`}
+                input={{ name: "msgValue", type: "uint256" }}
+                value={msgValue}
+                idx={0}
+                formData={msgValue}
+                setFormData={setMsgValue}
+                isMsgValue={true}
+              />
+            )}
+            <br />
+          </form>
         </>
-        <button
-          className={`p-2 mt-auto mr-0 mb-0 ml-auto border-2 h-min ${
-            txWillError ? "border-red-400" : "border-green-400"
-          }`}
-          onClick={async (e) => {
-            e.preventDefault();
-            if (stateMutability === "view") {
-              viewRefetch();
-            } else {
+      )}
+      <div className="flex flex-row justify-around items-center px-6 py-2 w-full border-t border-color-mode">
+        {txWillError && stateMutability !== "view" && (
+          <p className="overflow-auto p-2 mr-2 rounded-md border border-color-mode">
+            {errorMsg && "ERROR: " + errorMsg}
+          </p>
+        )}
+        {stateMutability !== "view" ? (
+          <button
+            className={`p-2 min-w-20 max-w-20 mt-auto mr-0 mb-0 ml-auto border h-min ${
+              txWillError ? "border-error" : "border-ready"
+            }`}
+            onClick={async (e) => {
+              e.preventDefault();
               write?.();
-            }
-          }}
-          disabled={txWillError}
-        >
-          {stateMutability === "view" ? "Refresh Query" : "Submit Transaction"}
-        </button>
+            }}
+            disabled={txWillError}
+          >
+            Submit
+          </button>
+        ) : (
+          <div className="mx-auto w-full text-center">
+            <br />
+            {viewIsLoading && <p>Loading...</p>}
+            {viewIsError && <p>Error</p>}
+            {viewIsSuccess && (
+              <>
+                <div className="overflow-x-auto max-w-32 scrollbar">
+                  {formattedViewData}
+                </div>
+                <p className="text-sm italic font-light">
+                  {`(${outputs[0].type})`}
+                </p>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

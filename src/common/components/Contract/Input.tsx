@@ -1,4 +1,4 @@
-import { JsonFragment, JsonFragmentType } from "@ethersproject/abi";
+import { JsonFragmentType } from "@ethersproject/abi";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 interface Props {
   input: JsonFragmentType;
