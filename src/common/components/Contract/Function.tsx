@@ -11,10 +11,13 @@ import { BigNumber, BigNumberish, ethers } from "ethers";
 import { formatIODefaultValues } from "@/utils/index";
 import { BytesLike } from "ethers/lib/utils";
 
-interface Props {
-  name: string;
+export interface UserCallableFunction {
+  functionName: string;
   stateMutability: string;
-  inputs: readonly JsonFragmentType[];
+  inputs: Array<{
+    json: JsonFragmentType;
+    userFriendlyCopy: string;
+  }>;
   outputs: readonly JsonFragmentType[];
   contractABI: JsonFragment[];
   contractAddress: string;
@@ -44,24 +47,29 @@ const formatInputData = (input: {
 };
 
 const Function = ({
-  name,
+  functionName,
   stateMutability,
   inputs,
   outputs,
   contractABI,
   contractAddress,
-}: Props) => {
+}: UserCallableFunction) => {
   const { address } = useAccount();
 
   // useState for all input values
   const [formData, setFormData] = useState(
-    formatIODefaultValues(inputs, address) // .sol types -> .js types
+    // .sol types -> .js types
+    formatIODefaultValues(
+      inputs.map((input) => input.json),
+      address
+    )
   );
+
   const [msgValue, setMsgValue] = useState(0); // for payable functions
   const [txWillError, setTxWillError] = useState(true); // block transactions until ethers can estimate gas
-  const [errorMsg, setErrorMsg] = useState<null | string | Error>(
-    "Tx will likely fail... Make sure you have proper permissions, enough money for gas, etc."
-  );
+  // const [errorMsg, setErrorMsg] = useState<null | string | Error>(
+  //   "Tx will likely fail... Make sure you have proper permissions, enough money for gas, etc."
+  // );
 
   // FOR READ FUNCTIONS
   const {
@@ -73,33 +81,33 @@ const Function = ({
   } = useContractRead({
     address: contractAddress,
     abi: [...contractABI] as const,
-    functionName: name,
+    functionName: functionName,
     args:
       inputs?.length > 0
         ? formData?.map((input) => {
             return formatInputData(input);
           })
         : undefined,
-    onError(error: any) {
-      setErrorMsg(
-        JSON.stringify(
-          (error?.reason ?? "") +
-            " - " +
-            (error?.error?.message ?? "") +
-            " - " +
-            (error?.code ?? "") +
-            " - " +
-            (error?.argument ?? "")
-        )
-      );
-    },
+    // onError(error: any) {
+    //   setErrorMsg(
+    //     JSON.stringify(
+    //       (error?.reason ?? "") +
+    //         " - " +
+    //         (error?.error?.message ?? "") +
+    //         " - " +
+    //         (error?.code ?? "") +
+    //         " - " +
+    //         (error?.argument ?? "")
+    //     )
+    //   );
+    // },
   });
 
   // FOR WRITE FUNCTIONS
   const { config, refetch } = usePrepareContractWrite({
     address: contractAddress,
     abi: [...contractABI] as const,
-    functionName: name,
+    functionName: functionName,
     args: formData?.map((input) => {
       return formatInputData(input);
     }),
@@ -111,17 +119,17 @@ const Function = ({
     },
     onError(error: any) {
       setTxWillError(true);
-      setErrorMsg(
-        JSON.stringify(
-          (error?.reason ?? "") +
-            " - " +
-            (error?.error?.message ?? "") +
-            " - " +
-            (error?.code ?? "") +
-            " - " +
-            (error?.argument ?? "")
-        )
-      );
+      // setErrorMsg(
+      //   JSON.stringify(
+      //     (error?.reason ?? "") +
+      //       " - " +
+      //       (error?.error?.message ?? "") +
+      //       " - " +
+      //       (error?.code ?? "") +
+      //       " - " +
+      //       (error?.argument ?? "")
+      //   )
+      // );
     },
   });
 
@@ -149,17 +157,17 @@ const Function = ({
   }, [formData]);
 
   return (
-    <div className="flex flex-col justify-between card">
-      <div className="px-6 py-4 w-full border-b border-color-mode">
-        <h3 className="mx-auto text-lg font-bold text-center">{`${name}:`}</h3>
-      </div>
+    <>
       {inputs?.length > 0 && (
         <>
-          <br />
-          <form className="px-6 w-full">
+          {/* <div className="px-6 py-4 w-full border-b border-color-mode"> */}
+          {/* <h3 className="mx-auto text-lg font-bold text-center">{`${name}:`}</h3> */}
+          {/* </div> */}
+          {/* <br /> */}
+          <form className="px-6 space-y-4 w-full">
             {inputs?.map((input, idx) => (
               <Input
-                key={`${input.name}-${contractAddress}-${idx}`}
+                key={`${input.json.name}-${contractAddress}-${idx}`}
                 input={input}
                 value={formData[idx].value}
                 idx={idx}
@@ -173,7 +181,10 @@ const Function = ({
             {stateMutability === "payable" && (
               <Input
                 key={`${msgValue}-${contractAddress}-${name}`}
-                input={{ name: "msgValue", type: "uint256" }}
+                input={{
+                  json: { name: "msgValue", type: "uint256" },
+                  userFriendlyCopy: "MATIC",
+                }}
                 value={msgValue}
                 idx={0}
                 formData={msgValue}
@@ -181,19 +192,18 @@ const Function = ({
                 isMsgValue={true}
               />
             )}
-            <br />
           </form>
         </>
       )}
-      <div className="flex flex-row justify-around items-center px-6 py-2 w-full border-t border-color-mode">
-        {txWillError && stateMutability !== "view" && (
+      <div className="flex flex-row justify-center items-center px-6 py-2 w-full">
+        {/* {txWillError && stateMutability !== "view" && (
           <p className="overflow-auto p-2 mr-2 rounded-md border border-color-mode">
             {errorMsg && "ERROR: " + errorMsg}
           </p>
-        )}
+        )} */}
         {stateMutability !== "view" ? (
           <button
-            className={`p-2 min-w-20 max-w-20 mt-auto mr-0 mb-0 ml-auto border h-min ${
+            className={`p-2 min-w-20 max-w-20 border h-min ${
               txWillError ? "border-error" : "border-ready"
             }`}
             onClick={async (e) => {
@@ -202,27 +212,29 @@ const Function = ({
             }}
             disabled={txWillError}
           >
-            Submit
+            {functionName.includes("claim") || functionName.includes("Claim")
+              ? "Claim"
+              : "Submit"}
           </button>
         ) : (
           <div className="mx-auto w-full text-center">
-            <br />
+            {/* <br /> */}
             {viewIsLoading && <p>Loading...</p>}
-            {viewIsError && <p>Error</p>}
+            {/* {viewIsError && <p>Error</p>} */}
             {viewIsSuccess && (
               <>
                 <div className="overflow-x-auto max-w-32 scrollbar">
                   {formattedViewData}
                 </div>
-                <p className="text-sm italic font-light">
+                {/* <p className="text-sm italic font-light">
                   {`(${outputs[0].type})`}
-                </p>
+                </p> */}
               </>
             )}
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

@@ -9,14 +9,14 @@ export function toTrimmedAddress(value: string) {
 
 export function formatIODefaultValues(
   inputs: readonly JsonFragmentType[],
-  address: string
+  address?: string
 ) {
   return inputs?.map((input) => {
     let value;
 
     switch (input.type) {
       case "address":
-        value = address ?? "0x0000000000000000000000000000000000000000";
+        value = ""; //address ?? "0x0000000000000000000000000000000000000000";
         break;
       case "string":
         value = "";
@@ -25,14 +25,14 @@ export function formatIODefaultValues(
         value = false;
         break;
       case "bytes6": // username
-        value = "6chars";
+        value = "";
         break;
 
       default:
-        if (input.type.includes("int")) value = 1;
-        else if (input.type.includes("fixed")) value = 1.1;
+        if (input.type.includes("int")) value = 0;
+        else if (input.type.includes("fixed")) value = 0.0;
         else if (input.type.includes("bytes"))
-          value = "0x0000000000000000000000000000000000000000";
+          value = ""; //"0x0000000000000000000000000000000000000000";
         else console.log(`Unknown Type: ${JSON.stringify(input)}`);
         break;
     }

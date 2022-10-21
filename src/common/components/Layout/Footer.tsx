@@ -5,6 +5,9 @@ const Footer = () => {
         <a className="" href="https://daobi.netlify.app/court/">
           DAObi Homepage
         </a>
+        <a className="" href="https://twitter.com/DaobiTreasury">
+          Twitter
+        </a>
         <a className="" href="https://discord.com/invite/HqvVRPZ9Gg">
           Discord
         </a>

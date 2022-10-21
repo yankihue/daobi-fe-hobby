@@ -1,7 +1,10 @@
 import { JsonFragmentType } from "@ethersproject/abi";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 interface Props {
-  input: JsonFragmentType;
+  input: {
+    json: JsonFragmentType;
+    userFriendlyCopy: string;
+  };
   value: any;
   idx: number;
   formData: any[] | number;
@@ -32,7 +35,7 @@ const Input = ({
 
   // field for each input based on type
   const renderInput = () => {
-    switch (input.type) {
+    switch (input.json.type) {
       case "address":
       // fallthrough
       case "string":
@@ -55,7 +58,7 @@ const Input = ({
         );
 
       default:
-        if (input.type.includes("int")) {
+        if (input.json.type.includes("int")) {
           return (
             <input
               className={inputStyle}
@@ -64,7 +67,7 @@ const Input = ({
               onChange={(e) => handleChange(e)}
             />
           );
-        } else if (input.type === "bytes6") {
+        } else if (input.json.type === "bytes6") {
           // username
           return (
             <input
@@ -76,7 +79,7 @@ const Input = ({
               onChange={(e) => handleChange(e)}
             />
           );
-        } else if (input.type.includes("bytes")) {
+        } else if (input.json.type.includes("bytes")) {
           return (
             <input
               className={inputStyle}
@@ -94,14 +97,14 @@ const Input = ({
   return (
     <div className="flex flex-col">
       <label>
-        {`${input.name}(${input.type}): `}
-        {input.type === "bytes6" && `6 character max`}
-        {input.type.includes("int") && isMsgValue && (
+        {`${input.userFriendlyCopy}: `}
+        {input.json.type.includes("int") && isMsgValue && (
           <p className="italic">
             Note: Will be converted to Wei; 1 = 1 ETH = 10^18 WEI
           </p>
         )}
         {renderInput()}
+        {input.json.type === "bytes6" && `Notice: 6 characters maximum`}
         <br />
       </label>
     </div>

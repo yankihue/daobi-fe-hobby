@@ -74,19 +74,15 @@
     @apply text-black outline-none focus:outline-none dark:bg-stone-200;
   }
 
-  .modal {
-    @apply !bg-opacity-50;
-  }
-
   .border-ready {
     @apply !border-green-300 !border-opacity-50 dark:!border-green-800;
   }
 
   .border-error {
-    @apply border-2 !border-red-300 !border-opacity-50 dark:!border-red-800;
+    @apply !border-red-300 !border-opacity-50 dark:!border-red-800;
   }
 
   button:disabled {
-    @apply !bg-red-700 dark:!opacity-75 cursor-not-allowed;
+    @apply !bg-red-500 dark:!opacity-75 cursor-not-allowed;
   }
 }

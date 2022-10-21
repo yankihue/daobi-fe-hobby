@@ -27,27 +27,32 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between justify-self-start items-center px-6 py-4 mb-4 w-full max-w-full h-full max-h-16 border-b border-color-mode">
       <div className="w-1/3">
+        {/* TODO: Light/Dark Logo */}
         <h1 className="text-left">DAObi</h1>
       </div>
       <div className="flex justify-center items-center mx-auto space-x-3 w-1/3 text-center whitespace-nowrap">
         <div className="hidden flex-col justify-center items-center lg:flex">
-          <p>
-            Today&#39;s Chancellor is{" "}
-            <a
-              href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
-            >
-              {toTrimmedAddress(result.data as unknown as string)}
-            </a>
-          </p>
-          <div className="hidden whitespace-nowrap md:inline">
-            {!rolesLoading &&
-              `${
-                isChancellor
-                  ? "👑 Welcome Chancellor! 🏰"
-                  : "🌾 Maybe One Day... 🛖"
-              }
-            `}
-          </div>
+          {address && (
+            <>
+              <p>
+                Today&#39;s Chancellor is{" "}
+                <a
+                  href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
+                >
+                  {toTrimmedAddress(result.data as unknown as string)}
+                </a>
+              </p>
+              <div className="hidden whitespace-nowrap md:inline">
+                {!rolesLoading &&
+                  `${
+                    isChancellor
+                      ? "👑 Welcome Chancellor! 🏰"
+                      : "🌾 Maybe One Day... 🛖"
+                  }
+              `}
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="mr-0 w-1/3 text-right">

@@ -4,8 +4,8 @@ import VoteContract from "./DaobiVoteContract.json";
 
 import { JsonFragment } from "@ethersproject/abi";
 
-type UserFriendlyMethod = Record<string, string>;
-interface UserFriendlySection {
+export type UserFriendlyMethod = Record<string, string>;
+export interface UserFriendlySection {
   title: string;
   methods: Record<string, UserFriendlyMethod>;
 }
@@ -74,7 +74,7 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
     },
     selfImmolation: {
       title:
-        "Self-immolation: the last recourse when all other forms of protest have failed. Click here to ceremonially burn your voting token",
+        "Self-immolation; the last recourse when all other forms of protest have failed. Click here to ceremonially burn your voting token.",
       methods: {
         selfImmolate: {},
       },
@@ -99,6 +99,12 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
   ABI: Contract3,
   heading: "The Chancellery",
   userFriendlySections: {
+    claimChancellorSalary: {
+      title: "Claim the Chancellor's Salary here",
+      methods: {
+        claimChancellorSalary: {},
+      },
+    },
     makeClaim: {
       title: "Claim your daily stipend here",
       methods: {
@@ -123,35 +129,30 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
         lastSalaryClaim: {},
       },
     },
-    claimChancellorSalary: {
-      title: "",
-      methods: {
-        claimChancellorSalary: {},
-      },
-    },
-    mint: {
-      title: "",
-      methods: {
-        mint: {},
-      },
-    },
-    recoverSeal: {
-      title: "",
-      methods: {
-        recoverSeal: {},
-      },
-    },
-    chancellor: {
-      title: "",
-      methods: {
-        chancellor: {},
-      },
-    },
+
+    // mint: {
+    //   title: "",
+    //   methods: {
+    //     mint: {},
+    //   },
+    // },
+    // recoverSeal: {
+    //   title: "",
+    //   methods: {
+    //     recoverSeal: {},
+    //   },
+    // },
+    // chancellor: {
+    //   title: "",
+    //   methods: {
+    //     chancellor: {},
+    //   },
+    // },
   },
 };
 
 export const DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
-  VOTING_CONTRACT,
-  NFT_CONTRACT,
   TOKEN_CONTRACT,
+  VOTING_CONTRACT,
+  // NFT_CONTRACT,
 ];
