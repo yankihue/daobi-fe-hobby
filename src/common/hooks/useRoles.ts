@@ -52,6 +52,7 @@ const useRoles = (userAddress: string) => {
     isRegistered: voterStruct?.["serving"],
     // check if user is Chancellor
     isChancellor: (chancellorAddress as unknown as string) === userAddress,
+    currentChancellor: chancellorAddress,
     rolesLoading:
       isChancellorLoading || isVerifiedLoading || isRegisteredLoading,
     rolesErrors:
