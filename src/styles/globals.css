@@ -43,11 +43,11 @@
   }
 
   h1 {
-    @apply text-2xl font-black;
+    @apply text-xl font-black;
   }
 
   h2 {
-    @apply text-xl font-extrabold;
+    @apply text-lg font-extrabold;
   }
 
   h3 {
@@ -67,7 +67,11 @@
 
 @layer utilities {
   .card button {
-    @apply text-gray-200 bg-black rounded-lg dark:bg-white dark:text-black;
+    @apply text-black bg-green-200 rounded-lg dark:bg-green-800 dark:text-gray-100;
+  }
+
+  .card button:disabled {
+    @apply !bg-red-500 dark:!opacity-75 cursor-not-allowed;
   }
 
   .card input {
@@ -80,9 +84,5 @@
 
   .border-error {
     @apply !border-red-300 !border-opacity-50 dark:!border-red-800;
-  }
-
-  button:disabled {
-    @apply !bg-red-500 dark:!opacity-75 cursor-not-allowed;
   }
 }

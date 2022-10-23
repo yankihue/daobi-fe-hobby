@@ -1,9 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
-import useRoles from "@/hooks/useRoles";
-import { toTrimmedAddress } from "@/utils/index";
-import { signIn, useSession, signOut, getCsrfToken } from "next-auth/react";
 
 const Wallet = (): JSX.Element => {
   const { connect, connectors, error, isLoading, pendingConnector } =
@@ -64,21 +60,7 @@ const Wallet = (): JSX.Element => {
           </svg>
         )}
       </button>
-      {/* <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-8 h-8 cursor-pointer"
-        onClick={() => setShowRegistrationModal(true)}
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-        />
-      </svg> */}
+
       {isConnected ? (
         <button onClick={() => disconnect?.()}>Disconnect</button>
       ) : (
@@ -89,36 +71,40 @@ const Wallet = (): JSX.Element => {
           Connect Wallet
         </button>
       )}
-      {/* {error && <div>{error?.message ?? "Failed to connect"}</div>} */}
+      {error && <div>{error?.message ?? "Failed to connect"}</div>}
       {showDialog && !address && (
         <div
           className="absolute top-0 right-0 bottom-0 left-0 z-50 w-full max-w-full h-screen bg-transparent"
           onClick={() => setShowDialog(false)}
         >
-          <dialog
-            className="grid relative grid-cols-2 grid-rows-2 gap-2 p-4 mt-14 mr-10 ml-auto w-80 h-44 rounded-lg border-2 card border-color-mode"
-            open={showDialog}
-          >
-            {connectors.map((connector) => {
-              return (
-                <button
-                  className="p-2 text-xs border"
-                  disabled={!connector.ready}
-                  key={connector.id}
-                  onClick={() => {
-                    setShowDialog(false);
-                    connect({ connector });
-                  }}
-                >
-                  {connector.name}
-                  {!connector.ready && " (unsupported)"}
-                  {isLoading &&
-                    connector.id === pendingConnector?.id &&
-                    " (connecting)"}
-                </button>
-              );
-            })}
-          </dialog>
+          <div className="flex justify-end mt-16 w-full">
+            <div className="md:flex md:w-1/4 md:justify-start pt-18">
+              <dialog
+                className="grid relative grid-cols-2 grid-rows-2 gap-2 p-4 ml-0 w-80 h-44 rounded-lg border-2 border-color-mode"
+                open={showDialog}
+              >
+                {connectors.map((connector) => {
+                  return (
+                    <button
+                      className="p-2 text-xs border"
+                      disabled={!connector.ready}
+                      key={connector.id}
+                      onClick={() => {
+                        setShowDialog(false);
+                        connect({ connector });
+                      }}
+                    >
+                      {connector.name}
+                      {!connector.ready && " (unsupported)"}
+                      {isLoading &&
+                        connector.id === pendingConnector?.id &&
+                        " (connecting)"}
+                    </button>
+                  );
+                })}
+              </dialog>
+            </div>
+          </div>
         </div>
       )}
     </div>

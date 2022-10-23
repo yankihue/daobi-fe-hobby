@@ -16,7 +16,7 @@ export function formatIODefaultValues(
 
     switch (input.type) {
       case "address":
-        value = ""; //address ?? "0x0000000000000000000000000000000000000000";
+        value = "";
         break;
       case "string":
         value = "";
@@ -24,15 +24,14 @@ export function formatIODefaultValues(
       case "bool":
         value = false;
         break;
-      case "bytes6": // username
+      case "bytes6":
         value = "";
         break;
 
       default:
         if (input.type.includes("int")) value = 0;
         else if (input.type.includes("fixed")) value = 0.0;
-        else if (input.type.includes("bytes"))
-          value = ""; //"0x0000000000000000000000000000000000000000";
+        else if (input.type.includes("bytes")) value = "";
         else console.log(`Unknown Type: ${JSON.stringify(input)}`);
         break;
     }

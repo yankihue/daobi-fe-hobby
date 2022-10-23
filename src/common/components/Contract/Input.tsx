@@ -13,7 +13,7 @@ interface Props {
 }
 
 const inputStyle =
-  "w-full p-2 rounded border-2 border-color-mode focus:outline-1 focus:outline-blue-400";
+  "w-full p-2 rounded-lg border-2 border-color-mode focus:outline-1 focus:outline-blue-400";
 
 const Input = ({
   input,
@@ -95,8 +95,8 @@ const Input = ({
   };
 
   return (
-    <div className="flex flex-col">
-      <label>
+    <div className="flex flex-col mb-2">
+      <label className="text-center">
         {`${input.userFriendlyCopy}: `}
         {input.json.type.includes("int") && isMsgValue && (
           <p className="italic">

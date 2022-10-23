@@ -29,7 +29,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col w-full h-full grow">
       {!address && (
-        <p className="font-bold text-center break-words">
+        <p className="my-auto font-bold text-center break-words">
           Please Connect Your Wallet
         </p>
       )}
@@ -55,10 +55,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// {
-//   isRegistered &&
-//     {
-//       /* full access contract selection */
-//     };
-// }

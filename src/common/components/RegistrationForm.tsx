@@ -1,8 +1,5 @@
 import { Session } from "next-auth";
-import { Dispatch, SetStateAction } from "react";
 import TwitterAuth from "./TwitterAuth";
-import Function from "@/components/Contract/Function";
-import Contract from "./Contract";
 import { VOTING_CONTRACT } from "@/ethereum/abis";
 import Section from "./Contract/Section";
 
@@ -52,16 +49,6 @@ export const RegistrationForm = ({
           )}
         </>
       )}
-      {/* registration: {
-      title: "Enter the Imperial Court",
-      methods: {
-        register: {
-          _initialVote:
-            "Please enter the address of the courtier whose faction you will be joining",
-          _name: "Courtesy Name",
-        },
-      },
-    }, */}
       {!isRegistered && isVerified && (
         <>
           <p>
@@ -72,20 +59,6 @@ export const RegistrationForm = ({
             {...VOTING_CONTRACT.userFriendlySections.registration}
             contractABI={VOTING_CONTRACT.ABI}
             contractAddress={VOTING_CONTRACT.address}
-            // userFriendlySections={{
-            //   registration: {
-            //     ...VOTING_CONTRACT.userFriendlySections.registration,
-            //   },
-            // }}
-            // functionName="register"
-            // stateMutability="nonpayable"
-            // inputs={[
-            //   { json: { "internalType": "address", "name": "_initialVote", "type": "address" },  VOTING_C},
-            //   { "internalType": "bytes6", "name": "_name", "type": "bytes6" }
-            // ]}
-            // outputs={func?.outputs}
-            // contractABI={ABI}
-            // contractAddress={address}
           />
         </>
       )}

@@ -1,7 +1,5 @@
 import { UserFriendlyMethod } from "@/ethereum/abis";
-import useRoles from "@/hooks/useRoles";
 import { JsonFragment } from "@ethersproject/abi";
-import { useAccount } from "wagmi";
 import Function, { UserCallableFunction } from "./Function";
 
 interface Props {
@@ -12,9 +10,6 @@ interface Props {
 }
 
 const Section = ({ title, methods, contractAddress, contractABI }: Props) => {
-  const { address: userAddress } = useAccount();
-  const { isChancellor } = useRoles(userAddress);
-
   // get functions from abi
   const allContractFunctions = contractABI.filter(
     (method) => method.type === "function" && method?.name
@@ -51,11 +46,10 @@ const Section = ({ title, methods, contractAddress, contractABI }: Props) => {
     }
   });
 
-  // return (
   return (
     <>
-      <div className="flex flex-col justify-between border !border-orange-500 card max-w-3xl">
-        <h3 className="p-4 text-xl text-center border-b border-color-mode">
+      <div className="flex flex-col justify-between max-w-3xl card">
+        <h3 className="p-4 mb-2 text-xl text-center border-b border-color-mode">
           {title}
         </h3>
         {userCallableFunctions.map((userFunc) => {
@@ -64,7 +58,6 @@ const Section = ({ title, methods, contractAddress, contractABI }: Props) => {
       </div>
     </>
   );
-  // )
 };
 
 export default Section;

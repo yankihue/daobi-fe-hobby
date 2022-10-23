@@ -67,15 +67,11 @@ const Function = ({
 
   const [msgValue, setMsgValue] = useState(0); // for payable functions
   const [txWillError, setTxWillError] = useState(true); // block transactions until ethers can estimate gas
-  // const [errorMsg, setErrorMsg] = useState<null | string | Error>(
-  //   "Tx will likely fail... Make sure you have proper permissions, enough money for gas, etc."
-  // );
 
   // FOR READ FUNCTIONS
   const {
     data: viewData,
     isSuccess: viewIsSuccess,
-    isError: viewIsError,
     isLoading: viewIsLoading,
     refetch: viewRefetch,
   } = useContractRead({
@@ -88,19 +84,6 @@ const Function = ({
             return formatInputData(input);
           })
         : undefined,
-    // onError(error: any) {
-    //   setErrorMsg(
-    //     JSON.stringify(
-    //       (error?.reason ?? "") +
-    //         " - " +
-    //         (error?.error?.message ?? "") +
-    //         " - " +
-    //         (error?.code ?? "") +
-    //         " - " +
-    //         (error?.argument ?? "")
-    //     )
-    //   );
-    // },
   });
 
   // FOR WRITE FUNCTIONS
@@ -119,17 +102,6 @@ const Function = ({
     },
     onError(error: any) {
       setTxWillError(true);
-      // setErrorMsg(
-      //   JSON.stringify(
-      //     (error?.reason ?? "") +
-      //       " - " +
-      //       (error?.error?.message ?? "") +
-      //       " - " +
-      //       (error?.code ?? "") +
-      //       " - " +
-      //       (error?.argument ?? "")
-      //   )
-      // );
     },
   });
 
@@ -160,10 +132,6 @@ const Function = ({
     <>
       {inputs?.length > 0 && (
         <>
-          {/* <div className="px-6 py-4 w-full border-b border-color-mode"> */}
-          {/* <h3 className="mx-auto text-lg font-bold text-center">{`${name}:`}</h3> */}
-          {/* </div> */}
-          {/* <br /> */}
           <form className="px-6 space-y-4 w-full">
             {inputs?.map((input, idx) => (
               <Input
@@ -196,14 +164,9 @@ const Function = ({
         </>
       )}
       <div className="flex flex-row justify-center items-center px-6 py-2 w-full">
-        {/* {txWillError && stateMutability !== "view" && (
-          <p className="overflow-auto p-2 mr-2 rounded-md border border-color-mode">
-            {errorMsg && "ERROR: " + errorMsg}
-          </p>
-        )} */}
         {stateMutability !== "view" ? (
           <button
-            className={`p-2 min-w-20 max-w-20 border h-min ${
+            className={`py-2 px-4 mb-2 min-w-20 max-w-20 border h-min ${
               txWillError ? "border-error" : "border-ready"
             }`}
             onClick={async (e) => {
@@ -218,17 +181,12 @@ const Function = ({
           </button>
         ) : (
           <div className="mx-auto w-full text-center">
-            {/* <br /> */}
             {viewIsLoading && <p>Loading...</p>}
-            {/* {viewIsError && <p>Error</p>} */}
             {viewIsSuccess && (
               <>
-                <div className="overflow-x-auto max-w-32 scrollbar">
+                <div className="overflow-x-auto mb-6 max-w-32 scrollbar">
                   {formattedViewData}
                 </div>
-                {/* <p className="text-sm italic font-light">
-                  {`(${outputs[0].type})`}
-                </p> */}
               </>
             )}
           </div>

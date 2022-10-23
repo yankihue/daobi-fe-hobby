@@ -129,7 +129,6 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
         lastSalaryClaim: {},
       },
     },
-
     // mint: {
     //   title: "",
     //   methods: {
@@ -154,5 +153,4 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
 export const DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   TOKEN_CONTRACT,
   VOTING_CONTRACT,
-  // NFT_CONTRACT,
 ];
