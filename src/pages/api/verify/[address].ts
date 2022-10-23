@@ -96,7 +96,7 @@ export default async function handler(
       break;
     default:
       return res.status(400).json({
-        message: " This API Route only accepts 'PUT' requests.",
+        message: "This API Route only accepts 'PUT' requests.",
         error: "Bad Request",
       });
   }
