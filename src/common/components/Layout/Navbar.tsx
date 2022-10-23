@@ -4,6 +4,7 @@ import Contract3ABI from "../../../ethereum/abis/DAObiContract3.json";
 import { toTrimmedAddress } from "@/utils/index";
 import { useEffect, useState } from "react";
 import useRoles from "@/hooks/useRoles";
+import Image from "next/image";
 
 const Navbar = () => {
   const { address } = useAccount();
@@ -25,38 +26,56 @@ const Navbar = () => {
   const { isChancellor, rolesLoading } = useRoles(address);
 
   return (
-    <nav className="flex justify-between justify-self-start items-center px-6 py-4 mb-4 w-full max-w-full h-full max-h-16 border-b border-color-mode">
-      <div className="w-1/3">
-        {/* TODO: Light/Dark Logo */}
-        <h1 className="text-left">DAObi</h1>
-      </div>
-      <div className="flex justify-center items-center mx-auto space-x-3 w-1/3 text-center whitespace-nowrap">
-        <div className="hidden flex-col justify-center items-center lg:flex">
-          {address && (
-            <>
-              <p>
-                Today&#39;s Chancellor is{" "}
-                <a
-                  href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
-                >
-                  {toTrimmedAddress(result.data as unknown as string)}
-                </a>
-              </p>
-              <div className="hidden whitespace-nowrap md:inline">
-                {!rolesLoading &&
-                  `${
-                    isChancellor
-                      ? "👑 Welcome Chancellor! 🏰"
-                      : "🌾 Maybe One Day... 🛖"
-                  }
-              `}
-              </div>
-            </>
-          )}
+    <nav className="w-full border-b  border-color-mode">
+      <div className="flex justify-between items-center px-6 py-4 mx-auto max-w-screen-2xl h-16">
+        <div className="w-1/3">
+          {/* light mode */}
+          <div className="relative w-16 h-16 dark:hidden">
+            <Image
+              src="/logo_light.png"
+              alt=""
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
+          {/* dark mode */}
+          <div className="hidden relative w-16 h-16 dark:flex">
+            <Image
+              src="/logo_dark.png"
+              alt=""
+              layout="fill"
+              objectFit="contain"
+            />
+          </div>
         </div>
-      </div>
-      <div className="mr-0 w-1/3 text-right">
-        <Wallet />
+        <div className="flex justify-center items-center mx-auto space-x-3 w-1/3 text-center whitespace-nowrap">
+          <div className="hidden flex-col justify-center items-center lg:flex">
+            {address && (
+              <>
+                <p>
+                  Today&#39;s Chancellor is{" "}
+                  <a
+                    href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
+                  >
+                    {toTrimmedAddress(result.data as unknown as string)}
+                  </a>
+                </p>
+                <div className="hidden whitespace-nowrap md:inline">
+                  {!rolesLoading &&
+                    `${
+                      isChancellor
+                        ? "👑 Welcome Chancellor! 🏰"
+                        : "🌾 Maybe One Day... 🛖"
+                    }
+              `}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="mr-0 w-1/3 text-right">
+          <Wallet />
+        </div>
       </div>
     </nav>
   );
