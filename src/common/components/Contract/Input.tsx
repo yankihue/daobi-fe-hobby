@@ -1,7 +1,10 @@
-import { JsonFragment, JsonFragmentType } from "@ethersproject/abi";
+import { JsonFragmentType } from "@ethersproject/abi";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 interface Props {
-  input: JsonFragmentType;
+  input: {
+    json: JsonFragmentType;
+    userFriendlyCopy: string;
+  };
   value: any;
   idx: number;
   formData: any[] | number;
@@ -10,7 +13,7 @@ interface Props {
 }
 
 const inputStyle =
-  "w-full p-2 rounded border-2 border-black-900 focus:outline-1 focus:outline-blue-400";
+  "w-full p-2 rounded-lg border-2 border-color-mode focus:outline-1 focus:outline-blue-400";
 
 const Input = ({
   input,
@@ -32,7 +35,7 @@ const Input = ({
 
   // field for each input based on type
   const renderInput = () => {
-    switch (input.type) {
+    switch (input.json.type) {
       case "address":
       // fallthrough
       case "string":
@@ -55,7 +58,7 @@ const Input = ({
         );
 
       default:
-        if (input.type.includes("int")) {
+        if (input.json.type.includes("int")) {
           return (
             <input
               className={inputStyle}
@@ -64,19 +67,18 @@ const Input = ({
               onChange={(e) => handleChange(e)}
             />
           );
-        } else if (input.type === "bytes6") {
+        } else if (input.json.name === "_name") {
           // username
           return (
             <input
               className={inputStyle}
               type="text"
-              pattern={`/^[A-Z|a-z|0-9]{1,6}$/s`}
-              maxLength={6}
+              maxLength={32}
               value={value}
               onChange={(e) => handleChange(e)}
             />
           );
-        } else if (input.type.includes("bytes")) {
+        } else if (input.json.type.includes("bytes")) {
           return (
             <input
               className={inputStyle}
@@ -92,11 +94,10 @@ const Input = ({
   };
 
   return (
-    <div className="flex flex-col">
-      <label>
-        {`${input.name}(${input.type}): `}
-        {input.type === "bytes6" && `6 character max`}
-        {input.type.includes("int") && (
+    <div className="flex flex-col mb-2">
+      <label className="text-center">
+        {`${input.userFriendlyCopy}: `}
+        {input.json.type.includes("int") && isMsgValue && (
           <p className="italic">
             Note: Will be converted to Wei; 1 = 1 ETH = 10^18 WEI
           </p>

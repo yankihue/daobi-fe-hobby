@@ -35,7 +35,12 @@
     "preserveConstEnums": true,
     "removeComments": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "public/darkModeScript.js"
+  ],
   "exclude": [
     ".github",
     ".next",

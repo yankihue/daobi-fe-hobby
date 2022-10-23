@@ -60,6 +60,9 @@ export default async function handler(
     case "PUT":
       // check auth tokens (CSRF/JWT) exists & user isn't trying to forge signatures
       if (!csrfToken || !jwt || resolvedAddress !== address) {
+        console.log(
+          `Unauthorized\naddress:${address}\nresolvedAddress:${resolvedAddress}`
+        );
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -75,6 +78,7 @@ export default async function handler(
           const receipt = await tx.wait(2);
 
           if (receipt) {
+            console.log(`Successfully registered address:${address}`);
             return res.status(200).json({
               message: "Verification Successful",
             });
@@ -92,7 +96,7 @@ export default async function handler(
       break;
     default:
       return res.status(400).json({
-        message: " This API Route only accepts 'PUT' requests.",
+        message: "This API Route only accepts 'PUT' requests.",
         error: "Bad Request",
       });
   }

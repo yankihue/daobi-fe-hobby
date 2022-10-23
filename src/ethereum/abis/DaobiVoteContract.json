@@ -158,9 +158,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bytes6",
+        "internalType": "bytes32",
         "name": "nickname",
-        "type": "bytes6"
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -380,6 +380,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "VOTE_ADMIN_ROLE",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "to", "type": "address" },
       { "internalType": "uint256", "name": "tokenId", "type": "uint256" }
@@ -394,7 +401,7 @@
       { "internalType": "address", "name": "_voter", "type": "address" }
     ],
     "name": "assessVotes",
-    "outputs": [{ "internalType": "uint40", "name": "", "type": "uint40" }],
+    "outputs": [{ "internalType": "uint160", "name": "", "type": "uint160" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -430,7 +437,7 @@
       { "internalType": "address", "name": "_voter", "type": "address" }
     ],
     "name": "getAlias",
-    "outputs": [{ "internalType": "bytes6", "name": "", "type": "bytes6" }],
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -528,6 +535,13 @@
   },
   {
     "inputs": [],
+    "name": "propertyRequirement",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "proxiableUUID",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
@@ -550,7 +564,7 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_initialVote", "type": "address" },
-      { "internalType": "bytes6", "name": "_name", "type": "bytes6" }
+      { "internalType": "bytes32", "name": "_name", "type": "bytes32" }
     ],
     "name": "register",
     "outputs": [],
@@ -628,6 +642,15 @@
   },
   {
     "inputs": [
+      { "internalType": "uint256", "name": "_minDB", "type": "uint256" }
+    ],
+    "name": "setMinimumTokenReq",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "string", "name": "newURI", "type": "string" }
     ],
     "name": "setURI",
@@ -649,6 +672,15 @@
     "name": "symbol",
     "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address payable", "name": "_daobi", "type": "address" }
+    ],
+    "name": "targetDaobi",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -718,10 +750,11 @@
     "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "name": "voterRegistry",
     "outputs": [
-      { "internalType": "bool", "name": "serving", "type": "bool" },
       { "internalType": "address", "name": "votedFor", "type": "address" },
-      { "internalType": "uint40", "name": "votesAccrued", "type": "uint40" },
-      { "internalType": "bytes6", "name": "courtName", "type": "bytes6" }
+      { "internalType": "bool", "name": "serving", "type": "bool" },
+      { "internalType": "uint160", "name": "votesAccrued", "type": "uint160" },
+      { "internalType": "bytes32", "name": "courtName", "type": "bytes32" },
+      { "internalType": "bytes23", "name": "blankGap", "type": "bytes23" }
     ],
     "stateMutability": "view",
     "type": "function"

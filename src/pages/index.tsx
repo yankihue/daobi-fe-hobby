@@ -1,39 +1,55 @@
 import type { NextPage } from "next";
-import { DAOBI_CONTRACTS } from "@/ethereum/abis";
-import Contract from "@/components/Contract";
-import { useState } from "react";
-
+import { useAccount } from "wagmi";
+import useRoles from "@/hooks/useRoles";
+import { useEffect, useState } from "react";
+import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
+import { RegistrationForm } from "@/components/RegistrationForm";
+import { toTrimmedAddress } from "../utils";
+import { ContractSelection } from "@/components/ContractSelection";
 const Home: NextPage = () => {
-  const [activeTab, setActiveTab] = useState(0); // contract nav
+  const { address } = useAccount();
+  const { isVerified, isRegistered, rolesLoading } = useRoles(address);
+
+  // next-auth twitter
+  const { data: twitterSession, status: twitterStatus } = useSession();
+  const [authToken, setAuthToken] = useState<null | string>();
+
+  useEffect(() => {
+    const getAuthToken = async () => {
+      const csrfToken = await getCsrfToken();
+      if (csrfToken) setAuthToken(csrfToken);
+    };
+
+    if (twitterStatus === "authenticated") {
+      getAuthToken();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [twitterStatus]);
 
   return (
-    <div className="w-full h-full">
-      <p className="mx-auto w-1/2 text-center">Select Contract</p>
-      <div className="flex justify-around mx-auto my-4 w-1/2">
-        {/* Tab Selection */}
-        {DAOBI_CONTRACTS.map((contract, idx) => {
-          return (
-            <button
-              key={contract.name}
-              onClick={() => setActiveTab(idx)}
-              className={`p-4 ${activeTab === idx ? "border-2" : "border"}`}
-            >
-              {contract.name}
-            </button>
-          );
-        })}
-      </div>
-      {/* Function Grid */}
-      {DAOBI_CONTRACTS.map((contract, idx) => {
-        return (
-          <div
-            key={contract.name}
-            className={`${activeTab === idx ? "" : "hidden"}`}
-          >
-            <Contract {...contract} />
-          </div>
-        );
-      })}
+    <div className="flex flex-col w-full h-full grow">
+      {!address && (
+        <p className="my-auto font-bold text-center break-words">
+          Please Connect Your Wallet
+        </p>
+      )}
+      {address && rolesLoading && (
+        <p className="font-bold text-center break-words">
+          Greetings! Loading your roles...
+        </p>
+      )}
+      {!isRegistered && !rolesLoading && address && (
+        <RegistrationForm
+          address={toTrimmedAddress(address)}
+          isVerified={isVerified}
+          isRegistered={isRegistered}
+          authToken={authToken}
+          twitterSession={twitterSession}
+          signIn={signIn}
+          signOut={signOut}
+        />
+      )}
+      {isRegistered && <ContractSelection />}
     </div>
   );
 };

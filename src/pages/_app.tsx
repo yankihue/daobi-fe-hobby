@@ -1,11 +1,18 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { WagmiConfig, chain, defaultChains } from "wagmi";
+import { WagmiConfig } from "wagmi";
 import { wagmiClient } from "@/ethereum/wagmiClient";
 import PageLayout from "@/components/Layout/PageLayout";
 import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
-const MyDApp = ({ Component, pageProps }: AppProps) => {
+type Props = AppProps & {
+  pageProps: {
+    session: Session;
+  };
+};
+
+const MyDApp = ({ Component, pageProps }: Props) => {
   return (
     <WagmiConfig client={wagmiClient}>
       <SessionProvider session={pageProps.session}>

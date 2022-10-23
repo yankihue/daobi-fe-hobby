@@ -1,62 +1,52 @@
 import { DAOBI_CONTRACT } from "@/ethereum/abis";
 import useRoles from "@/hooks/useRoles";
-import { toTrimmedAddress } from "@/utils/index";
-import { JsonFragment, JsonFragmentType } from "@ethersproject/abi";
 import { useAccount } from "wagmi";
-import Function from "./Function";
+import Section from "./Section";
 
-const chancellorOnlyMethods = ["claimChancellorSalary", "recoverSeal", "mint"];
+const chancellorOnlySections = ["claimChancellorSalary", "recoverSeal", "mint"];
 
-const Contract = ({ name, address, ABI, visibleMethods }: DAOBI_CONTRACT) => {
+const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
   const { address: userAddress, isConnected, connector } = useAccount();
   const { isChancellor } = useRoles(userAddress);
 
-  // get functions from abi
-  const allContractFunctions = ABI.filter(
-    (method) => method.type === "function" && method?.name
-  );
-
-  const callableContractFunctions = allContractFunctions.filter((method) => {
-    // filter out important functions
-    if (visibleMethods.includes(method.name)) {
-      // if function requires being Chancellor...
-      if (chancellorOnlyMethods.includes(method.name)) {
-        // only show to Chancellor
-        if (isChancellor) return method;
-      } else return method;
-    }
-  });
-
   return (
-    <div className="w-full h-full">
-      <div className="mx-auto my-2 text-center">
-        {`Contract Methods for ${name}`}
-        <br />
-        <a
-          className="text-sm underline hover:cursor-pointer"
-          href={`https://mumbai.polygonscan.com/address/${address}`}
-        >
-          <p>View {toTrimmedAddress(address)} on BlockExplorer</p>
-        </a>
-        <br />
-      </div>
+    <div className="mt-2 w-full h-full">
       {/* show each function if acct is connected  */}
-      <div className="grid grid-cols-2 gap-2 mx-4 xl:grid-cols-3">
+      <div className="flex flex-col mx-1 md:mx-16 xl:mx-32 2xl:mx-64">
         {isConnected &&
           connector &&
-          callableContractFunctions.map((func, idx) => {
-            return (
-              <Function
-                key={`${func?.name}-${address}-${idx}`}
-                name={func?.name}
-                stateMutability={func?.stateMutability}
-                inputs={func.inputs}
-                outputs={func.outputs}
-                contractABI={ABI}
-                contractAddress={address}
-              />
-            );
-          })}
+          Object.entries(userFriendlySections).map(
+            ([section, { title, methods }]) => {
+              let visibleToUser = true;
+              // if function requires being Chancellor...
+              if (chancellorOnlySections.includes(section)) {
+                // only show to Chancellor
+                if (!isChancellor) visibleToUser = false;
+              }
+
+              return (
+                <>
+                  {visibleToUser && (
+                    <Section
+                      key={title}
+                      contractAddress={address}
+                      contractABI={ABI}
+                      title={title}
+                      methods={methods}
+                    />
+                  )}
+                </>
+              );
+            }
+          )}
+      </div>
+      <div className="mx-auto mt-8 text-center">
+        <a
+          className="mx-auto w-min text-base underline hover:cursor-pointer"
+          href={`https://mumbai.polygonscan.com/address/${address}`}
+        >
+          Records of the Official Polygonscan Historian
+        </a>
       </div>
     </div>
   );

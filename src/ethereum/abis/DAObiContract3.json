@@ -68,9 +68,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint40",
+        "internalType": "uint160",
         "name": "_votes",
-        "type": "uint40"
+        "type": "uint160"
       }
     ],
     "name": "ClaimAttempted",
@@ -87,9 +87,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint40",
+        "internalType": "uint160",
         "name": "_votes",
-        "type": "uint40"
+        "type": "uint160"
       }
     ],
     "name": "ClaimSucceeded",
@@ -329,6 +329,13 @@
   {
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "PAUSER_ROLE",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
     "stateMutability": "view",
     "type": "function"
