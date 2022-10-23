@@ -33,13 +33,13 @@ const formatInputData = (input: {
 }) => {
   if (typeof input.value === "number") {
     input.value = BigNumber.from(input.value.toString());
-  } else if (input.type === "bytes6") {
+  } else if (input.name === "_name") {
     // username
     let utf8 = ethers.utils.toUtf8Bytes(input.value);
     let hexstring = ethers.utils.hexlify(utf8);
-    if (input.value.length < 6) {
-      hexstring = ethers.utils.hexZeroPad(hexstring, 6);
-    }
+    try {
+      hexstring = ethers.utils.hexZeroPad(hexstring, 32);
+    } catch {}
     return hexstring;
   } else {
     return input.value;

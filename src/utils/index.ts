@@ -24,9 +24,6 @@ export function formatIODefaultValues(
       case "bool":
         value = false;
         break;
-      case "bytes6":
-        value = "";
-        break;
 
       default:
         if (input.type.includes("int")) value = 0;

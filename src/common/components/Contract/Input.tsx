@@ -67,14 +67,13 @@ const Input = ({
               onChange={(e) => handleChange(e)}
             />
           );
-        } else if (input.json.type === "bytes6") {
+        } else if (input.json.name === "_name") {
           // username
           return (
             <input
               className={inputStyle}
               type="text"
-              pattern={`/^[A-Z|a-z|0-9]{1,6}$/s`}
-              maxLength={6}
+              maxLength={32}
               value={value}
               onChange={(e) => handleChange(e)}
             />
@@ -104,7 +103,6 @@ const Input = ({
           </p>
         )}
         {renderInput()}
-        {input.json.type === "bytes6" && `Notice: 6 characters maximum`}
         <br />
       </label>
     </div>
