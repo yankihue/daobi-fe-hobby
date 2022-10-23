@@ -8,14 +8,14 @@ export const ContractSelection = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center px-2 mx-auto w-full h-16 md:px-4 md:h-auto md:border-b md:flex-row md:w-full md:max-w-7xl border-color-mode">
+      <div className="flex justify-center items-center px-2 pt-2 mx-auto w-full h-16 md:px-4 md:h-auto md:border-b md:flex-row md:w-full md:max-w-7xl border-color-mode">
         {/* Tab Selection */}
         {DAOBI_CONTRACTS.map((contract, idx) => {
           return (
             <button
               key={contract.name}
               onClick={() => setActiveTab(idx)}
-              className={`border md:border-0 py-2 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
+              className={`border pb-2 md:border-0 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
                 activeTab === idx
                   ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
                   : "font-medium"
@@ -28,7 +28,7 @@ export const ContractSelection = () => {
         <button
           key="nft"
           onClick={() => setActiveTab(2)}
-          className={`border md:border-0 py-2 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
+          className={`border pb-2 md:border-0 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
             activeTab === 2
               ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
               : "font-medium"
