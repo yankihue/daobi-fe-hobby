@@ -40,7 +40,7 @@ export const RegistrationForm = ({
             <>
               <p>Click the button below to verify your Twitter.</p>
               <button
-                className="p-2 border border-ready"
+                className="p-2 text-black bg-green-200 rounded-lg dark:bg-green-800 dark:text-gray-100"
                 onClick={() => signIn()}
               >
                 Connect Twitter
