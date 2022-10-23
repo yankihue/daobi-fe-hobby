@@ -512,6 +512,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "tokenContract",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "address", "name": "owner", "type": "address" },
       { "internalType": "uint256", "name": "index", "type": "uint256" }

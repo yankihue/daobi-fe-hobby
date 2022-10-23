@@ -21,7 +21,7 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
   name: "Voting",
   address:
     process.env.NEXT_PUBLIC_VOTE_ADDR ??
-    "0xdB22a7D54504Cba851d2dbdC1b354B8C1B3E64D5",
+    "0xa487c8Fe4066872356b1668b1f5AC22C22E7E5a4",
   ABI: VoteContract,
   heading: "The Inner Courtyard",
   userFriendlySections: {
@@ -86,7 +86,7 @@ export const NFT_CONTRACT: DAOBI_CONTRACT = {
   name: "NFT",
   address:
     process.env.NEXT_PUBLIC_SEAL_ADDR ??
-    "0x6F5ec4A3Ff18647105cd42754846c86E3cDEec93",
+    "0xca157B9850403859A06CA65484327405fAbcE271",
   ABI: ChancellorsSeal,
   heading: "The Imperial Secretariat",
 };
@@ -95,7 +95,7 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
   name: "Token",
   address:
     process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-    "0x68af95a6f932a372e88170e9c2a46094FAeFd5D4",
+    "0x642c7dDcE8dD6EC6646340a16F331eCBDCeD5ff9",
   ABI: Contract3,
   heading: "The Chancellery",
   userFriendlySections: {
