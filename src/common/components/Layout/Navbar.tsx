@@ -65,7 +65,7 @@ const Navbar = () => {
                     `${
                       isChancellor
                         ? "👑 Welcome Chancellor! 🏰"
-                        : "🌾 Maybe One Day... 🛖"
+                        : "🌾 Maybe One Day... 🌾"
                     }
               `}
                 </div>

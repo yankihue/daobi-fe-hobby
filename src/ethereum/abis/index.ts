@@ -36,11 +36,11 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
       },
     },
     changeVote: {
-      title: "Join a faction",
+      title: "Join a different faction",
       methods: {
         vote: {
           _voteFor:
-            "Please enter the address of the courtier whose faction you will be joining",
+            "Please enter the address of the courtier whose faction you will be switching to",
         },
       },
     },

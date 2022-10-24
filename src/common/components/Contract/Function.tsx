@@ -11,11 +11,18 @@ import {
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
+  useWaitForTransaction,
 } from "wagmi";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { BigNumber, BigNumberish, BytesLike, ethers } from "ethers";
 import { formatIODefaultValues } from "@/utils/index";
 
+interface ParentState {
+  setToast: Dispatch<
+    SetStateAction<{ status: "loading" | "error" | "success"; hash?: string }>
+  >;
+  reloadRouter?: () => void;
+}
 export interface UserCallableFunction {
   functionName: string;
   stateMutability: string;
@@ -58,7 +65,9 @@ const Function = ({
   outputs,
   contractABI,
   contractAddress,
-}: UserCallableFunction) => {
+  setToast,
+  reloadRouter,
+}: UserCallableFunction & ParentState) => {
   const { address } = useAccount();
 
   // useState for all input values
@@ -110,8 +119,15 @@ const Function = ({
     },
   });
 
-  // TODO: implement notification of Tx status
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  const { data, write } = useContractWrite(config);
+  const { isLoading, isError, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      if (reloadRouter) {
+        reloadRouter();
+      }
+    },
+  });
 
   const formattedViewData =
     typeof viewData !== "object"
@@ -133,11 +149,27 @@ const Function = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
+  useEffect(() => {
+    if (isLoading) {
+      setToast({ status: "loading" });
+    }
+    if (isError) {
+      setToast({ status: "error", hash: data?.hash });
+    }
+    if (isSuccess) {
+      setToast({ status: "success", hash: data?.hash });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isError, isSuccess]);
+
   return (
     <>
       {inputs?.length > 0 && (
         <>
-          <form className="px-6 space-y-4 w-full">
+          <form
+            className="px-6 space-y-4 w-full"
+            onSubmit={(e) => e.preventDefault()}
+          >
             {inputs?.map((input, idx) => (
               <Input
                 key={`${input.json.name}-${contractAddress}-${idx}`}
