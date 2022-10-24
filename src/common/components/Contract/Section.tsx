@@ -19,7 +19,6 @@ const Section = ({ title, methods, contractAddress, contractABI }: Props) => {
 
   // filter out user callable functions
   Object.entries(methods).forEach(([methodName, methodInputs]) => {
-    // console.log({ methodName }, { methodInputs });
     let userFunc: UserCallableFunction | null = null;
 
     allContractFunctions.map(

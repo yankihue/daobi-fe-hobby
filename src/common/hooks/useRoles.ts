@@ -57,7 +57,7 @@ const useRoles = (userAddress: string) => {
     functionName: "balanceOf",
     args: [userAddress],
   });
-  console.log(balanceDB);
+
   return {
     // check if user completed twitter verification
     isVerified: (votingTokenBalance as BigNumber)?.gt(0),
