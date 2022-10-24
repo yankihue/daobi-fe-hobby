@@ -1,5 +1,11 @@
 import Input from "./Input";
 import { JsonFragment, JsonFragmentType } from "@ethersproject/abi";
+import { isHexString, hexlify } from "@ethersproject/bytes";
+import {
+  formatBytes32String,
+  parseBytes32String,
+  toUtf8Bytes,
+} from "@ethersproject/strings";
 import {
   useAccount,
   useContractRead,
@@ -7,9 +13,8 @@ import {
   usePrepareContractWrite,
 } from "wagmi";
 import { useEffect, useState } from "react";
-import { BigNumber, BigNumberish, ethers } from "ethers";
+import { BigNumber, BigNumberish, BytesLike, ethers } from "ethers";
 import { formatIODefaultValues } from "@/utils/index";
-import { BytesLike } from "ethers/lib/utils";
 
 export interface UserCallableFunction {
   functionName: string;
@@ -35,12 +40,12 @@ const formatInputData = (input: {
     input.value = BigNumber.from(input.value.toString());
   } else if (input.name === "_name") {
     // username
-    let utf8 = ethers.utils.toUtf8Bytes(input.value);
-    let hexstring = ethers.utils.hexlify(utf8);
     try {
-      hexstring = ethers.utils.hexZeroPad(hexstring, 32);
-    } catch {}
-    return hexstring;
+      return formatBytes32String(input.value);
+    } catch (error) {
+      // purposefully invalidate the tx with incorrect length bytes
+      return hexlify(toUtf8Bytes("FAIL"));
+    }
   } else {
     return input.value;
   }
@@ -110,8 +115,8 @@ const Function = ({
 
   const formattedViewData =
     typeof viewData !== "object"
-      ? ethers.utils.isHexString(viewData, 6)
-        ? ethers.utils.toUtf8String(viewData as BytesLike)
+      ? isHexString(viewData, 32)
+        ? parseBytes32String(viewData as BytesLike)
         : viewData?.toString() ?? viewData
       : (viewData as BigNumberish)?.toString();
 

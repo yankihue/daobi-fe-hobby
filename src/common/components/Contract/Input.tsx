@@ -73,7 +73,7 @@ const Input = ({
             <input
               className={inputStyle}
               type="text"
-              maxLength={32}
+              maxLength={31}
               value={value}
               onChange={(e) => handleChange(e)}
             />
