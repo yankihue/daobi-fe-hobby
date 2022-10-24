@@ -16,6 +16,9 @@ import { useEffect, useState } from "react";
 import { BigNumber, BigNumberish, BytesLike, ethers } from "ethers";
 import { formatIODefaultValues } from "@/utils/index";
 
+interface ParentState {
+  reloadRouter?: () => void;
+}
 export interface UserCallableFunction {
   functionName: string;
   stateMutability: string;
@@ -58,7 +61,8 @@ const Function = ({
   outputs,
   contractABI,
   contractAddress,
-}: UserCallableFunction) => {
+  reloadRouter,
+}: UserCallableFunction & ParentState) => {
   const { address } = useAccount();
 
   // useState for all input values
@@ -110,8 +114,15 @@ const Function = ({
     },
   });
 
-  // TODO: implement notification of Tx status
-  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+  const { data, write } = useContractWrite(config);
+  const { isLoading, isError, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+    onSuccess() {
+      if (reloadRouter) {
+        reloadRouter();
+      }
+    },
+  });
 
   const formattedViewData =
     typeof viewData !== "object"
@@ -137,7 +148,10 @@ const Function = ({
     <>
       {inputs?.length > 0 && (
         <>
-          <form className="px-6 space-y-4 w-full">
+          <form
+            className="px-6 space-y-4 w-full"
+            onSubmit={(e) => e.preventDefault()}
+          >
             {inputs?.map((input, idx) => (
               <Input
                 key={`${input.json.name}-${contractAddress}-${idx}`}

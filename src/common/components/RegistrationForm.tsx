@@ -1,4 +1,5 @@
 import { Session } from "next-auth";
+import { useRouter } from "next/router";
 import TwitterAuth from "./TwitterAuth";
 import { VOTING_CONTRACT } from "@/ethereum/abis";
 import Section from "./Contract/Section";
@@ -24,6 +25,12 @@ export const RegistrationForm = ({
   signIn,
   signOut,
 }: Props) => {
+  const router = useRouter();
+
+  const reloadRouter = () => {
+    router.reload();
+  };
+
   return (
     <div className="flex flex-col justify-center items-center my-auto space-y-6 w-full h-full text-center">
       <h3>Hello {`${address}.`}</h3>
@@ -68,6 +75,7 @@ export const RegistrationForm = ({
                 {...VOTING_CONTRACT.userFriendlySections.registration}
                 contractABI={VOTING_CONTRACT.ABI}
                 contractAddress={VOTING_CONTRACT.address}
+                reloadRouter={reloadRouter}
               />
             </>
           )}
