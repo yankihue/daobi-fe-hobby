@@ -11,12 +11,16 @@ import {
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
+  useWaitForTransaction,
 } from "wagmi";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { BigNumber, BigNumberish, BytesLike, ethers } from "ethers";
 import { formatIODefaultValues } from "@/utils/index";
 
 interface ParentState {
+  setToast: Dispatch<
+    SetStateAction<{ status: "loading" | "error" | "success"; hash?: string }>
+  >;
   reloadRouter?: () => void;
 }
 export interface UserCallableFunction {
@@ -61,6 +65,7 @@ const Function = ({
   outputs,
   contractABI,
   contractAddress,
+  setToast,
   reloadRouter,
 }: UserCallableFunction & ParentState) => {
   const { address } = useAccount();
@@ -143,6 +148,19 @@ const Function = ({
     refreshEstimates();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
+
+  useEffect(() => {
+    if (isLoading) {
+      setToast({ status: "loading" });
+    }
+    if (isError) {
+      setToast({ status: "error", hash: data?.hash });
+    }
+    if (isSuccess) {
+      setToast({ status: "success", hash: data?.hash });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isError, isSuccess]);
 
   return (
     <>
