@@ -1,4 +1,4 @@
-import { BigNumber } from "ethers";
+import { BigNumber, BigNumberish, ethers } from "ethers";
 import { useContractRead } from "wagmi";
 import Contract3ABI from "../../ethereum/abis/DAObiContract3.json";
 import VoteABI from "../../ethereum/abis/DaobiVoteContract.json";
@@ -45,19 +45,46 @@ const useRoles = (userAddress: string) => {
     functionName: "chancellor",
   });
 
+  const {
+    data: balanceDB,
+    isError: isBalanceDBError,
+    isLoading: isBalanceDBLoading,
+  } = useContractRead({
+    address:
+      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
+      "0x82A9313b7D869373E80776e770a9285c2981C018",
+    abi: [...Contract3ABI] as const,
+    functionName: "balanceOf",
+    args: [userAddress],
+  });
+  console.log(balanceDB);
   return {
     // check if user completed twitter verification
-    isVerified: (votingTokenBalance as unknown as BigNumber)?.gt(0),
+    isVerified: (votingTokenBalance as BigNumber)?.gt(0),
     // check if user registered to vote / claimed username
     isRegistered: voterStruct?.["serving"],
     // check if user is Chancellor
-    isChancellor: (chancellorAddress as unknown as string) === userAddress,
+    isChancellor: (chancellorAddress as string) === userAddress,
+    balanceDB: Number(
+      ethers.utils?.formatEther((balanceDB as BigNumberish) ?? 0)
+    ),
     currentChancellor: chancellorAddress,
     rolesLoading:
-      isChancellorLoading || isVerifiedLoading || isRegisteredLoading,
+      isChancellorLoading ||
+      isVerifiedLoading ||
+      isRegisteredLoading ||
+      isBalanceDBLoading,
     rolesErrors:
-      isChancellorError || isVerifiedError || isRegisteredError
-        ? [isChancellorError, isVerifiedError, isRegisteredError]
+      isChancellorError ||
+      isVerifiedError ||
+      isRegisteredError ||
+      isBalanceDBError
+        ? [
+            isChancellorError,
+            isVerifiedError,
+            isRegisteredError,
+            isBalanceDBError,
+          ]
         : null,
   };
 };

@@ -7,6 +7,7 @@ interface Props {
   address: string;
   isVerified: boolean;
   isRegistered: boolean;
+  balanceDB: number;
   twitterSession: Session;
   authToken: string;
   signIn: () => void;
@@ -17,13 +18,14 @@ export const RegistrationForm = ({
   address,
   isVerified,
   isRegistered,
+  balanceDB,
   twitterSession,
   authToken,
   signIn,
   signOut,
 }: Props) => {
   return (
-    <div className="flex flex-col justify-center items-center space-y-6 w-full h-full text-center">
+    <div className="flex flex-col justify-center items-center my-auto space-y-6 w-full h-full text-center">
       <h3>Hello {`${address}.`}</h3>
       {!isVerified && !isRegistered && (
         <>
@@ -51,20 +53,29 @@ export const RegistrationForm = ({
       )}
       {!isRegistered && isVerified && (
         <>
-          <p>
-            Twitter verification completed. Time to register your username and
-            cast your first vote!
-          </p>
-          <Section
-            {...VOTING_CONTRACT.userFriendlySections.registration}
-            contractABI={VOTING_CONTRACT.ABI}
-            contractAddress={VOTING_CONTRACT.address}
-          />
+          {balanceDB === 0 ? (
+            <p className="max-w-prose break-normal w-fit">
+              You currently hold 0 $DB. Acquire some to prove your worth to a
+              faction.
+            </p>
+          ) : (
+            <>
+              <p className="max-w-prose break-normal w-fit">
+                Twitter verification completed. Time to register your username
+                and cast your first vote!
+              </p>
+              <Section
+                {...VOTING_CONTRACT.userFriendlySections.registration}
+                contractABI={VOTING_CONTRACT.ABI}
+                contractAddress={VOTING_CONTRACT.address}
+              />
+            </>
+          )}
         </>
       )}
 
       {isVerified && isRegistered && (
-        <p>
+        <p className="max-w-prose break-normal w-fit">
           Congrats! You have already finished connecting your Twitter and
           registering to vote!
         </p>

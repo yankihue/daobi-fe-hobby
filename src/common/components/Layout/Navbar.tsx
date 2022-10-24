@@ -23,10 +23,10 @@ const Navbar = () => {
     }
   }, [result]);
 
-  const { isChancellor, rolesLoading } = useRoles(address);
+  const { isChancellor, balanceDB, rolesLoading } = useRoles(address);
 
   return (
-    <nav className="w-full border-b  border-color-mode">
+    <nav className="w-full border-b border-color-mode">
       <div className="flex justify-between items-center px-6 py-4 mx-auto max-w-screen-2xl h-16">
         <div className="w-1/3">
           {/* light mode */}
@@ -73,7 +73,8 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className="mr-0 w-1/3 text-right">
+        <div className="flex items-center mr-0 w-2/3 text-right md:w-1/3">
+          <div className="inline-block w-1/3">{`${balanceDB}`} $DB</div>
           <Wallet />
         </div>
       </div>

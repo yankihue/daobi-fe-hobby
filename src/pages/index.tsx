@@ -8,7 +8,8 @@ import { toTrimmedAddress } from "../utils";
 import { ContractSelection } from "@/components/ContractSelection";
 const Home: NextPage = () => {
   const { address } = useAccount();
-  const { isVerified, isRegistered, rolesLoading } = useRoles(address);
+  const { isVerified, isRegistered, balanceDB, rolesLoading } =
+    useRoles(address);
 
   // next-auth twitter
   const { data: twitterSession, status: twitterStatus } = useSession();
@@ -43,6 +44,7 @@ const Home: NextPage = () => {
           address={toTrimmedAddress(address)}
           isVerified={isVerified}
           isRegistered={isRegistered}
+          balanceDB={balanceDB}
           authToken={authToken}
           twitterSession={twitterSession}
           signIn={signIn}
