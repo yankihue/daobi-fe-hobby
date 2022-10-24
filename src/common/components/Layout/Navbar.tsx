@@ -11,7 +11,7 @@ const Navbar = () => {
   const result = useContractRead({
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x642c7dDcE8dD6EC6646340a16F331eCBDCeD5ff9",
+      "0x82A9313b7D869373E80776e770a9285c2981C018",
     abi: [...Contract3ABI] as const,
     functionName: "chancellor",
   });

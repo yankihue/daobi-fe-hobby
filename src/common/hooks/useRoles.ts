@@ -13,7 +13,7 @@ const useRoles = (userAddress: string) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
-      "0xa487c8Fe4066872356b1668b1f5AC22C22E7E5a4",
+      "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
     abi: [...VoteABI] as const,
     functionName: "balanceOf",
     args: [userAddress],
@@ -27,7 +27,7 @@ const useRoles = (userAddress: string) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
-      "0xa487c8Fe4066872356b1668b1f5AC22C22E7E5a4",
+      "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
     abi: [...VoteABI] as const,
     functionName: "voterRegistry",
     args: [userAddress],
@@ -40,7 +40,7 @@ const useRoles = (userAddress: string) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x642c7dDcE8dD6EC6646340a16F331eCBDCeD5ff9",
+      "0x82A9313b7D869373E80776e770a9285c2981C018",
     abi: [...Contract3ABI] as const,
     functionName: "chancellor",
   });
