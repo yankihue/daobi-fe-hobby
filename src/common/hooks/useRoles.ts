@@ -17,6 +17,8 @@ const useRoles = (userAddress: string) => {
     abi: [...VoteABI] as const,
     functionName: "balanceOf",
     args: [userAddress],
+    staleTime: 10000,
+    watch: true,
   });
 
   // get address' Voter Struct from Voter Registry Mapping
@@ -31,6 +33,8 @@ const useRoles = (userAddress: string) => {
     abi: [...VoteABI] as const,
     functionName: "voterRegistry",
     args: [userAddress],
+    staleTime: 30000,
+    watch: true,
   });
 
   const {
@@ -43,6 +47,7 @@ const useRoles = (userAddress: string) => {
       "0x82A9313b7D869373E80776e770a9285c2981C018",
     abi: [...Contract3ABI] as const,
     functionName: "chancellor",
+    staleTime: 30000,
   });
 
   const {
@@ -56,6 +61,8 @@ const useRoles = (userAddress: string) => {
     abi: [...Contract3ABI] as const,
     functionName: "balanceOf",
     args: [userAddress],
+    staleTime: 5000,
+    watch: true,
   });
 
   return {
