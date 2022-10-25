@@ -1,7 +1,6 @@
-import Contract3 from "./DAObiContract3.json";
-import ChancellorsSeal from "./DaobiChancellorsSeal.json";
-import VoteContract from "./DaobiVoteContract.json";
-
+import { DAObiContract3 } from "./DAObiContract3";
+import { DAObiChancellorsSeal } from "./DAObiChancellorsSeal";
+import { DAObiVoteContract } from "./DAObiVoteContract";
 import { JsonFragment } from "@ethersproject/abi";
 
 export type UserFriendlyMethod = Record<string, string>;
@@ -9,6 +8,7 @@ export interface UserFriendlySection {
   title: string;
   methods: Record<string, UserFriendlyMethod>;
 }
+
 export interface DAOBI_CONTRACT {
   name: string;
   address: string;
@@ -22,7 +22,7 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
   address:
     process.env.NEXT_PUBLIC_VOTE_ADDR ??
     "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
-  ABI: VoteContract,
+  ABI: DAObiVoteContract,
   heading: "The Inner Courtyard",
   userFriendlySections: {
     registration: {
@@ -87,7 +87,7 @@ export const NFT_CONTRACT: DAOBI_CONTRACT = {
   address:
     process.env.NEXT_PUBLIC_SEAL_ADDR ??
     "0x6F5ec4A3Ff18647105cd42754846c86E3cDEec93",
-  ABI: ChancellorsSeal,
+  ABI: DAObiChancellorsSeal,
   heading: "The Imperial Secretariat",
 };
 
@@ -96,35 +96,36 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
   address:
     process.env.NEXT_PUBLIC_TOKEN_ADDR ??
     "0x82A9313b7D869373E80776e770a9285c2981C018",
-  ABI: Contract3,
+  ABI: DAObiContract3,
   heading: "The Chancellery",
   userFriendlySections: {
     claimChancellorSalary: {
-      title: "Claim the Chancellor's Salary here",
+      title: "Claim the daily Chancellor's Salary here.",
       methods: {
         claimChancellorSalary: {},
       },
     },
     makeClaim: {
-      title: "Claim your daily stipend here",
+      title:
+        "Have enough votes to overthrow? Claim your rightful title as Chancellor here.",
       methods: {
         makeClaim: {},
       },
     },
     chancellorSalary: {
-      title: `Chancellor’s emoluments`,
+      title: `Chancellor’s emoluments:`,
       methods: {
         chancellorSalary: {},
       },
     },
     salaryInterval: {
-      title: "Time between stipend payments",
+      title: "Time between stipend payments:",
       methods: {
         salaryInterval: {},
       },
     },
     lastSalaryClaim: {
-      title: "Time since last stipend payment was claimed",
+      title: "Time since last stipend payment was claimed:",
       methods: {
         lastSalaryClaim: {},
       },
@@ -150,7 +151,7 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
   },
 };
 
-export const DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
+export const DYNAMIC_DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   TOKEN_CONTRACT,
   VOTING_CONTRACT,
 ];

@@ -3,9 +3,10 @@ import { useAccount } from "wagmi";
 import useRoles from "@/hooks/useRoles";
 import { useEffect, useState } from "react";
 import { getCsrfToken, signIn, signOut, useSession } from "next-auth/react";
-import { RegistrationForm } from "@/components/RegistrationForm";
+import RegistrationForm from "@/components/RegistrationForm";
 import { toTrimmedAddress } from "../utils";
-import { ContractSelection } from "@/components/ContractSelection";
+import ContractSelection from "@/components/ContractSelection";
+
 const Home: NextPage = () => {
   const { address } = useAccount();
   const { isVerified, isRegistered, balanceDB, rolesLoading } =

@@ -8,14 +8,17 @@ import {
 } from "@ethersproject/strings";
 import {
   useAccount,
+  useBlockNumber,
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
+  useProvider,
   useWaitForTransaction,
 } from "wagmi";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { BigNumber, BigNumberish, BytesLike, ethers } from "ethers";
 import { formatIODefaultValues } from "@/utils/index";
+import { BytesLike, formatEther, parseEther } from "ethers/lib/utils";
+import { BigNumber } from "ethers";
 
 interface ParentState {
   setToast: Dispatch<
@@ -31,7 +34,7 @@ export interface UserCallableFunction {
     userFriendlyCopy: string;
   }>;
   outputs: readonly JsonFragmentType[];
-  contractABI: JsonFragment[];
+  contractABI: JsonFragmentType[];
   contractAddress: string;
 }
 
@@ -40,7 +43,7 @@ const formatInputData = (input: {
   indexed?: boolean;
   type?: string;
   internalType?: any;
-  components?: readonly JsonFragmentType[];
+  components?: readonly JsonFragment[];
   value: any;
 }) => {
   if (typeof input.value === "number") {
@@ -69,6 +72,8 @@ const Function = ({
   reloadRouter,
 }: UserCallableFunction & ParentState) => {
   const { address } = useAccount();
+  const provider = useProvider();
+  const { data: currentBlockNumber } = useBlockNumber({ watch: true });
 
   // useState for all input values
   const [formData, setFormData] = useState(
@@ -81,6 +86,7 @@ const Function = ({
 
   const [msgValue, setMsgValue] = useState(0); // for payable functions
   const [txWillError, setTxWillError] = useState(true); // block transactions until ethers can estimate gas
+  const [formattedViewData, setFormattedViewData] = useState("");
 
   // FOR READ FUNCTIONS
   const {
@@ -90,7 +96,7 @@ const Function = ({
     refetch: viewRefetch,
   } = useContractRead({
     address: contractAddress,
-    abi: [...contractABI] as const,
+    abi: contractABI,
     functionName: functionName,
     args:
       inputs?.length > 0
@@ -103,13 +109,13 @@ const Function = ({
   // FOR WRITE FUNCTIONS
   const { config, refetch } = usePrepareContractWrite({
     address: contractAddress,
-    abi: [...contractABI] as const,
+    abi: contractABI,
     functionName: functionName,
     args: formData?.map((input) => {
       return formatInputData(input);
     }),
     overrides: {
-      value: ethers.utils.parseEther(msgValue.toString()),
+      value: parseEther(msgValue.toString()),
     },
     onSuccess() {
       setTxWillError(false);
@@ -120,7 +126,12 @@ const Function = ({
   });
 
   const { data, write } = useContractWrite(config);
-  const { isLoading, isError, isSuccess } = useWaitForTransaction({
+  const {
+    data: tx,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess() {
       if (reloadRouter) {
@@ -128,13 +139,6 @@ const Function = ({
       }
     },
   });
-
-  const formattedViewData =
-    typeof viewData !== "object"
-      ? isHexString(viewData, 32)
-        ? parseBytes32String(viewData as BytesLike)
-        : viewData?.toString() ?? viewData
-      : (viewData as BigNumberish)?.toString();
 
   // re-estimate when values change
   useEffect(() => {
@@ -153,14 +157,74 @@ const Function = ({
     if (isLoading) {
       setToast({ status: "loading" });
     }
+    if (isSuccess) {
+      if (tx.status === 1) {
+        setToast({ status: "success", hash: data?.hash });
+      } else {
+        setToast({ status: "error", hash: data?.hash });
+      }
+    }
     if (isError) {
       setToast({ status: "error", hash: data?.hash });
     }
-    if (isSuccess) {
-      setToast({ status: "success", hash: data?.hash });
-    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, isError, isSuccess]);
+
+  useEffect(() => {
+    async function getAndSetFormattedData() {
+      const formatViewData = async () => {
+        switch (functionName) {
+          case "chancellorSalary":
+            return `${Math.floor(
+              Number(formatEther(viewData as BigNumber))
+            )} $DB`;
+
+          case "salaryInterval":
+            const seconds = (viewData as BigNumber).toNumber();
+            if (seconds > 3600)
+              return `${(seconds / 3600).toPrecision(1)} hour(s)`;
+            else return seconds + ` seconds`;
+
+          case "lastSalaryClaim":
+            const lastClaimTimestamp = (viewData as BigNumber).toNumber();
+            const currentTimestamp = (
+              await provider.getBlock(currentBlockNumber)
+            ).timestamp;
+
+            const secondsSince = currentTimestamp - lastClaimTimestamp;
+
+            if (secondsSince > 86400) {
+              const days = (secondsSince / 86400).toPrecision(0);
+
+              return `Approximately ${days} day${
+                Number(days) > 1 ? "s" : ""
+              } ago`;
+            } else if (secondsSince > 3600) {
+              const hours = (secondsSince / 3600).toPrecision(2);
+
+              return `Approximately ${hours} hour${
+                Number(hours) > 1 ? "s" : ""
+              } ago`;
+            } else return `Approximately ${secondsSince} seconds ago`;
+
+          default:
+            return typeof viewData !== "object"
+              ? isHexString(viewData, 32)
+                ? parseBytes32String(viewData as BytesLike)
+                : viewData?.toString() ?? viewData
+              : (viewData as BigNumber)?.toString();
+        }
+      };
+      const formatted = await formatViewData();
+      setFormattedViewData(formatted as string);
+    }
+
+    if (viewData) {
+      getAndSetFormattedData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewData, formattedViewData]);
 
   return (
     <>
@@ -221,7 +285,7 @@ const Function = ({
             {viewIsLoading && <p>Loading...</p>}
             {viewIsSuccess && (
               <>
-                <div className="overflow-x-auto mb-6 max-w-32 scrollbar">
+                <div className="overflow-x-auto mb-2 max-w-32 scrollbar">
                   {formattedViewData}
                 </div>
               </>
