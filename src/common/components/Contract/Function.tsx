@@ -285,7 +285,7 @@ const Function = ({
             {viewIsLoading && <p>Loading...</p>}
             {viewIsSuccess && (
               <>
-                <div className="overflow-x-auto mb-6 max-w-32 scrollbar">
+                <div className="overflow-x-auto mb-2 max-w-32 scrollbar">
                   {formattedViewData}
                 </div>
               </>

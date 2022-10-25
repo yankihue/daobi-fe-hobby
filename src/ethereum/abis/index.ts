@@ -100,31 +100,32 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
   heading: "The Chancellery",
   userFriendlySections: {
     claimChancellorSalary: {
-      title: "Claim the Chancellor's Salary here",
+      title: "Claim the daily Chancellor's Salary here.",
       methods: {
         claimChancellorSalary: {},
       },
     },
     makeClaim: {
-      title: "Claim your daily stipend here",
+      title:
+        "Have enough votes to overthrow? Claim your rightful title as Chancellor here.",
       methods: {
         makeClaim: {},
       },
     },
     chancellorSalary: {
-      title: `Chancellor’s emoluments`,
+      title: `Chancellor’s emoluments:`,
       methods: {
         chancellorSalary: {},
       },
     },
     salaryInterval: {
-      title: "Time between stipend payments",
+      title: "Time between stipend payments:",
       methods: {
         salaryInterval: {},
       },
     },
     lastSalaryClaim: {
-      title: "Time since last stipend payment was claimed",
+      title: "Time since last stipend payment was claimed:",
       methods: {
         lastSalaryClaim: {},
       },
