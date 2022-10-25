@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { ethers } from "ethers";
 import { getToken } from "next-auth/jwt";
 import { getCsrfToken } from "next-auth/react";
-import VoteABI from "../../../ethereum/abis/DaobiVoteContract.json";
+import { VoteABIConst } from "../../../ethereum/abis/DAObiVoteContract";
 
 /** Twitter Verification and Minting Workflow // Draft
  * ** Client-Side **                    ** Server-Side **
@@ -110,7 +110,7 @@ const initiateVoteContractWithSigner = async () => {
   const signer = new ethers.Wallet(process.env.PRIVATE_KEY).connect(provider);
   const voteContract = new ethers.Contract(
     process.env.NEXT_PUBLIC_VOTE_ADDR,
-    VoteABI,
+    VoteABIConst,
     signer
   );
   return voteContract;

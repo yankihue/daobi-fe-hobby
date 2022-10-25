@@ -1,9 +1,9 @@
-import { BigNumber, BigNumberish, ethers } from "ethers";
 import { useContractRead } from "wagmi";
-import Contract3ABI from "../../ethereum/abis/DAObiContract3.json";
-import VoteABI from "../../ethereum/abis/DaobiVoteContract.json";
+import { TokenABIConst } from "@/ethereum/abis/DAObiContract3";
+import { VoteABIConst } from "@/ethereum/abis/DAObiVoteContract";
+import { formatEther } from "ethers/lib/utils";
 
-const useRoles = (userAddress: string) => {
+const useRoles = (userAddress: `0x${string}`) => {
   // check if address owns voting token
   // if they do, they've verified on twitter already
   const {
@@ -14,7 +14,7 @@ const useRoles = (userAddress: string) => {
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
       "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
-    abi: [...VoteABI] as const,
+    abi: VoteABIConst,
     functionName: "balanceOf",
     args: [userAddress],
     staleTime: 10000,
@@ -30,7 +30,7 @@ const useRoles = (userAddress: string) => {
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
       "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
-    abi: [...VoteABI] as const,
+    abi: VoteABIConst,
     functionName: "voterRegistry",
     args: [userAddress],
     staleTime: 30000,
@@ -45,7 +45,7 @@ const useRoles = (userAddress: string) => {
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
       "0x82A9313b7D869373E80776e770a9285c2981C018",
-    abi: [...Contract3ABI] as const,
+    abi: TokenABIConst,
     functionName: "chancellor",
     staleTime: 30000,
   });
@@ -58,7 +58,7 @@ const useRoles = (userAddress: string) => {
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
       "0x82A9313b7D869373E80776e770a9285c2981C018",
-    abi: [...Contract3ABI] as const,
+    abi: TokenABIConst,
     functionName: "balanceOf",
     args: [userAddress],
     staleTime: 5000,
@@ -67,14 +67,12 @@ const useRoles = (userAddress: string) => {
 
   return {
     // check if user completed twitter verification
-    isVerified: (votingTokenBalance as BigNumber)?.gt(0),
+    isVerified: votingTokenBalance?.gt(0),
     // check if user registered to vote / claimed username
     isRegistered: voterStruct?.["serving"],
     // check if user is Chancellor
     isChancellor: (chancellorAddress as string) === userAddress,
-    balanceDB: Number(
-      ethers.utils?.formatEther((balanceDB as BigNumberish) ?? 0)
-    ),
+    balanceDB: Number(formatEther?.(balanceDB ?? 0)),
     currentChancellor: chancellorAddress,
     rolesLoading:
       isChancellorLoading ||

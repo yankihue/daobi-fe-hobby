@@ -15,7 +15,7 @@ interface Props {
   signOut: () => void;
 }
 
-export const RegistrationForm = ({
+const RegistrationForm = ({
   address,
   isVerified,
   isRegistered,
@@ -91,3 +91,5 @@ export const RegistrationForm = ({
     </div>
   );
 };
+
+export default RegistrationForm;

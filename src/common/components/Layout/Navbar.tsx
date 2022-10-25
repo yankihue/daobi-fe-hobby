@@ -1,29 +1,41 @@
 import { useAccount, useContractRead } from "wagmi";
-import Wallet from "./Wallet";
-import Contract3ABI from "../../../ethereum/abis/DAObiContract3.json";
+// import Wallet from "./Wallet";
+import { TokenABIConst } from "../../../ethereum/abis/DAObiContract3";
 import { toTrimmedAddress } from "@/utils/index";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import useRoles from "@/hooks/useRoles";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const DynamicWallet = dynamic(() => import("./Wallet"), {
+  ssr: false,
+});
 
 const Navbar = () => {
+  const [chancellorAddress, setChancellorAddress] = useState(
+    "0x0000000000000000000000000000000000000000"
+  );
+  const [userBalance, setUserBalance] = useState(0);
+
   const { address } = useAccount();
+  const { isChancellor, balanceDB, rolesLoading } = useRoles(address);
+
   const result = useContractRead({
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
       "0x82A9313b7D869373E80776e770a9285c2981C018",
-    abi: [...Contract3ABI] as const,
+    abi: TokenABIConst,
     functionName: "chancellor",
   });
 
-  const [chancellorAddress, setChancellorAddress] = useState("");
   useEffect(() => {
     if (result.data) {
-      setChancellorAddress(result.data as string);
+      setChancellorAddress(result.data);
     }
-  }, [result]);
-
-  const { isChancellor, balanceDB, rolesLoading } = useRoles(address);
+    if (balanceDB && !rolesLoading) {
+      setUserBalance(balanceDB);
+    }
+  }, [result, balanceDB, rolesLoading]);
 
   return (
     <nav className="w-full border-b border-color-mode">
@@ -50,32 +62,27 @@ const Navbar = () => {
         </div>
         <div className="flex justify-center items-center mx-auto space-x-3 w-1/3 text-center whitespace-nowrap">
           <div className="hidden flex-col justify-center items-center lg:flex">
-            {address && (
-              <>
-                <p>
-                  Today&#39;s Chancellor is{" "}
-                  <a
-                    href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
-                  >
-                    {toTrimmedAddress(result.data as unknown as string)}
-                  </a>
-                </p>
-                <div className="hidden whitespace-nowrap md:inline">
-                  {!rolesLoading &&
-                    `${
-                      isChancellor
-                        ? "👑 Welcome Chancellor! 🏰"
-                        : "🌾 Maybe One Day... 🌾"
-                    }
+            <p>
+              Today&#39;s Chancellor is{" "}
+              <a
+                href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
+              >
+                {toTrimmedAddress(chancellorAddress as string)}
+              </a>
+            </p>
+            <div className="hidden whitespace-nowrap md:inline">
+              {`${
+                !rolesLoading && isChancellor
+                  ? "👑 Welcome Chancellor! 🏰"
+                  : "🌾 Maybe One Day... 🌾"
+              }
               `}
-                </div>
-              </>
-            )}
+            </div>
           </div>
         </div>
         <div className="flex items-center mr-0 w-2/3 text-right md:w-1/3">
-          <div className="inline-block w-1/3">{`${balanceDB}`} $DB</div>
-          <Wallet />
+          <div className="inline-block w-1/3">{`${userBalance}`} $DB</div>
+          <DynamicWallet />
         </div>
       </div>
     </nav>
