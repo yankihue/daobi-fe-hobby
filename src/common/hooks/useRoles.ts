@@ -100,11 +100,6 @@ const useRoles = (userAddress: `0x${string}`) => {
     // not enough tokens
     if (!isVerified || balanceDB < 1) return false;
 
-    console.log(`userVotes: ${userVoterStruct?.["votesAccrued"].toNumber()}`);
-    console.log(
-      `chanceVotes: ${chancellorVoterStruct?.["votesAccrued"].toNumber()}`
-    );
-
     return userVoterStruct?.["votesAccrued"]?.gt(
       chancellorVoterStruct?.["votesAccrued"]
     );
