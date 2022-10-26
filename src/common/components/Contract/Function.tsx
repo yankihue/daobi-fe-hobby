@@ -19,11 +19,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { formatIODefaultValues } from "@/utils/index";
 import { BytesLike, formatEther, parseEther } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
+import { Toast } from "../TxToast";
 
 interface ParentState {
-  setToast: Dispatch<
-    SetStateAction<{ status: "loading" | "error" | "success"; hash?: string }>
-  >;
+  setToast: Dispatch<SetStateAction<Toast>>;
   stateHandler?: () => void;
 }
 export interface UserCallableFunction {
