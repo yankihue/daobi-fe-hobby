@@ -75,7 +75,7 @@ const RegistrationForm = ({
                 {...VOTING_CONTRACT.userFriendlySections.registration}
                 contractABI={VOTING_CONTRACT.ABI}
                 contractAddress={VOTING_CONTRACT.address}
-                reloadRouter={reloadRouter}
+                stateHandler={reloadRouter}
               />
             </>
           )}

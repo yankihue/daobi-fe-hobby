@@ -24,7 +24,7 @@ interface ParentState {
   setToast: Dispatch<
     SetStateAction<{ status: "loading" | "error" | "success"; hash?: string }>
   >;
-  reloadRouter?: () => void;
+  stateHandler?: () => void;
 }
 export interface UserCallableFunction {
   functionName: string;
@@ -69,7 +69,7 @@ const Function = ({
   contractABI,
   contractAddress,
   setToast,
-  reloadRouter,
+  stateHandler,
 }: UserCallableFunction & ParentState) => {
   const { address } = useAccount();
   const provider = useProvider();
@@ -139,8 +139,8 @@ const Function = ({
   } = useWaitForTransaction({
     hash: data?.hash,
     onSuccess() {
-      if (reloadRouter) {
-        reloadRouter();
+      if (stateHandler) {
+        stateHandler();
       }
     },
   });

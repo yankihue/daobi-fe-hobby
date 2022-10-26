@@ -8,7 +8,7 @@ interface Props {
   methods: Record<string, UserFriendlyMethod>;
   contractAddress: string;
   contractABI: JsonFragment[];
-  reloadRouter?: () => void;
+  stateHandler?: () => void;
 }
 
 const Section = ({
@@ -16,7 +16,7 @@ const Section = ({
   methods,
   contractAddress,
   contractABI,
-  reloadRouter,
+  stateHandler,
 }: Props) => {
   const [toast, setToast] = useState<{
     status: "loading" | "error" | "success";
@@ -130,7 +130,7 @@ const Section = ({
         </div>
       )}
       <div className="flex flex-col justify-between max-w-3xl card">
-        <h3 className="p-4 mb-2 text-xl text-center border-b border-color-mode">
+        <h3 className="p-4 mb-2 text-xl text-center whitespace-pre-line border-b border-color-mode">
           {title}
         </h3>
         {userCallableFunctions.map((userFunc) => {
@@ -138,7 +138,7 @@ const Section = ({
             <Function
               key={userFunc.functionName}
               {...userFunc}
-              reloadRouter={reloadRouter}
+              stateHandler={stateHandler}
               setToast={setToast}
             />
           );
