@@ -106,8 +106,7 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
       },
     },
     makeClaim: {
-      title:
-        "Have enough votes to overthrow? Claim your rightful title as Chancellor here.",
+      title: `You've gained enough favor in the court.\nTime has come to claim your rightful title as Chancellor.`,
       methods: {
         makeClaim: {},
       },

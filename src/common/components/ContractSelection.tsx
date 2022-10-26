@@ -39,9 +39,6 @@ const ContractSelection = () => {
       </div>
       {/* Function Grid */}
       {DYNAMIC_DAOBI_CONTRACTS.map((contract, idx) => {
-        if (contract.name === "Voting") {
-          delete contract.userFriendlySections.registration;
-        }
         if (contract?.ABI) {
           return (
             <>
