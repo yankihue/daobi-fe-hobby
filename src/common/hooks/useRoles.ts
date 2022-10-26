@@ -4,12 +4,46 @@ import { VoteABIConst } from "@/ethereum/abis/DAObiVoteContract";
 import { formatEther } from "ethers/lib/utils";
 
 const useRoles = (userAddress: `0x${string}`) => {
-  // check if address owns voting token
-  // if they do, they've verified on twitter already
+  /** Token Contract Roles */
   const {
-    data: votingTokenBalance,
-    isError: isVerifiedError,
-    isLoading: isVerifiedLoading,
+    data: currentChancellor,
+    isError: chanceAddrError,
+    isLoading: chanceAddrLoading,
+  } = useContractRead({
+    address:
+      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
+      "0x82A9313b7D869373E80776e770a9285c2981C018",
+    abi: TokenABIConst,
+    functionName: "chancellor",
+    staleTime: 10000,
+  });
+
+  // check if user is Chancellor
+  const isChancellor = !chanceAddrLoading && currentChancellor === userAddress;
+
+  const {
+    data: bigNumberDB,
+    isError: isBalanceDBError,
+    isLoading: isBalanceDBLoading,
+  } = useContractRead({
+    address:
+      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
+      "0x82A9313b7D869373E80776e770a9285c2981C018",
+    abi: TokenABIConst,
+    functionName: "balanceOf",
+    args: [userAddress],
+    staleTime: 10000,
+    watch: true,
+  });
+
+  // get user's balance of $DB
+  const balanceDB = Number(formatEther?.(bigNumberDB ?? 0));
+
+  /** Voting Contract Roles */
+  const {
+    data: voteTokenBalance,
+    isError: voteTokenError,
+    isLoading: voteTokenLoading,
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
@@ -21,11 +55,14 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
-  // get address' Voter Struct from Voter Registry Mapping
+  // check if user owns voting token
+  // if they do, they've verified on twitter already
+  const isVerified = voteTokenBalance?.gt(0);
+
   const {
-    data: voterStruct,
-    isError: isRegisteredError,
-    isLoading: isRegisteredLoading,
+    data: userVoterStruct,
+    isError: userStructError,
+    isLoading: userStructLoading,
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
@@ -33,62 +70,71 @@ const useRoles = (userAddress: `0x${string}`) => {
     abi: VoteABIConst,
     functionName: "voterRegistry",
     args: [userAddress],
-    staleTime: 30000,
+    staleTime: 10000,
     watch: true,
   });
 
-  const {
-    data: chancellorAddress,
-    isError: isChancellorError,
-    isLoading: isChancellorLoading,
-  } = useContractRead({
-    address:
-      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x82A9313b7D869373E80776e770a9285c2981C018",
-    abi: TokenABIConst,
-    functionName: "chancellor",
-    staleTime: 30000,
-  });
+  // check if user registered to vote / claimed username
+  const isRegistered = userVoterStruct?.["serving"];
 
   const {
-    data: balanceDB,
-    isError: isBalanceDBError,
-    isLoading: isBalanceDBLoading,
+    data: chancellorVoterStruct,
+    isError: chanceStructError,
+    isLoading: chanceStructLoading,
   } = useContractRead({
     address:
-      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x82A9313b7D869373E80776e770a9285c2981C018",
-    abi: TokenABIConst,
-    functionName: "balanceOf",
-    args: [userAddress],
-    staleTime: 5000,
+      process.env.NEXT_PUBLIC_VOTE_ADDR ??
+      "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
+    abi: VoteABIConst,
+    functionName: "voterRegistry",
+    args: [currentChancellor],
+    staleTime: 10000,
     watch: true,
   });
+
+  // check if user has more votes than current chancellor
+  const canClaimChancellor = (): boolean => {
+    if (chanceStructLoading || userStructLoading) return false;
+    // if already chancellor, can't claim again
+    if (isChancellor) return false;
+    // not enough tokens
+    if (!isVerified || balanceDB < 1) return false;
+
+    console.log(`userVotes: ${userVoterStruct?.["votesAccrued"].toNumber()}`);
+    console.log(
+      `chanceVotes: ${chancellorVoterStruct?.["votesAccrued"].toNumber()}`
+    );
+
+    return userVoterStruct?.["votesAccrued"]?.gt(
+      chancellorVoterStruct?.["votesAccrued"]
+    );
+  };
 
   return {
-    // check if user completed twitter verification
-    isVerified: votingTokenBalance?.gt(0),
-    // check if user registered to vote / claimed username
-    isRegistered: voterStruct?.["serving"],
-    // check if user is Chancellor
-    isChancellor: (chancellorAddress as string) === userAddress,
-    balanceDB: Number(formatEther?.(balanceDB ?? 0)),
-    currentChancellor: chancellorAddress,
+    isVerified,
+    isRegistered,
+    isChancellor,
+    canClaimChancellor: canClaimChancellor(),
+    balanceDB,
+    currentChancellor,
     rolesLoading:
-      isChancellorLoading ||
-      isVerifiedLoading ||
-      isRegisteredLoading ||
-      isBalanceDBLoading,
+      chanceAddrLoading ||
+      voteTokenLoading ||
+      userStructLoading ||
+      isBalanceDBLoading ||
+      chanceStructLoading,
     rolesErrors:
-      isChancellorError ||
-      isVerifiedError ||
-      isRegisteredError ||
-      isBalanceDBError
+      chanceAddrError ||
+      voteTokenError ||
+      userStructError ||
+      isBalanceDBError ||
+      chanceStructError
         ? [
-            isChancellorError,
-            isVerifiedError,
-            isRegisteredError,
+            chanceAddrError,
+            voteTokenError,
+            userStructError,
             isBalanceDBError,
+            chanceStructError,
           ]
         : null,
   };
