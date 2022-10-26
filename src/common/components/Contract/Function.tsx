@@ -114,9 +114,14 @@ const Function = ({
     args: formData?.map((input) => {
       return formatInputData(input);
     }),
-    overrides: {
-      value: parseEther(msgValue.toString()),
-    },
+    overrides:
+      functionName === "makeClaim"
+        ? {
+            gasLimit: BigNumber.from(250000),
+          }
+        : {
+            value: parseEther(msgValue.toString()),
+          },
     onSuccess() {
       setTxWillError(false);
     },
@@ -182,8 +187,7 @@ const Function = ({
 
           case "salaryInterval":
             const seconds = (viewData as BigNumber).toNumber();
-            if (seconds > 3600)
-              return `${(seconds / 3600).toPrecision(1)} hour(s)`;
+            if (seconds > 3600) return `${(seconds / 3600).toFixed(1)} hour(s)`;
             else return seconds + ` seconds`;
 
           case "lastSalaryClaim":
@@ -195,13 +199,13 @@ const Function = ({
             const secondsSince = currentTimestamp - lastClaimTimestamp;
 
             if (secondsSince > 86400) {
-              const days = (secondsSince / 86400).toPrecision(0);
+              const days = (secondsSince / 86400).toFixed(0);
 
               return `Approximately ${days} day${
                 Number(days) > 1 ? "s" : ""
               } ago`;
             } else if (secondsSince > 3600) {
-              const hours = (secondsSince / 3600).toPrecision(2);
+              const hours = (secondsSince / 3600).toFixed(1);
 
               return `Approximately ${hours} hour${
                 Number(hours) > 1 ? "s" : ""
