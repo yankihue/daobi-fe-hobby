@@ -3,6 +3,7 @@ import useRoles from "@/hooks/useRoles";
 import { useAccount } from "wagmi";
 import Section from "./Section";
 
+const hiddenSections = ["registration", "makeClaim"];
 const chancellorOnlySections = ["claimChancellorSalary", "recoverSeal", "mint"];
 
 const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
@@ -23,7 +24,7 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
                 // only show to Chancellor
                 if (!isChancellor) visibleToUser = false;
               }
-
+              if (hiddenSections.includes(section)) visibleToUser = false;
               return (
                 <>
                   {visibleToUser && (
