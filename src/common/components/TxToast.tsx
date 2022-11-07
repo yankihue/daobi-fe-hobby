@@ -11,12 +11,12 @@ interface Props {
 }
 
 const TxToast = ({ toast, setToast }: Props) => {
-  // hide success / error toast after 15 seconds
-  const deleteToast = () => {
-    setToast(null);
-  };
-
   useEffect(() => {
+    // hide success / error toast after 15 seconds
+    const deleteToast = () => {
+      setToast(null);
+    };
+
     const interval = setInterval(() => {
       if (toast?.status === "error" || toast?.status === "success") {
         deleteToast();
@@ -25,7 +25,7 @@ const TxToast = ({ toast, setToast }: Props) => {
     return () => {
       clearInterval(interval);
     };
-  }, [toast]);
+  }, [toast, setToast]);
 
   return (
     <>

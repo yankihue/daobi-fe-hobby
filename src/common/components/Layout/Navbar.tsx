@@ -1,46 +1,22 @@
-import { useAccount, useContractRead } from "wagmi";
-// import Wallet from "./Wallet";
-import { TokenABIConst } from "../../../ethereum/abis/DAObiContract3";
-import { toTrimmedAddress } from "@/utils/index";
-import { Suspense, useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+import Wallet from "./Wallet";
 import useRoles from "@/hooks/useRoles";
 import Image from "next/image";
-import dynamic from "next/dynamic";
-
-const DynamicWallet = dynamic(() => import("./Wallet"), {
-  ssr: false,
-});
 
 const Navbar = () => {
-  const [chancellorAddress, setChancellorAddress] = useState(
-    "0x0000000000000000000000000000000000000000"
-  );
-  const [userBalance, setUserBalance] = useState(0);
-
   const { address } = useAccount();
-  const { isChancellor, balanceDB, rolesLoading } = useRoles(address);
-
-  const result = useContractRead({
-    address:
-      process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x82A9313b7D869373E80776e770a9285c2981C018",
-    abi: TokenABIConst,
-    functionName: "chancellor",
-  });
-
-  useEffect(() => {
-    if (result.data) {
-      setChancellorAddress(result.data);
-    }
-    if (balanceDB && !rolesLoading) {
-      setUserBalance(balanceDB);
-    }
-  }, [result, balanceDB, rolesLoading]);
+  const {
+    isChancellor,
+    balanceDB,
+    currentChancellor,
+    userCourtName,
+    rolesLoading,
+  } = useRoles(address);
 
   return (
     <nav className="w-full border-b border-color-mode">
       <div className="flex justify-between items-center px-6 py-4 mx-auto max-w-screen-2xl h-16">
-        <div className="w-1/3">
+        <div className="w-1/4 md:w-1/3">
           {/* light mode */}
           <div className="relative w-16 h-16 dark:hidden">
             <Image
@@ -60,29 +36,34 @@ const Navbar = () => {
             />
           </div>
         </div>
-        <div className="flex justify-center items-center mx-auto space-x-3 w-1/3 text-center whitespace-nowrap">
-          <div className="hidden flex-col justify-center items-center lg:flex">
+        <div className="hidden justify-center items-center mx-auto space-x-3 w-1/3 text-center whitespace-nowrap lg:flex">
+          <div className="flex flex-col justify-center items-center">
             <p>
-              Today&#39;s Chancellor is{" "}
+              Today&#39;s Chancellor is
+              {currentChancellor.address.length > 1 ? " " : "..."}
               <a
-                href={`https://mumbai.polygonscan.com/address/${chancellorAddress}`}
+                href={`https://mumbai.polygonscan.com/address/${currentChancellor.address}`}
               >
-                {toTrimmedAddress(chancellorAddress as string)}
+                {currentChancellor.courtName}
               </a>
             </p>
-            <div className="hidden whitespace-nowrap md:inline">
-              {`${
-                !rolesLoading && isChancellor
-                  ? "👑 Welcome Chancellor! 🏰"
-                  : "🌾 Maybe One Day... 🌾"
-              }
+            {address && (
+              <div className="hidden whitespace-nowrap md:inline">
+                {`${
+                  !rolesLoading && isChancellor
+                    ? "👑 Welcome Chancellor! 🏰"
+                    : `🌾 Maybe one day${
+                        userCourtName.length > 0 ? ", " + userCourtName : ""
+                      }... 🌾`
+                }
               `}
-            </div>
+              </div>
+            )}
           </div>
         </div>
-        <div className="flex items-center mr-0 w-2/3 text-right md:w-1/3">
-          <div className="inline-block w-1/3">{`${userBalance}`} $DB</div>
-          <DynamicWallet />
+        <div className="flex justify-around items-center mr-0 w-3/4 text-right md:w-1/3">
+          {address && <div className="w-1/3">{`${balanceDB}`} $DB</div>}
+          <Wallet />
         </div>
       </div>
     </nav>

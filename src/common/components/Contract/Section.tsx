@@ -1,6 +1,6 @@
 import { UserFriendlyMethod } from "@/ethereum/abis";
 import { JsonFragment } from "@ethersproject/abi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TxToast, { Toast } from "../TxToast";
 import Function, { UserCallableFunction } from "./Function";
 

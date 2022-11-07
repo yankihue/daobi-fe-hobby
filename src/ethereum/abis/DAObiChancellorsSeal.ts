@@ -1,6 +1,4 @@
-import { JsonFragment, JsonFragmentType } from "@ethersproject/abi";
-
-export const DAObiChancellorsSeal: JsonFragment[] = [
+export const DAObiChancellorsSeal = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     anonymous: false,

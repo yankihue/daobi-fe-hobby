@@ -1,11 +1,22 @@
+import { DAOBI_CHAIN_ID } from "@/ethereum/wagmiClient";
 import { useEffect, useState } from "react";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  useNetwork,
+  useSwitchNetwork,
+} from "wagmi";
 
 const Wallet = (): JSX.Element => {
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { switchNetwork, pendingChainId } = useSwitchNetwork({
+    chainId: DAOBI_CHAIN_ID,
+  });
   const [showDialog, setShowDialog] = useState(address ? true : false);
 
   // dark mode
@@ -32,6 +43,16 @@ const Wallet = (): JSX.Element => {
       localStorage.theme = "light";
     }
   }, [darkMode]);
+
+  useEffect(() => {
+    if (
+      isConnected &&
+      chain?.id !== DAOBI_CHAIN_ID &&
+      pendingChainId !== DAOBI_CHAIN_ID
+    ) {
+      switchNetwork?.();
+    }
+  }, [isConnected, chain, switchNetwork, pendingChainId]);
 
   return (
     <div className="flex gap-4 justify-end items-center w-full">
@@ -62,7 +83,17 @@ const Wallet = (): JSX.Element => {
       </button>
 
       {isConnected ? (
-        <button onClick={() => disconnect?.()}>Disconnect</button>
+        <div className="flex flex-col justify-center items-center">
+          <button onClick={() => disconnect?.()}>Disconnect</button>
+          {chain?.id !== 80001 && (
+            <button
+              onClick={() => switchNetwork?.()}
+              className="text-red-500 whitespace-nowrap"
+            >
+              Switch Network
+            </button>
+          )}
+        </div>
       ) : (
         <button
           onClick={() => setShowDialog(true)}

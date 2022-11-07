@@ -95,7 +95,7 @@ const Input = ({
 
   return (
     <div className="flex flex-col mb-2">
-      <label className="text-center">
+      <label className="text-center whitespace-pre-line">
         {`${input.userFriendlyCopy}: `}
         {input.json.type.includes("int") && isMsgValue && (
           <p className="italic">

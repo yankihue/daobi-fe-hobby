@@ -1,12 +1,13 @@
 import { useContractRead } from "wagmi";
 import { TokenABIConst } from "@/ethereum/abis/DAObiContract3";
 import { VoteABIConst } from "@/ethereum/abis/DAObiVoteContract";
-import { formatEther } from "ethers/lib/utils";
+import { formatEther, parseBytes32String } from "ethers/lib/utils";
+import { useEffect, useState } from "react";
 
 const useRoles = (userAddress: `0x${string}`) => {
   /** Token Contract Roles */
   const {
-    data: currentChancellor,
+    data: chancellorAddr,
     isError: chanceAddrError,
     isLoading: chanceAddrLoading,
   } = useContractRead({
@@ -18,8 +19,23 @@ const useRoles = (userAddress: `0x${string}`) => {
     staleTime: 10000,
   });
 
-  // check if user is Chancellor
-  const isChancellor = !chanceAddrLoading && currentChancellor === userAddress;
+  const [chanceAddr, setChanceAddr] = useState("");
+  const [isChancellor, setIsChancellor] = useState(false);
+  useEffect(() => {
+    if (!chanceAddrLoading) {
+      // check if user is Chancellor
+      let bool = chancellorAddr === userAddress;
+      if (bool !== isChancellor) setIsChancellor(bool);
+
+      if (chancellorAddr !== chanceAddr) setChanceAddr(chancellorAddr);
+    }
+  }, [
+    chanceAddr,
+    chanceAddrLoading,
+    chancellorAddr,
+    isChancellor,
+    userAddress,
+  ]);
 
   const {
     data: bigNumberDB,
@@ -36,8 +52,14 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
-  // get user's balance of $DB
-  const balanceDB = Number(formatEther?.(bigNumberDB ?? 0));
+  const [balanceDB, setBalanceDB] = useState(0);
+  useEffect(() => {
+    if (!isBalanceDBLoading) {
+      // get user's balance of $DB
+      let bal = Number(formatEther?.(bigNumberDB ?? 0));
+      if (bal !== balanceDB) setBalanceDB(bal);
+    }
+  }, [balanceDB, bigNumberDB, isBalanceDBLoading]);
 
   /** Voting Contract Roles */
   const {
@@ -55,9 +77,15 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
-  // check if user owns voting token
-  // if they do, they've verified on twitter already
-  const isVerified = voteTokenBalance?.gt(0);
+  const [isVerified, setIsVerified] = useState(false);
+  useEffect(() => {
+    if (!voteTokenLoading) {
+      // check if user owns voting token
+      // if they do, they've verified on twitter already
+      let bool = voteTokenBalance?.gt(0);
+      if (bool !== isVerified) setIsVerified(bool);
+    }
+  }, [isVerified, voteTokenBalance, voteTokenLoading]);
 
   const {
     data: userVoterStruct,
@@ -74,8 +102,25 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
-  // check if user registered to vote / claimed username
-  const isRegistered = userVoterStruct?.["serving"];
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [userCourtName, setUserCourtName] = useState("");
+  useEffect(() => {
+    if (!userStructLoading) {
+      let bool = false;
+      let courtName = "";
+
+      // check if user registered to vote / claimed username
+      try {
+        courtName = parseBytes32String?.(userVoterStruct?.["courtName"]);
+      } catch (error) {}
+      if (courtName !== "") {
+        bool = true;
+      }
+
+      if (bool !== isRegistered) setIsRegistered(bool);
+      if (courtName !== userCourtName) setUserCourtName(courtName);
+    }
+  }, [isRegistered, userCourtName, userStructLoading, userVoterStruct]);
 
   const {
     data: chancellorVoterStruct,
@@ -87,31 +132,59 @@ const useRoles = (userAddress: `0x${string}`) => {
       "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
     abi: VoteABIConst,
     functionName: "voterRegistry",
-    args: [currentChancellor],
+    args: [chancellorAddr],
     staleTime: 10000,
     watch: true,
   });
 
-  // check if user has more votes than current chancellor
-  const canClaimChancellor = (): boolean => {
-    if (chanceStructLoading || userStructLoading) return false;
-    // if already chancellor, can't claim again
-    if (isChancellor) return false;
-    // not enough tokens
-    if (!isVerified || balanceDB < 1) return false;
+  const [canClaim, setCanClaim] = useState(false);
+  const [chanceName, setChanceName] = useState("");
+  useEffect(() => {
+    const canClaimChancellor = (): boolean => {
+      // if already chancellor, can't claim again
+      if (isChancellor) return false;
+      // not enough tokens
+      if (!isVerified || balanceDB < 1) return false;
 
-    return userVoterStruct?.["votesAccrued"]?.gt(
-      chancellorVoterStruct?.["votesAccrued"]
-    );
-  };
+      return userVoterStruct?.["votesAccrued"]?.gt(
+        chancellorVoterStruct?.["votesAccrued"]
+      );
+    };
+
+    if (!chanceStructLoading) {
+      let courtName = "";
+      try {
+        courtName = parseBytes32String?.(chancellorVoterStruct?.["courtName"]);
+      } catch (error) {}
+
+      if (courtName !== chanceName) setChanceName(courtName);
+
+      // check if user has more votes than current chancellor
+      let bool = canClaimChancellor();
+      if (bool !== canClaim) setCanClaim(bool);
+    }
+  }, [
+    balanceDB,
+    canClaim,
+    chanceName,
+    chanceStructLoading,
+    chancellorVoterStruct,
+    isChancellor,
+    isVerified,
+    userVoterStruct,
+  ]);
 
   return {
     isVerified,
     isRegistered,
     isChancellor,
-    canClaimChancellor: canClaimChancellor(),
+    canClaimChancellor: canClaim,
     balanceDB,
-    currentChancellor,
+    currentChancellor: {
+      address: chanceAddr,
+      courtName: chanceName,
+    },
+    userCourtName,
     rolesLoading:
       chanceAddrLoading ||
       voteTokenLoading ||

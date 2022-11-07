@@ -45,8 +45,10 @@ const formatInputData = (input: {
   components?: readonly JsonFragment[];
   value: any;
 }) => {
-  if (typeof input.value === "number") {
-    input.value = BigNumber.from(input.value.toString());
+  if (input.name === "amount") {
+    return parseEther(input.value.toString());
+  } else if (typeof input.value === "number") {
+    return BigNumber.from(input.value.toString());
   } else if (input.name === "_name") {
     // username
     try {
@@ -113,14 +115,9 @@ const Function = ({
     args: formData?.map((input) => {
       return formatInputData(input);
     }),
-    overrides:
-      functionName === "makeClaim"
-        ? {
-            gasLimit: BigNumber.from(250000),
-          }
-        : {
-            value: parseEther(msgValue.toString()),
-          },
+    overrides: {
+      value: parseEther(msgValue.toString()),
+    },
     onSuccess() {
       setTxWillError(false);
     },
@@ -250,7 +247,7 @@ const Function = ({
             ))}
 
             {/* field for payable function */}
-            {stateMutability === "payable" && (
+            {/* {stateMutability === "payable" && (
               <Input
                 key={`${msgValue}-${contractAddress}-${name}`}
                 input={{
@@ -263,7 +260,7 @@ const Function = ({
                 setFormData={setMsgValue}
                 isMsgValue={true}
               />
-            )}
+            )} */}
           </form>
         </>
       )}
