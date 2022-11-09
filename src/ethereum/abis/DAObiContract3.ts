@@ -124,6 +124,14 @@ export const DAObiContract3 = [
   {
     anonymous: false,
     inputs: [
+      { indexed: false, internalType: "uint8", name: "version", type: "uint8" },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
         indexed: true,
         internalType: "address",
@@ -691,7 +699,6 @@ export const DAObiContract3 = [
     stateMutability: "view",
     type: "function",
   },
-  { stateMutability: "payable", type: "receive" },
 ];
 
 export const TokenABIConst = [
@@ -820,6 +827,14 @@ export const TokenABIConst = [
   {
     anonymous: false,
     inputs: [
+      { indexed: false, internalType: "uint8", name: "version", type: "uint8" },
+    ],
+    name: "Initialized",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
         indexed: true,
         internalType: "address",
@@ -1185,7 +1200,7 @@ export const TokenABIConst = [
     inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
     name: "mint",
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -1387,5 +1402,4 @@ export const TokenABIConst = [
     stateMutability: "view",
     type: "function",
   },
-  { stateMutability: "payable", type: "receive" },
 ] as const;

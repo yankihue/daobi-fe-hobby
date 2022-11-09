@@ -30,7 +30,6 @@ const Home: NextPage = () => {
     if (twitterStatus === "authenticated") {
       getAuthToken();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [twitterStatus]);
 
   return (

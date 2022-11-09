@@ -5,10 +5,10 @@ import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 
-export const DAOBI_CHAIN_ID = 80001;
+export const DAOBI_CHAIN_ID = 137;
 
 export const { chains, provider, webSocketProvider } = configureChains(
-  [chain.polygonMumbai],
+  [chain.polygon],
   [publicProvider()]
 );
 

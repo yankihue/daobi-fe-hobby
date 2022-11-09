@@ -59,12 +59,7 @@ export const DAObiVoteContract = [
         name: "operator",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "approved",
-        type: "bool",
-      },
+      { indexed: false, internalType: "bool", name: "approved", type: "bool" },
     ],
     name: "ApprovalForAll",
     type: "event",
@@ -93,6 +88,14 @@ export const DAObiVoteContract = [
       },
     ],
     name: "Burnt",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: "uint8", name: "version", type: "uint8" },
+    ],
+    name: "Initialized",
     type: "event",
   },
   {
@@ -175,12 +178,7 @@ export const DAObiVoteContract = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
         internalType: "bytes32",
@@ -200,12 +198,7 @@ export const DAObiVoteContract = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
         internalType: "address",
@@ -225,12 +218,7 @@ export const DAObiVoteContract = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
         internalType: "address",
@@ -263,18 +251,8 @@ export const DAObiVoteContract = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
+      { indexed: true, internalType: "address", name: "from", type: "address" },
+      { indexed: true, internalType: "address", name: "to", type: "address" },
       {
         indexed: true,
         internalType: "uint256",
@@ -340,6 +318,13 @@ export const DAObiVoteContract = [
   {
     inputs: [],
     name: "DEFAULT_ADMIN_ROLE",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MINREQ_ROLE",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
     stateMutability: "view",
     type: "function",
@@ -591,7 +576,7 @@ export const DAObiVoteContract = [
       { internalType: "address", name: "from", type: "address" },
       { internalType: "address", name: "to", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
-      { internalType: "bytes", name: "_data", type: "bytes" },
+      { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "safeTransferFrom",
     outputs: [],
@@ -660,6 +645,13 @@ export const DAObiVoteContract = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "tokenContract",
+    outputs: [{ internalType: "address payable", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "tokenURI",
     outputs: [{ internalType: "string", name: "", type: "string" }],
@@ -686,11 +678,7 @@ export const DAObiVoteContract = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
-      },
+      { internalType: "address", name: "newImplementation", type: "address" },
     ],
     name: "upgradeTo",
     outputs: [],
@@ -699,11 +687,7 @@ export const DAObiVoteContract = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
-      },
+      { internalType: "address", name: "newImplementation", type: "address" },
       { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "upgradeToAndCall",
@@ -794,12 +778,7 @@ export const VoteABIConst = [
         name: "operator",
         type: "address",
       },
-      {
-        indexed: false,
-        internalType: "bool",
-        name: "approved",
-        type: "bool",
-      },
+      { indexed: false, internalType: "bool", name: "approved", type: "bool" },
     ],
     name: "ApprovalForAll",
     type: "event",
@@ -828,6 +807,14 @@ export const VoteABIConst = [
       },
     ],
     name: "Burnt",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: "uint8", name: "version", type: "uint8" },
+    ],
+    name: "Initialized",
     type: "event",
   },
   {
@@ -910,12 +897,7 @@ export const VoteABIConst = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
         internalType: "bytes32",
@@ -935,12 +917,7 @@ export const VoteABIConst = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
         internalType: "address",
@@ -960,12 +937,7 @@ export const VoteABIConst = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
+      { indexed: true, internalType: "bytes32", name: "role", type: "bytes32" },
       {
         indexed: true,
         internalType: "address",
@@ -998,18 +970,8 @@ export const VoteABIConst = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
+      { indexed: true, internalType: "address", name: "from", type: "address" },
+      { indexed: true, internalType: "address", name: "to", type: "address" },
       {
         indexed: true,
         internalType: "uint256",
@@ -1075,6 +1037,13 @@ export const VoteABIConst = [
   {
     inputs: [],
     name: "DEFAULT_ADMIN_ROLE",
+    outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MINREQ_ROLE",
     outputs: [{ internalType: "bytes32", name: "", type: "bytes32" }],
     stateMutability: "view",
     type: "function",
@@ -1326,7 +1295,7 @@ export const VoteABIConst = [
       { internalType: "address", name: "from", type: "address" },
       { internalType: "address", name: "to", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
-      { internalType: "bytes", name: "_data", type: "bytes" },
+      { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "safeTransferFrom",
     outputs: [],
@@ -1395,6 +1364,13 @@ export const VoteABIConst = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "tokenContract",
+    outputs: [{ internalType: "address payable", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "tokenURI",
     outputs: [{ internalType: "string", name: "", type: "string" }],
@@ -1421,11 +1397,7 @@ export const VoteABIConst = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
-      },
+      { internalType: "address", name: "newImplementation", type: "address" },
     ],
     name: "upgradeTo",
     outputs: [],
@@ -1434,11 +1406,7 @@ export const VoteABIConst = [
   },
   {
     inputs: [
-      {
-        internalType: "address",
-        name: "newImplementation",
-        type: "address",
-      },
+      { internalType: "address", name: "newImplementation", type: "address" },
       { internalType: "bytes", name: "data", type: "bytes" },
     ],
     name: "upgradeToAndCall",

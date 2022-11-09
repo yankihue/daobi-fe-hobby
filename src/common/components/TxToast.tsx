@@ -55,9 +55,7 @@ const TxToast = ({ toast, setToast }: Props) => {
                 <p className="font-bold">
                   Success!{" "}
                   {toast?.hash && (
-                    <a
-                      href={`https://mumbai.polygonscan.com/tx/${toast?.hash}`}
-                    >
+                    <a href={`https://polygonscan.com/tx/${toast?.hash}`}>
                       View on Explorer.
                     </a>
                   )}
@@ -70,9 +68,7 @@ const TxToast = ({ toast, setToast }: Props) => {
                   {toast?.hash && (
                     <>
                       :{" "}
-                      <a
-                        href={`https://mumbai.polygonscan.com/tx/${toast?.hash}`}
-                      >
+                      <a href={`https://polygonscan.com/tx/${toast?.hash}`}>
                         View on Explorer.
                       </a>
                     </>

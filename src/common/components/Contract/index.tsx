@@ -44,7 +44,7 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
       <div className="mx-auto mt-8 text-center">
         <a
           className="mx-auto w-min text-base underline hover:cursor-pointer"
-          href={`https://mumbai.polygonscan.com/address/${address}`}
+          href={`https://polygonscan.com/address/${address}`}
         >
           Records of the Official Polygonscan Historian
         </a>

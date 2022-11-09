@@ -13,7 +13,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x82A9313b7D869373E80776e770a9285c2981C018",
+      "0x5988Bf243ADf1b42a2Ec2e9452D144A90b1FD9A9",
     abi: TokenABIConst,
     functionName: "chancellor",
     staleTime: 10000,
@@ -44,7 +44,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_TOKEN_ADDR ??
-      "0x82A9313b7D869373E80776e770a9285c2981C018",
+      "0x5988Bf243ADf1b42a2Ec2e9452D144A90b1FD9A9",
     abi: TokenABIConst,
     functionName: "balanceOf",
     args: [userAddress],
@@ -69,7 +69,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
-      "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
+      "0xe8A858B29311652F7e2170118FbEaD34d097e88A",
     abi: VoteABIConst,
     functionName: "balanceOf",
     args: [userAddress],
@@ -94,7 +94,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
-      "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
+      "0xe8A858B29311652F7e2170118FbEaD34d097e88A",
     abi: VoteABIConst,
     functionName: "voterRegistry",
     args: [userAddress],
@@ -129,7 +129,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   } = useContractRead({
     address:
       process.env.NEXT_PUBLIC_VOTE_ADDR ??
-      "0xbb1AE89B97134a753D1852A83d7eE15Ed1C46DE0",
+      "0xe8A858B29311652F7e2170118FbEaD34d097e88A",
     abi: VoteABIConst,
     functionName: "voterRegistry",
     args: [chancellorAddr],

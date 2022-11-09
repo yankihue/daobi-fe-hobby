@@ -1,5 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import { DYNAMIC_DAOBI_CONTRACTS } from "@/ethereum/abis";
+import Image from "next/image";
 import { useState } from "react";
 import Contract from "./Contract";
 
@@ -58,10 +58,17 @@ const ContractSelection = () => {
       {activeTab === 2 && (
         <div
           key="nftdiv"
-          className="flex flex-col mx-1 mt-2 space-y-2 md:mx-16 xl:mx-32 2xl:mx-64"
+          className="flex flex-col mx-1 mt-2 space-y-2 min-h-screen md:mx-16 xl:mx-32 2xl:mx-64"
         >
           <h2 className="text-2xl text-center">The Chancellor&apos;s Seal</h2>
-          <img src="/Seal.png" alt="A clearly scuffed up Chancellor's Seal" />
+          <div className="flex relative flex-1">
+            <Image
+              layout="fill"
+              objectFit="contain"
+              src="/Seal.png"
+              alt="A clearly scuffed up Chancellor's Seal"
+            />
+          </div>
         </div>
       )}
     </>

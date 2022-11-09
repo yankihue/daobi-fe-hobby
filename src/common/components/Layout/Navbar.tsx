@@ -40,9 +40,9 @@ const Navbar = () => {
           <div className="flex flex-col justify-center items-center">
             <p>
               Today&#39;s Chancellor is
-              {currentChancellor.address.length > 1 ? " " : "..."}
+              {currentChancellor?.address?.length > 1 ? " " : "..."}
               <a
-                href={`https://mumbai.polygonscan.com/address/${currentChancellor.address}`}
+                href={`https://polygonscan.com/address/${currentChancellor.address}`}
               >
                 {currentChancellor.courtName}
               </a>
