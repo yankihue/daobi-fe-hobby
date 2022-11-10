@@ -29,9 +29,9 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
       title: "Enter the Imperial Court",
       methods: {
         register: {
+          _name: "Choose a Courtesy Name for yourself",
           _initialVote:
             "Please enter the address of the courtier whose faction you will be joining",
-          _name: "Courtesy Name",
         },
       },
     },
@@ -73,14 +73,14 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
     },
     abandon: {
       title:
-        "Abandon your faction and withdraw into reclusion on your country estates.",
+        "Abandon your faction and withdraw (your vote) into reclusion on your country estates.",
       methods: {
         recluse: {},
       },
     },
     selfImmolation: {
       title:
-        "Self-immolation; the last recourse when all other forms of protest have failed. Click here to ceremonially burn your voting token.",
+        "Self-immolation; the last recourse when all other forms of protest have failed. If you come back, initiation must be completed again. Click here to ceremonially burn your voting token.",
       methods: {
         selfImmolate: {},
       },
