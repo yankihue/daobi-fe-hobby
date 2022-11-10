@@ -11,7 +11,7 @@ import { DAOBI_CHAIN_ID } from "@/ethereum/wagmiClient";
 
 const Home: NextPage = () => {
   const { address, isConnected } = useAccount();
-  const { isVerified, isRegistered, balanceDB, rolesLoading } =
+  const { hasVoteToken, isRegistered, isImmolated, balanceDB, rolesLoading } =
     useRoles(address);
   const { chain } = useNetwork();
 
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
           Please switch to Polygon before continuing.
         </div>
       )}
-      {isPolygon && !isRegistered ? (
+      {isPolygon && (!isRegistered || isImmolated) ? (
         <>
           <p
             id="connection"
@@ -58,8 +58,9 @@ const Home: NextPage = () => {
           {!rolesLoading && address && (
             <RegistrationForm
               address={toTrimmedAddress(address)}
-              isVerified={isVerified}
+              hasVoteToken={hasVoteToken}
               isRegistered={isRegistered}
+              isImmolated={isImmolated}
               balanceDB={balanceDB}
               authToken={authToken}
               twitterSession={twitterSession}

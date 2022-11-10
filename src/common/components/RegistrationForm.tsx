@@ -6,8 +6,9 @@ import Section from "./Contract/Section";
 
 interface Props {
   address: string;
-  isVerified: boolean;
+  hasVoteToken: boolean;
   isRegistered: boolean;
+  isImmolated: boolean;
   balanceDB: number;
   twitterSession: Session;
   authToken: string;
@@ -17,8 +18,9 @@ interface Props {
 
 const RegistrationForm = ({
   address,
-  isVerified,
+  hasVoteToken,
   isRegistered,
+  isImmolated,
   balanceDB,
   twitterSession,
   authToken,
@@ -34,7 +36,7 @@ const RegistrationForm = ({
   return (
     <div className="flex flex-col justify-center items-center my-auto space-y-6 w-full h-full text-center">
       <h3>Hello {`${address}.`}</h3>
-      {!isVerified && !isRegistered && (
+      {!hasVoteToken && (!isRegistered || isImmolated) && (
         <>
           <p className="max-w-prose break-normal w-fit">
             It looks like you have not yet completed registration.
@@ -58,7 +60,7 @@ const RegistrationForm = ({
           )}
         </>
       )}
-      {!isRegistered && isVerified && (
+      {!isRegistered && hasVoteToken && (
         <>
           {balanceDB === 0 ? (
             <p className="max-w-prose break-normal w-fit">
@@ -82,7 +84,7 @@ const RegistrationForm = ({
         </>
       )}
 
-      {isVerified && isRegistered && (
+      {hasVoteToken && isRegistered && (
         <p className="max-w-prose break-normal w-fit">
           Congrats! You have already finished connecting your Twitter and
           registering to vote!
