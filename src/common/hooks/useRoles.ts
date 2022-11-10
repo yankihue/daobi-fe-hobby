@@ -77,15 +77,15 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
-  const [isVerified, setIsVerified] = useState(false);
+  const [hasVoteToken, setHasVoteToken] = useState(false);
   useEffect(() => {
     if (!voteTokenLoading) {
       // check if user owns voting token
       // if they do, they've verified on twitter already
-      let bool = voteTokenBalance?.gt(0);
-      if (bool !== isVerified) setIsVerified(bool);
+      let hasToken = voteTokenBalance?.gt(0);
+      if (hasToken !== hasVoteToken) setHasVoteToken(hasToken);
     }
-  }, [isVerified, voteTokenBalance, voteTokenLoading]);
+  }, [hasVoteToken, voteTokenBalance, voteTokenLoading]);
 
   const {
     data: userVoterStruct,
@@ -102,25 +102,52 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
+  const [isReclused, setIsReclused] = useState(false);
+  const [isImmolated, setIsImmolated] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [userCourtName, setUserCourtName] = useState("");
   useEffect(() => {
     if (!userStructLoading) {
-      let bool = false;
+      let hasUsername = false;
       let courtName = "";
+      let reclused = false;
+      let immolated = false;
 
       // check if user registered to vote / claimed username
       try {
         courtName = parseBytes32String?.(userVoterStruct?.["courtName"]);
       } catch (error) {}
+
       if (courtName !== "") {
-        bool = true;
+        hasUsername = true;
+
+        // check if user is reclused/immolated
+        // cast to string to make sure its non null
+        if (userVoterStruct?.serving?.toString() === "false") {
+          if (hasVoteToken) {
+            // if user isnt serving & has DBVT they are reclused
+            reclused = true;
+          } else {
+            // if user isnt serving & has 0 DBVT they have self-immolated
+            immolated = true;
+          }
+        }
       }
 
-      if (bool !== isRegistered) setIsRegistered(bool);
+      if (hasUsername !== isRegistered) setIsRegistered(hasUsername);
       if (courtName !== userCourtName) setUserCourtName(courtName);
+      if (reclused !== isReclused) setIsReclused(reclused);
+      if (immolated !== isImmolated) setIsImmolated(immolated);
     }
-  }, [isRegistered, userCourtName, userStructLoading, userVoterStruct]);
+  }, [
+    hasVoteToken,
+    isImmolated,
+    isReclused,
+    isRegistered,
+    userCourtName,
+    userStructLoading,
+    userVoterStruct,
+  ]);
 
   const {
     data: chancellorVoterStruct,
@@ -144,7 +171,7 @@ const useRoles = (userAddress: `0x${string}`) => {
       // if already chancellor, can't claim again
       if (isChancellor) return false;
       // not enough tokens
-      if (!isVerified || balanceDB < 1) return false;
+      if (!hasVoteToken || balanceDB < 1) return false;
 
       return userVoterStruct?.["votesAccrued"]?.gt(
         chancellorVoterStruct?.["votesAccrued"]
@@ -170,13 +197,15 @@ const useRoles = (userAddress: `0x${string}`) => {
     chanceStructLoading,
     chancellorVoterStruct,
     isChancellor,
-    isVerified,
+    hasVoteToken,
     userVoterStruct,
   ]);
 
   return {
-    isVerified,
+    hasVoteToken,
     isRegistered,
+    isReclused,
+    isImmolated,
     isChancellor,
     canClaimChancellor: canClaim,
     balanceDB,

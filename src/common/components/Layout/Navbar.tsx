@@ -62,7 +62,11 @@ const Navbar = () => {
           </div>
         </div>
         <div className="flex justify-around items-center mr-0 w-3/4 text-right md:w-1/3">
-          {address && <div className="w-1/3">{`${balanceDB}`} $DB</div>}
+          {address && (
+            <div className="w-1/3 text-sm text-center overflow-ellipsis">
+              {`${balanceDB.toFixed(2)}`} $DB
+            </div>
+          )}
           <Wallet />
         </div>
       </div>
