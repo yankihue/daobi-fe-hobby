@@ -8,6 +8,7 @@ interface Props {
   address: string;
   hasVoteToken: boolean;
   isRegistered: boolean;
+  isReclused: boolean;
   isImmolated: boolean;
   balanceDB: number;
   twitterSession: Session;
@@ -20,6 +21,7 @@ const RegistrationForm = ({
   address,
   hasVoteToken,
   isRegistered,
+  isReclused,
   isImmolated,
   balanceDB,
   twitterSession,
@@ -39,7 +41,10 @@ const RegistrationForm = ({
       {!hasVoteToken && (!isRegistered || isImmolated) && (
         <>
           <p className="max-w-prose break-normal w-fit">
-            It looks like you have not yet completed registration.
+            {!isRegistered &&
+              "It looks like you have not yet completed registration."}
+            {isImmolated &&
+              "You have self-immolated and must re-register if you wish to come back to Court."}
             <br />
             To protect against bots, we require linking a Twitter account. Your
             address and username are not stored, and your Twitter will be
@@ -60,7 +65,7 @@ const RegistrationForm = ({
           )}
         </>
       )}
-      {!isRegistered && hasVoteToken && (
+      {(!isRegistered || isReclused) && hasVoteToken && (
         <>
           {balanceDB === 0 ? (
             <p className="max-w-prose break-normal w-fit">
@@ -70,8 +75,9 @@ const RegistrationForm = ({
           ) : (
             <>
               <p className="max-w-prose break-normal w-fit">
-                Twitter verification completed. Time to register your username
-                and cast your first vote!
+                {isReclused
+                  ? "Welcome back to the Court. We knew we would see you again."
+                  : "Twitter verification completed. Time to register your username and cast your first vote!"}
               </p>
               <Section
                 {...VOTING_CONTRACT.userFriendlySections.registration}
@@ -84,7 +90,7 @@ const RegistrationForm = ({
         </>
       )}
 
-      {hasVoteToken && isRegistered && (
+      {hasVoteToken && isRegistered && !isReclused && (
         <p className="max-w-prose break-normal w-fit">
           Congrats! You have already finished connecting your Twitter and
           registering to vote!

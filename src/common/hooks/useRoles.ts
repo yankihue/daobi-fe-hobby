@@ -172,7 +172,15 @@ const useRoles = (userAddress: `0x${string}`) => {
       if (isChancellor) return false;
       // not enough tokens
       if (!hasVoteToken || balanceDB < 1) return false;
+      // chancellor is not serving & user has a vote
+      if (
+        chancellorVoterStruct?.serving?.toString() === "false" &&
+        userVoterStruct?.["votesAccrued"]?.gt(0)
+      ) {
+        return true;
+      }
 
+      // userVotes > chanceVotes
       return userVoterStruct?.["votesAccrued"]?.gt(
         chancellorVoterStruct?.["votesAccrued"]
       );
