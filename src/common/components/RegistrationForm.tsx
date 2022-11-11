@@ -9,6 +9,7 @@ interface Props {
   hasVoteToken: boolean;
   isRegistered: boolean;
   isReclused: boolean;
+  isServing: boolean;
   isImmolated: boolean;
   balanceDB: number;
   twitterSession: Session;
@@ -22,6 +23,7 @@ const RegistrationForm = ({
   hasVoteToken,
   isRegistered,
   isReclused,
+  isServing,
   isImmolated,
   balanceDB,
   twitterSession,
@@ -36,12 +38,13 @@ const RegistrationForm = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center my-auto space-y-6 w-full h-full text-center">
+    <div className="flex flex-col justify-center items-center my-auto mb-4 space-y-6 w-full h-full text-center">
       <h3>Hello {`${address}.`}</h3>
       {!hasVoteToken && (!isRegistered || isImmolated) && (
         <>
           <p className="max-w-prose break-normal w-fit">
             {!isRegistered &&
+              !isImmolated &&
               "It looks like you have not yet completed registration."}
             {isImmolated &&
               "You have self-immolated and must re-register if you wish to come back to Court."}
@@ -65,7 +68,7 @@ const RegistrationForm = ({
           )}
         </>
       )}
-      {(!isRegistered || isReclused) && hasVoteToken && (
+      {!isServing && hasVoteToken && (
         <>
           {balanceDB === 0 ? (
             <p className="max-w-prose break-normal w-fit">
@@ -90,7 +93,7 @@ const RegistrationForm = ({
         </>
       )}
 
-      {hasVoteToken && isRegistered && !isReclused && (
+      {hasVoteToken && isServing && !isReclused && (
         <p className="max-w-prose break-normal w-fit">
           Congrats! You have already finished connecting your Twitter and
           registering to vote!

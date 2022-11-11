@@ -22,6 +22,7 @@ const TwitterAuth = ({ signOut, authToken }: Props) => {
     data: signedMessage,
     isSuccess: successfullySigned,
     signMessage,
+    status,
   } = useSignMessage({
     message: uniqueMessage,
   });
@@ -33,14 +34,17 @@ const TwitterAuth = ({ signOut, authToken }: Props) => {
   });
 
   useEffect(() => {
-    // on load
-    if (address && !promptedToSign) {
-      // prompt user to sign message
+    // prompt user to sign message
+    if (
+      address &&
+      status !== "loading" &&
+      !sentVerification &&
+      !promptedToSign
+    ) {
       signMessage();
-      // dont prompt again
-      setPromptedToSign(true);
     }
-  }, [address, promptedToSign, signMessage]);
+    if (status === "loading") setPromptedToSign(true);
+  }, [address, signMessage, status, sentVerification, promptedToSign]);
 
   useEffect(() => {
     const verifySignedMessage = (signature: BytesLike): boolean => {

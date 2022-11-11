@@ -8,12 +8,15 @@ import { toTrimmedAddress } from "../utils";
 import ContractSelection from "@/components/ContractSelection";
 import MakeClaimModal from "@/components/MakeClaimModal";
 import { DAOBI_CHAIN_ID } from "@/ethereum/wagmiClient";
+import { VOTING_CONTRACT } from "@/ethereum/abis";
+import Section from "@/components/Contract/Section";
 
 const Home: NextPage = () => {
   const { address, isConnected } = useAccount();
   const {
     hasVoteToken,
     isRegistered,
+    isServing,
     isReclused,
     isImmolated,
     balanceDB,
@@ -50,7 +53,7 @@ const Home: NextPage = () => {
           Please switch to Polygon before continuing.
         </div>
       )}
-      {isPolygon && (!isRegistered || isImmolated || isReclused) ? (
+      {isPolygon && (!isRegistered || !isServing) && (
         <>
           <p
             id="connection"
@@ -67,6 +70,7 @@ const Home: NextPage = () => {
               hasVoteToken={hasVoteToken}
               isRegistered={isRegistered}
               isReclused={isReclused}
+              isServing={isServing}
               isImmolated={isImmolated}
               balanceDB={balanceDB}
               authToken={authToken}
@@ -76,14 +80,25 @@ const Home: NextPage = () => {
             />
           )}
         </>
-      ) : (
+      )}
+      {isPolygon && isServing && (
         <>
-          {isPolygon && (
-            <>
-              <MakeClaimModal />
-              <ContractSelection />
-            </>
-          )}
+          <MakeClaimModal />
+          <ContractSelection />
+        </>
+      )}
+      {isPolygon && isReclused && (
+        <>
+          <Section
+            {...VOTING_CONTRACT.userFriendlySections.investigateRivals}
+            contractABI={VOTING_CONTRACT.ABI}
+            contractAddress={VOTING_CONTRACT.address}
+          />
+          <Section
+            {...VOTING_CONTRACT.userFriendlySections.selfImmolation}
+            contractABI={VOTING_CONTRACT.ABI}
+            contractAddress={VOTING_CONTRACT.address}
+          />
         </>
       )}
     </div>

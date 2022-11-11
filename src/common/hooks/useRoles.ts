@@ -102,39 +102,45 @@ const useRoles = (userAddress: `0x${string}`) => {
     watch: true,
   });
 
+  const [isServing, setIsServing] = useState(false);
   const [isReclused, setIsReclused] = useState(false);
   const [isImmolated, setIsImmolated] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [userCourtName, setUserCourtName] = useState("");
   useEffect(() => {
     if (!userStructLoading) {
-      let hasUsername = false;
       let courtName = "";
+      let serving = false;
       let reclused = false;
       let immolated = false;
 
-      // check if user registered to vote / claimed username
+      // parse username
       try {
         courtName = parseBytes32String?.(userVoterStruct?.["courtName"]);
       } catch (error) {}
 
-      if (courtName !== "") {
-        hasUsername = true;
+      // check status
+      if (userVoterStruct?.serving) {
+        serving = true;
+      }
 
-        // check if user is reclused/immolated
-        // cast to string to make sure its non null
-        if (userVoterStruct?.serving?.toString() === "false") {
-          if (hasVoteToken) {
-            // if user isnt serving & has DBVT they are reclused
-            reclused = true;
-          } else {
-            // if user isnt serving & has 0 DBVT they have self-immolated
-            immolated = true;
-          }
+      // user is registered if any are true: serving=true, courtName!=null, has DBVT
+      const registered = serving || courtName !== "" || hasVoteToken;
+
+      // check if user is reclused/immolated
+      if (!serving) {
+        if (hasVoteToken && courtName !== "") {
+          // if user isnt serving & is still otherwise registered they are reclused
+          reclused = true;
+        }
+
+        if (!hasVoteToken && courtName !== "") {
+          immolated = true;
         }
       }
 
-      if (hasUsername !== isRegistered) setIsRegistered(hasUsername);
+      if (serving !== isServing) setIsServing(serving);
+      if (registered !== isRegistered) setIsRegistered(registered);
       if (courtName !== userCourtName) setUserCourtName(courtName);
       if (reclused !== isReclused) setIsReclused(reclused);
       if (immolated !== isImmolated) setIsImmolated(immolated);
@@ -142,6 +148,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   }, [
     hasVoteToken,
     isImmolated,
+    isServing,
     isReclused,
     isRegistered,
     userCourtName,
@@ -212,6 +219,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   return {
     hasVoteToken,
     isRegistered,
+    isServing,
     isReclused,
     isImmolated,
     isChancellor,
