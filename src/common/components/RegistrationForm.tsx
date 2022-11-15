@@ -38,7 +38,7 @@ const RegistrationForm = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center my-auto mb-4 space-y-6 w-full h-full text-center">
+    <div className="flex flex-col justify-center items-center pb-4 my-auto space-y-6 w-full h-full text-center">
       <h3>Hello {`${address}.`}</h3>
       {!hasVoteToken && (!isRegistered || isImmolated) && (
         <>

@@ -31,16 +31,16 @@ export const VOTING_CONTRACT: DAOBI_CONTRACT = {
         register: {
           _name: "Choose a Courtesy Name for yourself",
           _initialVote:
-            "Please enter the address of the courtier whose faction you will be joining",
+            "Please enter the address of the courtier whose faction you will be joining, or your address if you wish to start a faction of your own",
         },
       },
     },
     changeVote: {
-      title: "Join a different faction",
+      title: "Switch Factions",
       methods: {
         vote: {
           _voteFor:
-            "Please enter the address of the courtier whose faction you will be switching to",
+            "To pledge allegiance to a new faction, please enter the address of their courtier here. Your name will then be entered on the rolls of their supporters, and removed from your previous faction's",
         },
       },
     },
