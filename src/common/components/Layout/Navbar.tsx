@@ -43,6 +43,8 @@ const Navbar = () => {
               {currentChancellor?.address?.length > 1 ? " " : "..."}
               <a
                 href={`https://polygonscan.com/address/${currentChancellor.address}`}
+                target={"_blank"}
+                rel={"noopener noreferrer"}
               >
                 {currentChancellor.courtName}
               </a>

@@ -45,6 +45,8 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
         <a
           className="mx-auto w-min text-base underline hover:cursor-pointer"
           href={`https://polygonscan.com/address/${address}`}
+          target={"_blank"}
+          rel={"noopener noreferrer"}
         >
           Records of the Official Polygonscan Historian
         </a>

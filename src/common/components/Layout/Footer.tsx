@@ -22,16 +22,36 @@ const Footer = () => {
             objectFit="contain"
           />
         </div>
-        <a className="" href="https://daobi.netlify.app/court/">
+        <a
+          className=""
+          href="https://daobi.netlify.app/court/"
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
           DAObi Homepage
         </a>
-        <a className="" href="https://twitter.com/DaobiTreasury">
+        <a
+          className=""
+          href="https://twitter.com/DaobiTreasury"
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
           Twitter
         </a>
-        <a className="" href="https://discord.com/invite/HqvVRPZ9Gg">
+        <a
+          className=""
+          href="https://discord.com/invite/HqvVRPZ9Gg"
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
           Discord
         </a>
-        <a className="" href="https://github.com/bluentity/daobi">
+        <a
+          className=""
+          href="https://github.com/bluentity/daobi"
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
           Contract Source Code
         </a>
       </div>
