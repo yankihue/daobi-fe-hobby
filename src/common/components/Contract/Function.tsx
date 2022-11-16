@@ -47,7 +47,7 @@ const formatInputData = (input: {
 }) => {
   if (input.name === "amount") {
     try {
-      return parseEther(input.value.toString());
+      return parseEther(Number(input.value).toFixed(2));
     } catch (error) {
       return BigNumber.from(0);
     }
@@ -149,10 +149,15 @@ const Function = ({
               } else {
                 amountIsInvalid = false;
               }
+
+              if (input.value.toString().includes(".")) {
+                input.value = Number(input.value).toFixed(2);
+              }
             }
           });
 
           setTxWillError(amountIsInvalid);
+          break;
 
         default:
           setTxWillError(false);
