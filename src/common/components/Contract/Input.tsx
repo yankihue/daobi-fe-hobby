@@ -64,6 +64,9 @@ const Input = ({
               className={inputStyle}
               type="number"
               value={value}
+              min="0.00"
+              max="100000.00"
+              step="1"
               onChange={(e) => handleChange(e)}
             />
           );

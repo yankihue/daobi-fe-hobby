@@ -26,7 +26,7 @@ export function formatIODefaultValues(
         break;
 
       default:
-        if (input.type.includes("int")) value = 0;
+        if (input.type.includes("int")) value = "0.00";
         else if (input.type.includes("fixed")) value = 0.0;
         else if (input.type.includes("bytes")) value = "";
         else console.log(`Unknown Type: ${JSON.stringify(input)}`);

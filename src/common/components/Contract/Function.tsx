@@ -127,18 +127,36 @@ const Function = ({
       value: parseEther(msgValue.toString()),
     },
     onSuccess() {
-      if (functionName === "register") {
-        // require filling out courtName to register
-        let nameIsNull = true;
-        formData.map((input) => {
-          if (input.name === "_name") {
-            if (input.value !== "") nameIsNull = false;
-          }
-        });
+      switch (functionName) {
+        case "register":
+          // require filling out courtName to register
+          let nameIsNull = true;
+          formData.map((input) => {
+            if (input.name === "_name") {
+              if (input.value !== "") nameIsNull = false;
+            }
+          });
 
-        setTxWillError(nameIsNull);
-      } else {
-        setTxWillError(false);
+          setTxWillError(nameIsNull);
+          break;
+
+        case "mint":
+          let amountIsInvalid: boolean;
+          formData.map((input) => {
+            if ((input.name = "amount")) {
+              if (input.value < 0 || input.value > 100000) {
+                amountIsInvalid = true;
+              } else {
+                amountIsInvalid = false;
+              }
+            }
+          });
+
+          setTxWillError(amountIsInvalid);
+
+        default:
+          setTxWillError(false);
+          break;
       }
     },
     onError(error: any) {
