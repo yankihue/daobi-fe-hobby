@@ -144,7 +144,7 @@ const Function = ({
           let amountIsInvalid: boolean;
           formData.map((input) => {
             if ((input.name = "amount")) {
-              if (input.value < 0 || input.value > 100000) {
+              if (input.value < 0) {
                 amountIsInvalid = true;
               } else {
                 amountIsInvalid = false;

@@ -65,7 +65,6 @@ const Input = ({
               type="number"
               value={value}
               min="0.00"
-              max="100000.00"
               step="1"
               onChange={(e) => handleChange(e)}
             />
@@ -107,6 +106,11 @@ const Input = ({
         )}
         {renderInput()}
         <br />
+        {input.json.name === "amount" && (
+          <p className="italic">
+            {`Notice: Large amounts (50,000+) may fail. It is recommended to split large sums into multiple transactions.`}
+          </p>
+        )}
       </label>
     </div>
   );
