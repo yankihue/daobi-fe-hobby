@@ -75,7 +75,7 @@ function FactionsTable() {
       {" "}
       <div className="flex">
         {" "}
-        <h1 className="mx-auto my-6">Faction Registry</h1>
+        <h1 className="mx-auto my-6">Registry</h1>
       </div>
       <div className="flex sm:mx-36">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mx-auto card">
@@ -85,10 +85,10 @@ function FactionsTable() {
                 Leader
               </th>
               <th scope="col" className="px-6 py-3">
-                # Votes
+                #
               </th>
               <th scope="col" className="px-6 py-3">
-                Voters
+                Supporters
               </th>
             </tr>
           </thead>
