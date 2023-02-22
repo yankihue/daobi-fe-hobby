@@ -79,7 +79,7 @@ function FactionsTable() {
       </div>
       <div className="flex overflow-x-scroll">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mx-auto card">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-transparent dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Leader
@@ -96,7 +96,7 @@ function FactionsTable() {
             {Object.keys(factions).map((factionName) => (
               <tr
                 key={factionName}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 overflow-x-scroll "
+                className="bg-white border-b dark:bg-black dark:border-gray-700 overflow-x-scroll "
               >
                 <td className="px-6 py-4">{factionName}</td>
                 <td className="px-6 py-4"> {factions[factionName]["votes"]}</td>
