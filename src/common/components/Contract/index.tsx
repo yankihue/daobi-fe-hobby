@@ -1,6 +1,7 @@
 import { DAOBI_CONTRACT } from "@/ethereum/abis";
 import useRoles from "@/hooks/useRoles";
 import { useAccount } from "wagmi";
+import FactionsTable from "../Layout/FactionsTable";
 import Section from "./Section";
 
 const hiddenSections = ["registration", "makeClaim"];
@@ -51,6 +52,7 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
           Records of the Official Polygonscan Historian
         </a>
       </div>
+      <FactionsTable />
     </div>
   );
 };
