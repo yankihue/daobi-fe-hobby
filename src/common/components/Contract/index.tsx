@@ -41,6 +41,7 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
               );
             }
           )}
+        {isConnected && connector && <FactionsTable />}
       </div>
       <div className="mx-auto mt-8 text-center">
         <a
@@ -52,7 +53,6 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
           Records of the Official Polygonscan Historian
         </a>
       </div>
-      <FactionsTable />
     </div>
   );
 };
