@@ -1,7 +1,6 @@
 import { DAOBI_CONTRACT } from "@/ethereum/abis";
 import useRoles from "@/hooks/useRoles";
 import { useAccount } from "wagmi";
-import FactionsTable from "../Layout/FactionsTable";
 import Section from "./Section";
 
 const hiddenSections = ["registration", "makeClaim"];
@@ -41,7 +40,6 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
               );
             }
           )}
-        {isConnected && connector && <FactionsTable />}
       </div>
       <div className="mx-auto mt-8 text-center">
         <a

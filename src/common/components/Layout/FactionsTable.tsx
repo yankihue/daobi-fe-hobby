@@ -73,9 +73,25 @@ function FactionsTable() {
   return (
     <>
       {" "}
-      <div className="flex">
+      <div className="flex flex-col">
         {" "}
-        <h1 className="mx-auto my-6">Registry</h1>
+        <h1 className="mx-auto mt-6 mb-3">Heaven's Will</h1>
+        <a
+          href="https://info.daobi.org/court"
+          className="no-underline mx-auto"
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
+          {" "}
+          <button
+            className="
+           bg-indigo-500 text-white
+          px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-orange-500 transition ease-in-out duration-300 hover:-translate-y-1 hover:scale-110"
+          >
+            {" "}
+            Visit the court
+          </button>
+        </a>
       </div>
       <div className="flex overflow-x-scroll">
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mx-auto card">
