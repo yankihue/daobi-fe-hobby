@@ -92,16 +92,20 @@ function FactionsTable() {
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="">
             {Object.keys(factions).map((factionName) => (
               <tr
                 key={factionName}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 overflow-x-scroll "
               >
                 <td className="px-6 py-4">{factionName}</td>
                 <td className="px-6 py-4"> {factions[factionName]["votes"]}</td>
-                <td className="px-6 py-4">
-                  {factions[factionName]["voters"].join(", ")}
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {factions[factionName]["voters"].map((voter) => (
+                    <span key={voter} className="card p-3 mx-1">
+                      {voter}
+                    </span>
+                  ))}
                 </td>
               </tr>
             ))}
