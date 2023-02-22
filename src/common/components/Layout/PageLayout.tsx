@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import JsonTable from "./JsonTable";
+import FactionsTable from "./FactionsTable";
 
 const PageLayout = ({ children }: { children: ReactNode }): JSX.Element => (
   <>
@@ -9,8 +9,7 @@ const PageLayout = ({ children }: { children: ReactNode }): JSX.Element => (
       <div className="flex flex-col h-full grow">
         <Navbar />
         {children}
-        <h1>Faction Registry</h1>
-        <JsonTable src="/data/factions.json" />
+        <FactionsTable/>
       </div>
       <Footer />
     </div>
