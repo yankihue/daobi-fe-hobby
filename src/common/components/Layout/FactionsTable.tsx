@@ -98,7 +98,11 @@ function FactionsTable() {
                 key={factionName}
                 className="bg-white border-b dark:bg-black dark:border-gray-700 overflow-x-scroll "
               >
-                <td className="px-6 py-4">{factionName}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="card p-3 mx-1 bg-gradient-to-r from-indigo-500  to-pink-500 text-white">
+                    {factionName}
+                  </span>
+                </td>
                 <td className="px-6 py-4"> {factions[factionName]["votes"]}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {factions[factionName]["voters"].map((voter) => (
