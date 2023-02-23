@@ -7,6 +7,7 @@ type factionData = {
 
 function FactionsTable() {
   const [factions, setFactions] = useState<factionData>({});
+  const chancellor = "";
 
   useEffect(() => {
     async function fetchData() {
@@ -85,8 +86,8 @@ function FactionsTable() {
           {" "}
           <button
             className="
-           bg-indigo-500 text-white
-          px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-orange-500 transition ease-in-out duration-300 hover:-translate-y-1 hover:scale-110"
+           bg-orange-500 text-white
+          px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-amber-500 transition ease-in-out duration-300 hover:-translate-y-1 hover:scale-110"
           >
             {" "}
             Visit the court
@@ -115,7 +116,7 @@ function FactionsTable() {
                 className="bg-white border-b dark:bg-black dark:border-gray-700 overflow-x-scroll "
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="card p-3 mx-1 bg-gradient-to-r from-indigo-500  to-pink-500 text-white">
+                  <span className="card p-3 mx-1 bg-gradient-to-r from-amber-500  to-orange-500 text-white">
                     {factionName}
                   </span>
                 </td>
