@@ -7,7 +7,7 @@ type factionData = {
 
 function FactionsTable() {
   const [factions, setFactions] = useState<factionData>({});
-  const chancellor = "";
+  const [winningFaction, setWinningFaction] = useState<string>("");
 
   useEffect(() => {
     async function fetchData() {
@@ -67,6 +67,10 @@ function FactionsTable() {
         }
       }
       setFactions(factionsDict);
+      const winningFaction = Object.keys(factionsDict).reduce((a, b) =>
+        factionsDict[a]["votes"] > factionsDict[b]["votes"] ? a : b
+      );
+      setWinningFaction(winningFaction);
     }
     fetchData();
   }, []);
@@ -116,7 +120,13 @@ function FactionsTable() {
                 className="bg-white border-b dark:bg-black dark:border-gray-700 overflow-x-scroll "
               >
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="card p-3 mx-1 bg-gradient-to-r from-amber-500  to-orange-500 text-white">
+                  <span
+                    className={`${
+                      factionName === winningFaction
+                        ? "from-amber-400  to-amber-600 text-white"
+                        : "from-gray-200 to-gray-400 text-black"
+                    } card p-3 mx-1 bg-gradient-to-r `}
+                  >
                     {factionName}
                   </span>
                 </td>
