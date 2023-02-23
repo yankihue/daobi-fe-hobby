@@ -80,7 +80,7 @@ function FactionsTable() {
       {" "}
       <div className="flex flex-col">
         {" "}
-        <h1 className="mx-auto mt-6 mb-3">Heaven's Will</h1>
+        <h1 className="mx-auto mt-6 mb-3">Heaven&apos;s Will</h1>
         <a
           href="https://info.daobi.org/court"
           className="no-underline mx-auto"
