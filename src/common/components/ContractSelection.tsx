@@ -35,7 +35,7 @@ const ContractSelection = () => {
               : "font-medium"
           }`}
         >
-          The Mandate《天命》{" "}
+          The Hierarchy{" "}
         </button>
         <button
           key="factionsbutton"
