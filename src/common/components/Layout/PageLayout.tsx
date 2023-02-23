@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import FactionsTable from "./FactionsTable";
 
 const PageLayout = ({ children }: { children: ReactNode }): JSX.Element => (
   <>
@@ -9,7 +8,6 @@ const PageLayout = ({ children }: { children: ReactNode }): JSX.Element => (
       <div className="flex flex-col h-full grow">
         <Navbar />
         {children}
-        <FactionsTable/>
       </div>
       <Footer />
     </div>

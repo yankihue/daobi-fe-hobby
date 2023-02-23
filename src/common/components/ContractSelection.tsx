@@ -2,6 +2,7 @@ import { DYNAMIC_DAOBI_CONTRACTS } from "@/ethereum/abis";
 import Image from "next/image";
 import { useState } from "react";
 import Contract from "./Contract";
+import FactionsTable from "./Layout/FactionsTable";
 
 const ContractSelection = () => {
   const [activeTab, setActiveTab] = useState(1); // contract nav
@@ -34,6 +35,17 @@ const ContractSelection = () => {
               : "font-medium"
           }`}
         >
+          The Hierarchy{" "}
+        </button>
+        <button
+          key="factionsbutton"
+          onClick={() => setActiveTab(3)}
+          className={`border pb-2 md:border-0 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
+            activeTab === 3
+              ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
+              : "font-medium"
+          }`}
+        >
           The Imperial Secretariat
         </button>
       </div>
@@ -54,8 +66,15 @@ const ContractSelection = () => {
           );
         }
       })}
-
       {activeTab === 2 && (
+        <div
+          key="nftdiv"
+          className="flex flex-col mx-1 mt-2 space-y-2 min-h-screen md:mx-16 xl:mx-32 2xl:mx-64"
+        >
+          <FactionsTable />{" "}
+        </div>
+      )}
+      {activeTab === 3 && (
         <div
           key="nftdiv"
           className="flex flex-col mx-1 mt-2 space-y-2 min-h-screen md:mx-16 xl:mx-32 2xl:mx-64"

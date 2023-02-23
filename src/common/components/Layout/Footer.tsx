@@ -24,7 +24,7 @@ const Footer = () => {
         </div>
         <a
           className=""
-          href="https://daobi.netlify.app/court/"
+          href="https://info.daobi.org/court/"
           target={"_blank"}
           rel={"noopener noreferrer"}
         >
