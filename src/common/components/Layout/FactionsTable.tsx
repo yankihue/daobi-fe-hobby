@@ -1,13 +1,22 @@
 import React from "react";
+import { useAccount } from "wagmi";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import useRoles from "@/hooks/useRoles";
 type factionData = {
   [key: string]: string[];
 };
 
 function FactionsTable() {
+  const { address } = useAccount();
+  const {
+    isChancellor,
+    balanceDB,
+    currentChancellor,
+    userCourtName,
+    rolesLoading,
+  } = useRoles(address);
   const [factions, setFactions] = useState<factionData>({});
-  const [winningFaction, setWinningFaction] = useState<string>("");
 
   useEffect(() => {
     async function fetchData() {
@@ -67,10 +76,6 @@ function FactionsTable() {
         }
       }
       setFactions(factionsDict);
-      const winningFaction = Object.keys(factionsDict).reduce((a, b) =>
-        factionsDict[a]["votes"] > factionsDict[b]["votes"] ? a : b
-      );
-      setWinningFaction(winningFaction);
     }
     fetchData();
   }, []);
@@ -122,7 +127,7 @@ function FactionsTable() {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`${
-                      factionName === winningFaction
+                      factionName === currentChancellor.courtName
                         ? "from-amber-400  to-amber-600 text-white"
                         : "from-gray-200 to-gray-400 text-black"
                     } card p-3 mx-1 bg-gradient-to-r `}
