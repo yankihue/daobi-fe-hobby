@@ -111,6 +111,11 @@ const Input = ({
             {`Notice: Large amounts (50,000+) may fail. It is recommended to split large sums into multiple transactions.`}
           </p>
         )}
+        {input.json.name === "_name" && (
+          <p className="italic">
+            {`Note: If you wish to be able to exert your powers in the Discord server if you're elected chancellor, set your discord tag as your official name. Example: User#1234`}
+          </p>
+        )}
       </label>
     </div>
   );
