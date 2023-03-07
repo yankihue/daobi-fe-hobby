@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        daobi: ["daobi"],
+        sans: ["Asul"],
       },
     },
   },

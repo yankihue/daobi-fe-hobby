@@ -22,12 +22,16 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
-            rel="preload"
-            href="public/fonts/daobi_font.ttf"
-            as="font"
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
             crossOrigin=""
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Asul&display=swap"
+            rel="stylesheet"
+          ></link>
         </Head>
         <body>
           <Main />
