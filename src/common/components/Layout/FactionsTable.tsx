@@ -85,16 +85,15 @@ function FactionsTable() {
       {" "}
       <div className="flex flex-col">
         {" "}
-        <h1 className="mx-auto mt-6 mb-3">Heaven&apos;s Will</h1>
         <a
           href="https://info.daobi.org/court"
-          className="no-underline mx-auto"
+          className="no-underline mx-auto mt-6"
           target={"_blank"}
           rel={"noopener noreferrer"}
         >
           {" "}
           <button
-            className="
+            className=" font-daobi
            bg-orange-500 text-white
           px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-amber-500 transition ease-in-out duration-300 hover:-translate-y-1 hover:scale-110"
           >
@@ -107,13 +106,13 @@ function FactionsTable() {
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 mx-auto card">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-transparent dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 font-daobi text-lg">
                 Leader
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-lg">
                 #
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 font-daobi text-lg">
                 Supporters
               </th>
             </tr>
@@ -128,7 +127,7 @@ function FactionsTable() {
                   <span
                     className={`${
                       factionName === currentChancellor.courtName
-                        ? "from-amber-400  to-amber-600 text-white"
+                        ? "from-amber-400  to-amber-600 text-white font-daobi"
                         : "from-gray-200 to-gray-400 text-black"
                     } card p-3 mx-1 bg-gradient-to-r `}
                   >
