@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  @font-face {
+    font-family: "daobi";
+    src: url("/font/daobi_font.ttf");
+  }
   body {
     @apply font-sans;
     /* light mode */
