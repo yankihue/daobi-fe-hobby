@@ -9,14 +9,14 @@ const ContractSelection = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center px-2 pt-2 mx-auto w-full h-16 md:px-4 md:h-auto md:border-b md:flex-row md:w-full md:max-w-7xl border-color-mode">
+      <div className="w-full flex justify-center items-center px-2 pt-2 mx-auto h-16 md:px-4 md:h-auto md:border-b md:flex-row md:w-full md:max-w-7xl border-color-mode overflow-x-auto">
         {/* Tab Selection */}
         {DYNAMIC_DAOBI_CONTRACTS.map((contract, idx) => {
           return (
             <button
               key={contract.name + "button" + idx}
               onClick={() => setActiveTab(idx)}
-              className={`border pb-2 md:border-0 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
+              className={`sm:font-daobi border pb-2 md:border-0 px-4 box-content w-1/4 text-sm md:text-xl h-full ${
                 activeTab === idx
                   ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
                   : "font-medium"
@@ -29,7 +29,7 @@ const ContractSelection = () => {
         <button
           key="nftbutton"
           onClick={() => setActiveTab(2)}
-          className={`border pb-2 md:border-0 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
+          className={`sm:font-daobi border pb-2 md:border-0 px-4 box-content w-1/4 text-sm md:text-xl h-full ${
             activeTab === 2
               ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
               : "font-medium"
@@ -40,7 +40,7 @@ const ContractSelection = () => {
         <button
           key="factionsbutton"
           onClick={() => setActiveTab(3)}
-          className={`border pb-2 md:border-0 px-4 box-content w-1/3 text-sm md:text-xl h-full ${
+          className={`sm:font-daobi border pb-2 md:border-0 px-4 box-content w-1/4 text-sm md:text-xl h-full ${
             activeTab === 3
               ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
               : "font-medium"

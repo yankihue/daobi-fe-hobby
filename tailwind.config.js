@@ -5,7 +5,11 @@ module.exports = {
     "./src/common/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Asul"],
+      },
+    },
   },
   plugins: [],
 };
