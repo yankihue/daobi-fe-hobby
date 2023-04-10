@@ -1,6 +1,6 @@
 import { Session } from "next-auth";
 import { useRouter } from "next/router";
-import DiscordAuth from "./DiscordAuth";
+import TwitterAuth from "./TwitterAuth";
 import { VOTING_CONTRACT } from "@/ethereum/abis";
 import Section from "./Contract/Section";
 
@@ -12,7 +12,7 @@ interface Props {
   isServing: boolean;
   isImmolated: boolean;
   balanceDB: number;
-  discordSession: Session;
+  twitterSession: Session;
   authToken: string;
   signIn: () => void;
   signOut: () => void;
@@ -26,7 +26,7 @@ const RegistrationForm = ({
   isServing,
   isImmolated,
   balanceDB,
-  discordSession,
+  twitterSession,
   authToken,
   signIn,
   signOut,
@@ -49,20 +49,20 @@ const RegistrationForm = ({
             {isImmolated &&
               "You have self-immolated and must re-register if you wish to come back to Court."}
             <br />
-            To protect against bots, we require linking a Discord account. Your
-            address and username are not stored, and your Discord will be
+            To protect against bots, we require linking a Twitter account. Your
+            address and username are not stored, and your Twitter will be
             disconnected afterwards.
           </p>
-          {discordSession && authToken ? (
-            <DiscordAuth signOut={signOut} authToken={authToken} />
+          {twitterSession && authToken ? (
+            <TwitterAuth signOut={signOut} authToken={authToken} />
           ) : (
             <>
-              <p>Click the button below to verify your Discord.</p>
+              <p>Click the button below to verify your Twitter.</p>
               <button
                 className="p-2 text-black bg-green-200 rounded-lg dark:bg-green-800 dark:text-gray-100"
                 onClick={() => signIn()}
               >
-                Connect Discord
+                Connect Twitter
               </button>
             </>
           )}
