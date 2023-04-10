@@ -7,9 +7,9 @@ import { VoteABIConst } from "../../../ethereum/abis/DAObiVoteContract";
 /** Twitter Verification and Minting Workflow // Draft
  * ** Client-Side **                    ** Server-Side **
  * - new user connects wallet
- * - prompt user to connect Twitter
+ * - prompt user to connect Discord
  * - user approves our app
- * -->                                  - api/auth gets twitter details
+ * -->                                  - api/auth gets discord details
  *                                        - implement requirements/checks here,
  *                                          ex: follower count, account age,
  *                                          account used already for dif addr.
@@ -47,7 +47,7 @@ export default async function handler(
   const csrfToken = await getCsrfToken({ req });
 
   const uniqueMessage =
-    `Signing this message verifies that you have completed linking your Twitter. \nAfter you sign this message, DAObi will approve your wallet address on the Voting contract, and your Twitter will be disconnected. \nNeither your address or Twitter will be saved by DAObi, but we still recommend clearing your cookies after verification is completed. \n` +
+    `Signing this message verifies that you have completed linking your Discord account. \nAfter you sign this message, DAObi will approve your wallet address on the Voting contract, and your Discord account will be disconnected. \nNeither your address or Discord information will be saved by DAObi, but we still recommend clearing your cookies after verification is completed. \n` +
     JSON.stringify({
       address: address,
       authToken: csrfToken,
