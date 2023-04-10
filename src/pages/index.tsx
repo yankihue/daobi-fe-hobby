@@ -27,7 +27,7 @@ const Home: NextPage = () => {
   const isPolygon = chain?.id === DAOBI_CHAIN_ID;
 
   // next-auth twitter
-  const { data: discordSession, status: discordStatus } = useSession();
+  const { data: twitterSession, status: twitterStatus } = useSession();
   const [authToken, setAuthToken] = useState<null | string>();
 
   useEffect(() => {
@@ -36,10 +36,10 @@ const Home: NextPage = () => {
       if (csrfToken) setAuthToken(csrfToken);
     };
 
-    if (discordStatus === "authenticated") {
+    if (twitterStatus === "authenticated") {
       getAuthToken();
     }
-  }, [discordStatus]);
+  }, [twitterStatus]);
 
   return (
     <div className="flex flex-col w-full h-full grow">
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
               isImmolated={isImmolated}
               balanceDB={balanceDB}
               authToken={authToken}
-              discordSession={discordSession}
+              twitterSession={twitterSession}
               signIn={signIn}
               signOut={signOut}
             />
