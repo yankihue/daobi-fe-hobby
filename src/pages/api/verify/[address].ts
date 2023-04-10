@@ -7,9 +7,9 @@ import { VoteABIConst } from "../../../ethereum/abis/DAObiVoteContract";
 /** Twitter Verification and Minting Workflow // Draft
  * ** Client-Side **                    ** Server-Side **
  * - new user connects wallet
- * - prompt user to connect Twitter
+ * - prompt user to connect Discord
  * - user approves our app
- * -->                                  - api/auth gets twitter details
+ * -->                                  - api/auth gets discord details
  *                                        - implement requirements/checks here,
  *                                          ex: follower count, account age,
  *                                          account used already for dif addr.
