@@ -7,12 +7,12 @@ interface Props {
   authToken: string;
 }
 
-const TwitterAuth = ({ signOut, authToken }: Props) => {
+const DiscordAuth = ({ signOut, authToken }: Props) => {
   const [promptedToSign, setPromptedToSign] = useState(false);
   const [sentVerification, setSentVerification] = useState(false);
   const { address } = useAccount();
   const uniqueMessage =
-    `Signing this message verifies that you have completed linking your Twitter. \nAfter you sign this message, DAObi will approve your wallet address on the Voting contract, and your Twitter will be disconnected. \nNeither your address or Twitter will be saved by DAObi, but we still recommend clearing your cookies after verification is completed. \n` +
+    `Signing this message verifies that you have completed linking your Discord account. \nAfter you sign this message, DAObi will approve your wallet address on the Voting contract, and your Discord account will be disconnected. \nNeither your address or Discord information will be saved by DAObi, but we still recommend clearing your cookies after verification is completed. \n` +
     JSON.stringify({
       address: address,
       authToken,
@@ -120,4 +120,4 @@ const TwitterAuth = ({ signOut, authToken }: Props) => {
   );
 };
 
-export default TwitterAuth;
+export default DiscordAuth;
