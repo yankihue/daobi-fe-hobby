@@ -80,7 +80,7 @@ const RegistrationForm = ({
               <p className="max-w-prose break-normal w-fit">
                 {isReclused
                   ? "Welcome back to the Court. We knew we would see you again."
-                  : "Twitter verification completed. Time to register your username and cast your first vote!"}
+                  : "Discord verification completed. Time to register your username and cast your first vote!"}
               </p>
               <Section
                 {...VOTING_CONTRACT.userFriendlySections.registration}
