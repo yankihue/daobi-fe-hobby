@@ -171,6 +171,12 @@ export const ACCOUNTABILITY_CONTRACT: DAOBI_CONTRACT = {
         },
       },
     },
+    refuteAccusation: {
+      title: "Refute An Accusation Made Against You",
+      methods: {
+        refuteAccusation: {},
+      },
+    },
   },
 };
 export const DYNAMIC_DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
