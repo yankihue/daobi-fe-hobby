@@ -28,9 +28,9 @@ const ContractSelection = () => {
         })}
         <button
           key="nftbutton"
-          onClick={() => setActiveTab(2)}
+          onClick={() => setActiveTab(3)}
           className={`sm:font-daobi border pb-2 md:border-0 px-4 box-content w-1/4 text-sm md:text-xl h-full ${
-            activeTab === 2
+            activeTab === 3
               ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
               : "font-medium"
           }`}
@@ -39,9 +39,9 @@ const ContractSelection = () => {
         </button>
         <button
           key="factionsbutton"
-          onClick={() => setActiveTab(3)}
+          onClick={() => setActiveTab(4)}
           className={`sm:font-daobi border pb-2 md:border-0 px-4 box-content w-1/4 text-sm md:text-xl h-full ${
-            activeTab === 3
+            activeTab === 4
               ? "font-bold text-orange-600 md:!border-b-2 border-orange-600"
               : "font-medium"
           }`}
@@ -66,7 +66,7 @@ const ContractSelection = () => {
           );
         }
       })}
-      {activeTab === 2 && (
+      {activeTab === 3 && (
         <div
           key="nftdiv"
           className="flex flex-col mx-1 mt-2 space-y-2 min-h-screen md:mx-16 xl:mx-32 2xl:mx-64"
@@ -74,7 +74,7 @@ const ContractSelection = () => {
           <FactionsTable />{" "}
         </div>
       )}
-      {activeTab === 3 && (
+      {activeTab === 4 && (
         <div
           key="nftdiv"
           className="flex flex-col mx-1 mt-2 space-y-2 min-h-screen md:mx-16 xl:mx-32 2xl:mx-64"

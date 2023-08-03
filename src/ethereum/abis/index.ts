@@ -153,7 +153,17 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
   },
 };
 
+export const ACCOUNTABILITY_CONTRACT: DAOBI_CONTRACT = {
+  name: "Accountability",
+  address:
+    process.env.NEXT_PUBLIC_VOTE_ADDR ??
+    "0xbfb20adc227c6570c089c673836ddcccd1d23a64",
+  ABI: DAObiVoteContract,
+  heading: "Accountability",
+  userFriendlySections: {},
+};
 export const DYNAMIC_DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   TOKEN_CONTRACT,
   VOTING_CONTRACT,
+  ACCOUNTABILITY_CONTRACT,
 ];
