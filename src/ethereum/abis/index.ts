@@ -2,6 +2,7 @@ import { DAObiContract3 } from "./DAObiContract3";
 import { DAObiChancellorsSeal } from "./DAObiChancellorsSeal";
 import { DAObiVoteContract } from "./DAObiVoteContract";
 import { JsonFragment } from "@ethersproject/abi";
+import { DaobiAccountability } from "./DaobiAccountability";
 
 export type UserFriendlyMethod = Record<string, string>;
 export interface UserFriendlySection {
@@ -156,11 +157,21 @@ export const TOKEN_CONTRACT: DAOBI_CONTRACT = {
 export const ACCOUNTABILITY_CONTRACT: DAOBI_CONTRACT = {
   name: "Accountability",
   address:
-    process.env.NEXT_PUBLIC_VOTE_ADDR ??
+    process.env.NEXT_PUBLIC_BANISHMENT_ADDR ??
     "0xbfb20adc227c6570c089c673836ddcccd1d23a64",
-  ABI: DAObiVoteContract,
+  ABI: DaobiAccountability,
   heading: "Accountability",
-  userFriendlySections: {},
+  userFriendlySections: {
+    makeAccusation: {
+      title: "Make Accusation",
+      methods: {
+        makeAccusation: {
+          _target:
+            "Enter the address of the courtier you wish to accuse. This might lead to their banishment from the Imperial Court, and the confiscation of their voting token.",
+        },
+      },
+    },
+  },
 };
 export const DYNAMIC_DAOBI_CONTRACTS: DAOBI_CONTRACT[] = [
   TOKEN_CONTRACT,
