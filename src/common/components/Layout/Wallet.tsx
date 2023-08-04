@@ -84,7 +84,12 @@ const Wallet = (): JSX.Element => {
 
       {isConnected ? (
         <div className="flex flex-col justify-center items-center">
-          <button onClick={() => disconnect?.()}>Disconnect</button>
+          <button
+            className="border border-gray-300 rounded-lg p-2"
+            onClick={() => disconnect?.()}
+          >
+            Disconnect
+          </button>
           {chain?.id !== DAOBI_CHAIN_ID && (
             <button
               onClick={() => switchNetwork?.()}
@@ -96,6 +101,7 @@ const Wallet = (): JSX.Element => {
         </div>
       ) : (
         <button
+          className="border border-gray-300 rounded-lg p-2"
           onClick={() => setShowDialog(true)}
           onKeyDown={(e) => handleKeyDown(e)}
         >
@@ -117,7 +123,7 @@ const Wallet = (): JSX.Element => {
                 {connectors.map((connector) => {
                   return (
                     <button
-                      className="p-2 text-xs border"
+                      className="p-2 text-xs border rounded-lg"
                       disabled={!connector.ready}
                       key={connector.id}
                       onClick={() => {
