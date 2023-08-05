@@ -125,6 +125,10 @@ const Function = ({
     }),
     overrides: {
       value: parseEther(msgValue.toString()),
+      gasLimit:
+        functionName === "makeAccusation"
+          ? (150000 as unknown as BigNumber)
+          : null,
     },
     onSuccess() {
       switch (functionName) {
