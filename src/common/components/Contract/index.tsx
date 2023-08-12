@@ -8,27 +8,28 @@ const chancellorOnlySections = ["claimChancellorSalary", "recoverSeal", "mint"];
 
 const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
   const { address: userAddress, isConnected, connector } = useAccount();
-  const { isChancellor, hasGrudge, accuser, accusationTracker } =
-    useRoles(userAddress);
+  const { isChancellor, hasGrudge, isRingLeader } = useRoles(userAddress);
   return (
     <div className="mt-2 w-full h-full">
       {/* show each function if acct is connected  */}
+
       <div className="flex flex-col mx-1 md:mx-16 xl:mx-32 2xl:mx-64">
         {isConnected &&
           connector &&
           Object.entries(userFriendlySections).map(
             ([section, { title, methods }]) => {
               let visibleToUser = true;
+              if (section === "refuteAccusation" && !hasGrudge)
+                visibleToUser = false;
+              else if (section === "banish" && !isRingLeader)
+                visibleToUser = false;
+              else visibleToUser = true;
+
               // if function requires being Chancellor...
               if (chancellorOnlySections.includes(section)) {
                 // only show to Chancellor
                 if (!isChancellor) visibleToUser = false;
               }
-              if (section === "refuteAccusation" && !hasGrudge)
-                visibleToUser = false;
-              else if (section === "banish" && !accusationTracker)
-                visibleToUser = false;
-              else visibleToUser = true;
 
               if (hiddenSections.includes(section)) visibleToUser = false;
               return (

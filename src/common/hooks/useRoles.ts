@@ -25,6 +25,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   const [hasGrudge, setHasGrudge] = useState(false);
   const [accuser, setAccuser] = useState("");
   const [accusationTracker, setAccusationTracker] = useState("");
+  const [isRingLeader, setIsRingLeader] = useState(false);
 
   useEffect(() => {
     if (!chanceAddrLoading) {
@@ -206,6 +207,20 @@ const useRoles = (userAddress: `0x${string}`) => {
     staleTime: 10000,
     watch: true,
   });
+  const {
+    data: isAccuserStruct,
+    isError: isAccuserError,
+    isLoading: isAccuserLoading,
+  } = useContractRead({
+    address:
+      process.env.NEXT_PUBLIC_BANISHMENT_ADDR ??
+      "0x397D5bA2F608A6FE51aD11DA0eA9c0eE09890D4e",
+    abi: DaobiAccountability,
+    functionName: "getAccuser",
+    args: [accusationTracker],
+    staleTime: 10000,
+    watch: true,
+  });
   const [canClaim, setCanClaim] = useState(false);
   const [chanceName, setChanceName] = useState("");
   useEffect(() => {
@@ -247,6 +262,7 @@ const useRoles = (userAddress: `0x${string}`) => {
       setAccuser(hasGrudgeStruct?.accuser);
     }
     setAccusationTracker(accusationTrackerStruct);
+    setIsRingLeader(isAccuserStruct === userAddress);
   }, [
     balanceDB,
     canClaim,
@@ -258,6 +274,7 @@ const useRoles = (userAddress: `0x${string}`) => {
     userVoterStruct,
     hasGrudgeStruct,
     accusationTrackerStruct,
+    isAccuserStruct,
   ]);
 
   return {
@@ -297,6 +314,7 @@ const useRoles = (userAddress: `0x${string}`) => {
     hasGrudge,
     accuser,
     accusationTracker,
+    isRingLeader,
   };
 };
 
