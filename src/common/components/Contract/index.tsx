@@ -8,8 +8,8 @@ const chancellorOnlySections = ["claimChancellorSalary", "recoverSeal", "mint"];
 
 const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
   const { address: userAddress, isConnected, connector } = useAccount();
-  const { isChancellor } = useRoles(userAddress);
-
+  const { isChancellor, hasGrudge, accuser, accusationTracker } =
+    useRoles(userAddress);
   return (
     <div className="mt-2 w-full h-full">
       {/* show each function if acct is connected  */}
@@ -24,6 +24,12 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
                 // only show to Chancellor
                 if (!isChancellor) visibleToUser = false;
               }
+              if (section === "refuteAccusation" && !hasGrudge)
+                visibleToUser = false;
+              else if (section === "banish" && !accusationTracker)
+                visibleToUser = false;
+              else visibleToUser = true;
+
               if (hiddenSections.includes(section)) visibleToUser = false;
               return (
                 <>
