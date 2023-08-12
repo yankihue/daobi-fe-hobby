@@ -162,6 +162,12 @@ export const ACCOUNTABILITY_CONTRACT: DAOBI_CONTRACT = {
   ABI: DaobiAccountability,
   heading: "Accountability",
   userFriendlySections: {
+    refuteAccusation: {
+      title: "Refute The Accusation Made Against You",
+      methods: {
+        refuteAccusation: {},
+      },
+    },
     makeAccusation: {
       title: "Make Accusation",
       methods: {
@@ -171,10 +177,13 @@ export const ACCOUNTABILITY_CONTRACT: DAOBI_CONTRACT = {
         },
       },
     },
-    refuteAccusation: {
-      title: "Refute An Accusation Made Against You",
+    banish: {
+      title: "Banish a Courtier",
       methods: {
-        refuteAccusation: {},
+        banish: {
+          _target:
+            "If you have gathered enough supporters you can banish your target. This will lead to the confiscation of your target's voting token and in turn you will receive an NFT commemorating the banishment event.",
+        },
       },
     },
   },
