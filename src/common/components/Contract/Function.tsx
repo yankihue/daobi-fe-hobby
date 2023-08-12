@@ -20,6 +20,7 @@ import { formatIODefaultValues } from "@/utils/index";
 import { BytesLike, formatEther, parseEther } from "ethers/lib/utils";
 import { BigNumber } from "ethers";
 import { Toast } from "../TxToast";
+import { DAObiContract3 } from "@/ethereum/abis/DAObiContract3";
 
 interface ParentState {
   setToast: Dispatch<SetStateAction<Toast>>;
@@ -125,6 +126,10 @@ const Function = ({
     }),
     overrides: {
       value: parseEther(msgValue.toString()),
+      gasLimit:
+        functionName === "makeAccusation"
+          ? (250000 as unknown as BigNumber)
+          : null,
     },
     onSuccess() {
       switch (functionName) {
@@ -168,6 +173,15 @@ const Function = ({
       setTxWillError(true);
     },
   });
+  const { config: approveConfig } = usePrepareContractWrite({
+    address: "0x5988Bf243ADf1b42a2Ec2e9452D144A90b1FD9A9",
+    abi: DAObiContract3,
+    functionName: "approve",
+    args: ["0x397d5ba2f608a6fe51ad11da0ea9c0ee09890d4e", parseEther("1000")],
+  });
+
+  const { data: approveData, write: writeApprove } =
+    useContractWrite(approveConfig);
 
   const { data, write } = useContractWrite(config);
   const {
@@ -312,6 +326,7 @@ const Function = ({
             }`}
             onClick={async (e) => {
               e.preventDefault();
+              functionName === "makeAccusation" ? writeApprove?.() : null;
               write?.();
             }}
             disabled={txWillError}

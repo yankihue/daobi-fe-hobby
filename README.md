@@ -1,4 +1,4 @@
-Repository for DAObi smart contracts' front-end.
+Temporary repository for DAObi smart contracts' front-end.
 
 Using next, wagmi, & next-auth.
 
