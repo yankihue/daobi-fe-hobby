@@ -4,6 +4,7 @@ import { VoteABIConst } from "@/ethereum/abis/DAObiVoteContract";
 import { formatEther, parseBytes32String } from "ethers/lib/utils";
 import { useEffect, useState } from "react";
 import { DaobiAccountability } from "@/ethereum/abis/DaobiAccountability";
+import { BigNumber } from "ethers";
 
 const useRoles = (userAddress: `0x${string}`) => {
   /** Token Contract Roles */
@@ -26,6 +27,7 @@ const useRoles = (userAddress: `0x${string}`) => {
   const [accuser, setAccuser] = useState("");
   const [accusationTracker, setAccusationTracker] = useState("");
   const [isRingLeader, setIsRingLeader] = useState(false);
+  const [numSupporters, setNumSupporters] = useState(0);
 
   useEffect(() => {
     if (!chanceAddrLoading) {
@@ -221,6 +223,21 @@ const useRoles = (userAddress: `0x${string}`) => {
     staleTime: 10000,
     watch: true,
   });
+  const {
+    data: numSupportersStruct,
+    isError: numSupportersError,
+    isLoading: numSupportersLoading,
+  } = useContractRead({
+    address:
+      process.env.NEXT_PUBLIC_BANISHMENT_ADDR ??
+      "0x397D5bA2F608A6FE51aD11DA0eA9c0eE09890D4e",
+    abi: DaobiAccountability,
+    functionName: "getNumSupporters",
+    args: [accusationTracker as `0x${string}`],
+    staleTime: 10000,
+    watch: true,
+  });
+
   const [canClaim, setCanClaim] = useState(false);
   const [chanceName, setChanceName] = useState("");
   useEffect(() => {
@@ -263,6 +280,7 @@ const useRoles = (userAddress: `0x${string}`) => {
     }
     setAccusationTracker(accusationTrackerStruct);
     setIsRingLeader(isAccuserStruct === userAddress);
+    setNumSupporters(numSupportersStruct?.toNumber());
   }, [
     balanceDB,
     canClaim,
@@ -315,6 +333,7 @@ const useRoles = (userAddress: `0x${string}`) => {
     accuser,
     accusationTracker,
     isRingLeader,
+    numSupporters,
   };
 };
 
