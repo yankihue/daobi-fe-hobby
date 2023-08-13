@@ -159,7 +159,7 @@ export const ACCOUNTABILITY_CONTRACT: DAOBI_CONTRACT = {
   address:
     process.env.NEXT_PUBLIC_BANISHMENT_ADDR ??
     "0x397D5bA2F608A6FE51aD11DA0eA9c0eE09890D4e",
-  ABI: DaobiAccountability,
+  ABI: DaobiAccountability as unknown as DAOBI_CONTRACT["ABI"],
   heading: "Accountability",
   userFriendlySections: {
     refuteAccusation: {

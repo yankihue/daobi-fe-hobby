@@ -217,7 +217,7 @@ const useRoles = (userAddress: `0x${string}`) => {
       "0x397D5bA2F608A6FE51aD11DA0eA9c0eE09890D4e",
     abi: DaobiAccountability,
     functionName: "getAccuser",
-    args: [accusationTracker],
+    args: [accusationTracker as `0x${string}`],
     staleTime: 10000,
     watch: true,
   });
