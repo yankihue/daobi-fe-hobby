@@ -12,6 +12,26 @@ const Contract = ({ address, ABI, userFriendlySections }: DAOBI_CONTRACT) => {
   return (
     <div className="mt-2 w-full h-full">
       {/* show each function if acct is connected  */}
+      {address === process.env.NEXT_PUBLIC_BANISHMENT_ADDR ? (
+        <div className="mx-auto mt-8 text-center">
+          <a
+            href="https://opensea.io/collection/daobi-banishment-memorial-nft"
+            className="no-underline mx-auto mt-6"
+            target={"_blank"}
+            rel={"noopener noreferrer"}
+          >
+            {" "}
+            <button
+              className=" font-daobi
+           bg-orange-500 text-white
+          px-4 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-amber-500 transition ease-in-out duration-300 hover:-translate-y-1 hover:scale-110"
+            >
+              {" "}
+              Banishments Memorial
+            </button>
+          </a>
+        </div>
+      ) : null}
 
       <div className="flex flex-col mx-1 md:mx-16 xl:mx-32 2xl:mx-64">
         {isConnected &&
