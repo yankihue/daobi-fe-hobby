@@ -121,7 +121,6 @@ const useRoles = (userAddress: `0x${string}`) => {
       let serving = false;
       let reclused = false;
       let immolated = false;
-      let grudge = false;
 
       // parse username
       try {
@@ -153,7 +152,6 @@ const useRoles = (userAddress: `0x${string}`) => {
       if (courtName !== userCourtName) setUserCourtName(courtName);
       if (reclused !== isReclused) setIsReclused(reclused);
       if (immolated !== isImmolated) setIsImmolated(immolated);
-      if (grudge !== hasGrudge) setHasGrudge(hasGrudge);
     }
   }, [
     hasVoteToken,
@@ -180,6 +178,15 @@ const useRoles = (userAddress: `0x${string}`) => {
     staleTime: 10000,
     watch: true,
   });
+  useEffect(() => {
+    let grudge = false;
+
+    if (!hasGrudgeStructLoading) {
+      if (!hasGrudgeStructLoading) {
+        if (grudge !== hasGrudge) setHasGrudge(hasGrudge);
+      }
+    }
+  }, [hasGrudge, hasGrudgeStruct, hasGrudgeStructLoading]);
 
   const {
     data: accusationTrackerStruct,
@@ -314,19 +321,31 @@ const useRoles = (userAddress: `0x${string}`) => {
       voteTokenLoading ||
       userStructLoading ||
       isBalanceDBLoading ||
-      chanceStructLoading,
+      chanceStructLoading ||
+      hasGrudgeStructLoading ||
+      accusationTrackerLoading ||
+      isAccuserLoading ||
+      numSupportersLoading,
     rolesErrors:
       chanceAddrError ||
       voteTokenError ||
       userStructError ||
       isBalanceDBError ||
-      chanceStructError
+      chanceStructError ||
+      hasGrudgeStructError ||
+      accusationTrackerError ||
+      isAccuserError ||
+      numSupportersError
         ? [
             chanceAddrError,
             voteTokenError,
             userStructError,
             isBalanceDBError,
             chanceStructError,
+            hasGrudgeStructError,
+            accusationTrackerError,
+            isAccuserError,
+            numSupportersError,
           ]
         : null,
     hasGrudge,
