@@ -82,6 +82,21 @@ const Section = ({
             </div>
           </>
         );
+      case "Make Accusation":
+        return (
+          <>
+            {title}
+            {accusationTracker && (
+              <div className="text-sm font-normal">
+                You are currently accusing{" "}
+                <div className="inline text-orange-400">
+                  {accusationTracker}
+                </div>{" "}
+                along with {numSupporters} other courtiers.
+              </div>
+            )}
+          </>
+        );
       default:
         return title;
     }
