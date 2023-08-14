@@ -182,9 +182,7 @@ const useRoles = (userAddress: `0x${string}`) => {
     let grudge = false;
 
     if (!hasGrudgeStructLoading) {
-      if (!hasGrudgeStructLoading) {
-        if (grudge !== hasGrudge) setHasGrudge(hasGrudge);
-      }
+      if (grudge !== hasGrudge) setHasGrudge(hasGrudge);
     }
   }, [hasGrudge, hasGrudgeStruct, hasGrudgeStructLoading]);
 
