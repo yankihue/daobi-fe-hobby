@@ -287,11 +287,13 @@ const useRoles = (userAddress: `0x${string}`) => {
       let bool = canClaimChancellor();
       if (bool !== canClaim) setCanClaim(bool);
     }
-    if (
-      hasGrudgeStruct?.accuser != "0x0000000000000000000000000000000000000000"
-    ) {
-      setHasGrudge(true);
-      setAccuser(hasGrudgeStruct?.accuser);
+    if (!hasGrudgeStructLoading) {
+      if (
+        hasGrudgeStruct?.accuser != "0x0000000000000000000000000000000000000000"
+      ) {
+        setHasGrudge(true);
+        setAccuser(hasGrudgeStruct?.accuser);
+      }
     }
     setAccusationTracker(accusationTrackerStruct);
     setIsRingLeader(isAccuserStruct === userAddress);
